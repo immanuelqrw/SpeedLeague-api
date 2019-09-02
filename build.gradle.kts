@@ -1,8 +1,12 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-group = "com.immanuelqrw.speedleague"
-version = "0.0.1-pre-alpha"
+val projectGroup = "com.immanuelqrw.speedleague"
+val projectArtifact = "speedleague-api"
+val projectVersion = "0.0.1-pre-alpha"
+
+group = projectGroup
+version = projectVersion
 
 apply(from = "gradle/constants.gradle.kts")
 
@@ -14,6 +18,7 @@ plugins {
     id("org.sonarqube") version "2.6"
     id("org.jetbrains.dokka") version "0.9.17"
     idea
+    `maven-publish`
 }
 
 repositories {
@@ -90,8 +95,8 @@ sonarqube {
         property("sonar.organization", sonarOrganization)
         property("sonar.login", sonarLogin)
 
-        property("sonar.projectKey", "immanuelqrw_Speedleague-API")
-        property("sonar.projectName", "Speedleague-API")
+        property("sonar.projectKey", "immanuelqrw_SpeedLeague-API")
+        property("sonar.projectName", "SpeedLeague-API")
         property("sonar.projectVersion", version)
     }
 }
@@ -100,4 +105,34 @@ val sonar: Task = tasks["sonarqube"]
 val check by tasks.getting {
     //    dependsOn(integrationTest)
 //    dependsOn(sonar)
+}
+
+
+val sourcesJar by tasks.registering(Jar::class) {
+    classifier = "sources"
+    from(sourceSets["main"].allSource)
+}
+
+val repoUsername: String by project
+val repoPassword: String by project
+
+publishing {
+    repositories {
+        maven {
+            url = uri("http://localhost:8081/repository/maven-releases/")
+            credentials {
+                username = repoUsername
+                password = repoPassword
+            }
+        }
+    }
+    publications {
+        register("mavenJava", MavenPublication::class) {
+            groupId = projectGroup
+            artifactId = projectArtifact
+            version = projectVersion
+            from(components["java"])
+            artifact(sourcesJar.get())
+        }
+    }
 }
