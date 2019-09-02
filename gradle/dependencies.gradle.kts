@@ -55,7 +55,10 @@ val packages: Array<Package> = arrayOf(
     *nucleusPackages,
     *jacksonPackages,
     *databasePackages,
-    *jUnitPackages
+    *jUnitPackages,
+    Package("io.micronaut", "micronaut-runtime", "1.2.0"),
+    Package("io.micronaut", "micronaut-http-client", "1.2.0"),
+    Package("io.micronaut", "micronaut-http-server-netty", "1.2.0")
 )
 
 val testPackages: Array<Package> = arrayOf(
