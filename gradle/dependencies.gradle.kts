@@ -46,7 +46,8 @@ val springPackages: Array<Package> = arrayOf(
 val springBootPackages: Array<Package> = arrayOf(
     Package("org.springframework.boot", "spring-boot-autoconfigure", springBootVersion),
     Package("org.springframework.boot", "spring-boot", springBootVersion),
-    Package("org.springframework.boot", "spring-boot-starter-tomcat", springBootVersion)
+    Package("org.springframework.boot", "spring-boot-starter-tomcat", springBootVersion),
+    Package("org.springframework.boot", "spring-boot-gradle-plugin", springBootVersion)
 )
 
 val databasePackages: Array<Package> = arrayOf(
