@@ -13,6 +13,7 @@ data class Race(
 
     val league: League,
 
+    // ? ! Create unique name generator
     @Column(unique = true)
     val name: String,
 

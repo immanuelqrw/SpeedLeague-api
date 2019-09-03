@@ -1,17 +1,17 @@
 package com.immanuelqrw.speedleague.api.controller
 
-import io.micronaut.http.MediaType
-import io.micronaut.http.annotation.Controller
-import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.Produces
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.ui.set
+import org.springframework.web.bind.annotation.GetMapping
 
+@Controller
+class HtmlController {
 
-@Controller("/hello")
-class HelloController {
-
-    @Get("/")
-    @Produces(MediaType.TEXT_PLAIN)
-    fun index(): String {
-        return "Hello World"
+    @GetMapping("/hello")
+    fun blog(model: Model): String {
+        model["title"] = "Blog"
+        return "blog"
     }
+
 }

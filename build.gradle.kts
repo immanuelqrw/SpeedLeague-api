@@ -13,9 +13,10 @@ apply(from = "gradle/constants.gradle.kts")
 plugins {
     java
     kotlin("jvm") version "1.3.50"
-    kotlin("kapt") version "1.3.50"
-    id("org.jetbrains.kotlin.plugin.noarg") version "1.3.50"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.3.50"
+    kotlin("plugin.noarg") version "1.3.50"
+    kotlin("plugin.allopen") version "1.3.50"
+    kotlin("plugin.spring") version "1.3.50"
+    id("io.spring.dependency-management") version "1.0.7.RELEASE"
     id("org.sonarqube") version "2.6"
     id("org.jetbrains.dokka") version "0.9.17"
     idea
@@ -35,11 +36,6 @@ repositories {
 
 
 apply(from = "gradle/dependencies.gradle.kts")
-
-dependencies {
-    compile("org.jetbrains.kotlin:kotlin-reflect:1.3.50")
-    kapt("io.micronaut:micronaut-inject-java:1.2.0")
-}
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8

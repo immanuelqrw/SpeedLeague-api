@@ -1,16 +1,18 @@
 package com.immanuelqrw.speedleague.api.entity
 
 import com.immanuelqrw.core.entity.BaseUniqueEntity
-import javax.persistence.Entity
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
-@Table(name = "`RaceRunner`")
+@Table(name = "`RaceRunner`", uniqueConstraints = [UniqueConstraint(columnNames = ["`raceId`", "`runnerId`"])])
 data class RaceRunner(
 
-    // ! Make Race and Runner unique constraint
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
+    @JoinColumn(name = "`raceId`", referencedColumnName = "`id`")
     val race: Race,
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
+    @JoinColumn(name = "`runnerId`", referencedColumnName = "`id`")
     val runner: Runner,
 
     val time: Long?,
