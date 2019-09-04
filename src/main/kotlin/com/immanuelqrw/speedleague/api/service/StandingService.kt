@@ -4,8 +4,8 @@ import com.immanuelqrw.speedleague.api.dto.output.Standing
 import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.entity.Race
 import com.immanuelqrw.speedleague.api.entity.RaceRunner
-import com.immanuelqrw.speedleague.api.service.search.LeagueService
-import com.immanuelqrw.speedleague.api.service.search.RaceRunnerService
+import com.immanuelqrw.speedleague.api.service.seek.LeagueService
+import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

@@ -1,4 +1,4 @@
-package com.immanuelqrw.speedleague.api.service.search
+package com.immanuelqrw.speedleague.api.service.seek
 
 import com.immanuelqrw.core.api.service.BaseUniqueService
 import com.immanuelqrw.speedleague.api.entity.RaceRunner
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
-class RaceRunnerService : BaseUniqueService<RaceRunner>() {
+class RaceRunnerService : BaseUniqueService<RaceRunner>(RaceRunner::class.java) {
 
     @Autowired
     private lateinit var raceService: RaceService
