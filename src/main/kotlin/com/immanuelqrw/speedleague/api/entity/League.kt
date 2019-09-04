@@ -14,7 +14,7 @@ data class League(
     // ? Parse from String
     val startedOn: LocalDateTime,
 
-    @OneToMany(mappedBy = "`league`", cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "league", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var races: List<Race> = emptyList()
 
 ) : BaseUniqueEntity()

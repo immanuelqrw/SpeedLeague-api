@@ -52,8 +52,9 @@ val springBootPackages: Array<Package> = arrayOf(
 
 val databasePackages: Array<Package> = arrayOf(
     Package("org.postgresql", "postgresql", "42.2.5"),
-    Package("org.hibernate", "hibernate-core", "5.3.7.Final"),
-    Package("org.hibernate.validator", "hibernate-validator", "6.0.13.Final")
+    Package("com.h2database", "h2", "1.4.199"),
+    Package("org.hibernate", "hibernate-core", "5.4.4.Final"),
+    Package("org.hibernate.validator", "hibernate-validator", "6.0.17.Final")
 )
 
 val jUnitPackages: Array<Package> = arrayOf(
