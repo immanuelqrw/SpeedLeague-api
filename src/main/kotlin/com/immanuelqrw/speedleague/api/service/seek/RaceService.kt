@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class RaceService : BaseUniqueService<Race>(Race::class.java) {
 
     fun findByName(name: String): Race? {
-        return findAll("name:$name").firstOrNull()
+        return findAll(search = "name:$name").firstOrNull()
     }
 
 }

@@ -34,11 +34,11 @@ class RaceRunnerService : BaseUniqueService<RaceRunner>(RaceRunner::class.java) 
     }
 
     fun findByRace(raceId: UUID): RaceRunner? {
-        return findAll("raceId:$raceId").firstOrNull()
+        return findAll(search = "raceId:$raceId").firstOrNull()
     }
 
     fun findByRunner(runnerId: UUID): RaceRunner? {
-        return findAll("runnerId:$runnerId").firstOrNull()
+        return findAll(search = "runnerId:$runnerId").firstOrNull()
     }
 
 }

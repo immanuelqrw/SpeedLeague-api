@@ -14,6 +14,7 @@ plugins {
     java
     kotlin("jvm") version "1.3.50"
     kotlin("plugin.noarg") version "1.3.50"
+    kotlin("plugin.jpa") version "1.3.50"
     kotlin("plugin.allopen") version "1.3.50"
     kotlin("plugin.spring") version "1.3.50"
     id("io.spring.dependency-management") version "1.0.7.RELEASE"

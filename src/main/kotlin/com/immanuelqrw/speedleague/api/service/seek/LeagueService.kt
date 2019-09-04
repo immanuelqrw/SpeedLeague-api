@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class LeagueService : BaseUniqueService<League>(League::class.java) {
 
     fun findByName(name: String): League? {
-        return findAll("name:$name").firstOrNull()
+        return findAll(search = "name:$name").firstOrNull()
     }
 
 }
