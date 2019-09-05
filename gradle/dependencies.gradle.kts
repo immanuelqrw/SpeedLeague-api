@@ -24,8 +24,8 @@ data class Package(
 val nucleusPackages: Array<Package> = arrayOf(
     Package("com.immanuelqrw.core", "nucleus-util", nucleusVersion),
     Package("com.immanuelqrw.core", "nucleus-test", nucleusVersion),
-    Package("com.immanuelqrw.core", "nucleus-entity", "0.0.4-pre-alpha"),
-    Package("com.immanuelqrw.core", "nucleus-api", "0.0.11-pre-alpha")
+    Package("com.immanuelqrw.core", "nucleus-entity", "0.0.10-pre-alpha"),
+    Package("com.immanuelqrw.core", "nucleus-api", "0.0.18-pre-alpha")
 )
 
 val nucleusTestPackages: Array<Package> = arrayOf(

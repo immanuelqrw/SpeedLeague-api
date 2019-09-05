@@ -5,12 +5,15 @@ server:
   port : 8089
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: password
+    url: jdbc:postgresql://localhost:5432/speedleague
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: postgres
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: update
   jackson:
     serialization:
       write_dates_as_timestamps: false

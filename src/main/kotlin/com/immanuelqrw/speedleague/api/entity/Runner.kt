@@ -18,7 +18,7 @@ data class Runner(
 
     @Column(unique = true)
     val name: String,
-    
+
     @JsonSerialize(using = LocalDateTimeSerializer::class)
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     val joinedOn: LocalDateTime
