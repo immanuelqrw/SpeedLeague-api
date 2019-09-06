@@ -42,12 +42,4 @@ class RaceTimeController {
         }
     }
 
-//    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-//    fun findAll(
-//        @RequestParam("search")
-//        search: String?
-//    ): Iterable<RaceTimeDTO> {
-//        return raceTimeService.findAll(search = search)
-//    }
-
 }
