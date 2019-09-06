@@ -23,7 +23,7 @@ class RaceController {
     fun create(@RequestBody entity: RaceDTO): Race {
         return entity.run {
             val race = Race(
-                name = "racename",
+                name = "racename", // - Replace with name generator
                 league = leagueService.findByName(leagueName) ?: throw EntityNotFoundException(),
                 startedOn = startedOn
             )
