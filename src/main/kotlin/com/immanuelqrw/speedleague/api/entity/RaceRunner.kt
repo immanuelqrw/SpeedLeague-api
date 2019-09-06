@@ -15,10 +15,13 @@ data class RaceRunner(
     @JoinColumn(name = "`runnerId`", referencedColumnName = "`id`")
     val runner: Runner,
 
+    @Column(name = "`time`")
     val time: Long?,
 
+    @Column(name = "`result`")
     val result: Result?,
 
+    @Column(name = "`placement`")
     val placement: Int? // Convert placement to Enum?
 
 ) : BaseUniqueEntity()
