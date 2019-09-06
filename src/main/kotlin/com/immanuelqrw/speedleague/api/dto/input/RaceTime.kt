@@ -1,11 +1,15 @@
 package com.immanuelqrw.speedleague.api.dto.input
 
+import com.immanuelqrw.speedleague.api.entity.Outcome
+
 data class RaceTime(
 
     val runnerName: String,
 
     val raceName: String,
 
-    val time: String // ! Need to parse into seconds
+    val time: Long, // - Convert in frontend
+
+    val outcome: Outcome? = null
 
 )

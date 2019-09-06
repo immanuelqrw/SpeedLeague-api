@@ -18,10 +18,11 @@ data class RaceRunner(
     @Column(name = "`time`")
     val time: Long?,
 
-    @Column(name = "`result`")
-    val result: Result?,
+    @Enumerated(EnumType.STRING)
+    @Column(name = "`outcome`")
+    val outcome: Outcome? = null,
 
     @Column(name = "`placement`")
-    val placement: Int? // Convert placement to Enum?
+    val placement: Int? = null // ? Convert placement to Enum
 
 ) : BaseUniqueEntity()
