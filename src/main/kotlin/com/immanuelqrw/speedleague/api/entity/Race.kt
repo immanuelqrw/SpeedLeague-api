@@ -10,13 +10,13 @@ import javax.persistence.*
 @Table(name = "`Race`")
 data class Race(
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
-    @JoinColumn(name = "`leagueId`", referencedColumnName = "`id`")
-    val league: League,
-
     // ? ! Create unique name generator
     @Column(name = "`name`", unique = true)
     val name: String,
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
+    @JoinColumn(name = "`leagueId`", referencedColumnName = "`id`")
+    val league: League,
 
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
     @Column(name = "`startedOn`")

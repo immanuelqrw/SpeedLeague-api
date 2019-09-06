@@ -1,5 +1,6 @@
 package com.immanuelqrw.speedleague.api.entity
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import com.immanuelqrw.core.entity.BaseUniqueEntity
 import com.immanuelqrw.core.util.DateTimeFormatter
 import org.springframework.format.annotation.DateTimeFormat
@@ -17,6 +18,7 @@ data class League(
     @Column(name = "`startedOn`")
     val startedOn: LocalDateTime,
 
+    @JsonBackReference
     @OneToMany(mappedBy = "league", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var races: List<Race> = emptyList()
 
