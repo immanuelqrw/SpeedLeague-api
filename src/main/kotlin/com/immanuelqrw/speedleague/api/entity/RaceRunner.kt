@@ -21,8 +21,8 @@ data class RaceRunner(
     var time: Long? = null,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "`outcome`")
-    var outcome: Outcome? = null,
+    @Column(name = "`outcome`", nullable = false)
+    var outcome: Outcome = Outcome.PENDING_VERIFICATION,
 
     @Column(name = "`placement`")
     var placement: Int? = null // ? Convert placement to Enum
