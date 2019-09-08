@@ -7,9 +7,7 @@ import com.immanuelqrw.speedleague.api.entity.RaceRunner
 import com.immanuelqrw.speedleague.api.service.seek.LeagueService
 import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.stereotype.Service
-import java.lang.IllegalStateException
 import java.util.*
 import javax.persistence.EntityNotFoundException
 
@@ -23,7 +21,7 @@ class StandingService {
     private lateinit var raceRunnerService: RaceRunnerService
 
     private fun findRaces(leagueName: String): List<Race> {
-        val league: League = leagueService.findByName(leagueName) ?: throw EntityNotFoundException()
+        val league: League = leagueService.findByName(leagueName)
         return league.races
     }
 
@@ -44,7 +42,7 @@ class StandingService {
         val races: List<Race> = findRaces(leagueName)
 
         val raceRunners: List<RaceRunner> = races.mapNotNull { race: Race ->
-            val raceId: UUID = race.id ?: throw IllegalStateException()
+            val raceId: UUID = race.id
             raceRunnerService.findByRace(raceId)
         }
 

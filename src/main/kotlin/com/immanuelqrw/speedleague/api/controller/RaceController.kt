@@ -24,7 +24,7 @@ class RaceController {
         return entity.run {
             val race = Race(
                 name = "racename", // - Replace with name generator
-                league = leagueService.findByName(leagueName) ?: throw EntityNotFoundException(),
+                league = leagueService.findByName(leagueName),
                 startedOn = startedOn
             )
             raceService.create(race)

@@ -31,8 +31,8 @@ class RaceTimeController {
     fun register(@RequestBody entity: RaceTimeInput): RaceRunner {
 
         return entity.run {
-            val race: Race = raceService.findByName(entity.raceName) ?: throw EntityNotFoundException()
-            val runner: Runner = runnerService.findByName(entity.runnerName) ?: throw EntityNotFoundException()
+            val race: Race = raceService.findByName(entity.raceName)
+            val runner: Runner = runnerService.findByName(entity.runnerName)
 
             val raceRunner = RaceRunner(
                 race = race,
