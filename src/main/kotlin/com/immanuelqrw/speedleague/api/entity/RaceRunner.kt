@@ -18,7 +18,7 @@ data class RaceRunner(
     val runner: Runner,
 
     @Column(name = "`time`")
-    var time: Long? = null,
+    var time: Long? = null, // Time in frames - Convert to human readable on frontend
 
     @Enumerated(EnumType.STRING)
     @Column(name = "`outcome`", nullable = false)

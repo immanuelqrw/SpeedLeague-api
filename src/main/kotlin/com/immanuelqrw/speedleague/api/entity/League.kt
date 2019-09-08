@@ -31,6 +31,6 @@ data class League(
 
     @JsonBackReference
     @OneToMany(mappedBy = "league", cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
-    var races: List<Race> = emptyList()
+    var races: Set<Race> = emptySet()
 
 }

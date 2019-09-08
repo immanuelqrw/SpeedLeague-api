@@ -10,6 +10,6 @@ data class RaceTime(
 
     val time: Long? = null, // - Convert in frontend
 
-    val outcome: Outcome? = null
+    val outcome: Outcome = Outcome.PENDING_VERIFICATION
 
 )
