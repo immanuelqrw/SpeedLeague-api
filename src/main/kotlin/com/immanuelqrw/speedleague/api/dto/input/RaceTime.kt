@@ -8,7 +8,7 @@ data class RaceTime(
 
     val raceName: String,
 
-    val time: Long, // - Convert in frontend
+    val time: Long? = null, // - Convert in frontend
 
     val outcome: Outcome? = null
 
