@@ -10,6 +10,10 @@ data class Standing(
 
     val raceCount: Int,
 
-    val wins: Int // Amount of First Places
+    // Amount of First Places
+    val wins: Int,
+
+    // Average Time in frames
+    val averageTime: Long
 
 )

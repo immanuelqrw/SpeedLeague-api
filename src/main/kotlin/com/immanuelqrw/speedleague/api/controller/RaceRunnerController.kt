@@ -1,6 +1,6 @@
 package com.immanuelqrw.speedleague.api.controller
 
-import com.immanuelqrw.core.entity.BaseUniqueEntity
+import com.immanuelqrw.core.entity.UniqueEntityable
 import com.immanuelqrw.speedleague.api.entity.Race
 import com.immanuelqrw.speedleague.api.entity.Runner
 import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerService
@@ -23,7 +23,7 @@ class RaceRunnerController {
         runnerName: String? = null,
         @RequestParam("raceName")
         raceName: String? = null
-    ): Iterable<BaseUniqueEntity> {
+    ): Iterable<UniqueEntityable> {
         val races: List<Race>? = runnerName?.run {
             raceRunnerService.findByRunner(runnerName).map { raceRunner ->
                 raceRunner.race

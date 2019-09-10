@@ -17,8 +17,9 @@ data class RaceRunner(
     @JoinColumn(name = "`runnerId`", referencedColumnName = "`id`", nullable = false)
     val runner: Runner,
 
+    // Time in frames - Convert to human readable on frontend
     @Column(name = "`time`")
-    var time: Long? = null, // Time in frames - Convert to human readable on frontend
+    var time: Long? = null,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "`outcome`", nullable = false)

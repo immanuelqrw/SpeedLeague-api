@@ -9,6 +9,8 @@ data class League(
     val name: String,
 
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
-    val startedOn: LocalDateTime
+    val startedOn: LocalDateTime,
+
+    val defaultTime: Long
 
 )

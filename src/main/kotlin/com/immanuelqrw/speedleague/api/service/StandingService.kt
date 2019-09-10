@@ -2,6 +2,7 @@ package com.immanuelqrw.speedleague.api.service
 
 import com.immanuelqrw.speedleague.api.dto.output.RaceResult as RaceResult
 import com.immanuelqrw.speedleague.api.dto.output.Standing
+import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.entity.Outcome
 import com.immanuelqrw.speedleague.api.entity.Race
 import com.immanuelqrw.speedleague.api.entity.RaceRunner
@@ -39,7 +40,8 @@ class StandingService {
     }
 
     fun calculateStandings(leagueName: String): List<Standing> {
-        val races: Set<Race> = leagueService.findByName(leagueName).races
+        val league: League = leagueService.findByName(leagueName)
+        val races: Set<Race> = league.races
 
         val raceRunners: List<RaceRunner> = races.mapNotNull { race: Race ->
             val raceId: UUID = race.id
@@ -55,7 +57,8 @@ class StandingService {
                 points = points,
                 raceCount = raceRunners.size,
                 pointsPerRace = points.toFloat() / raceCount,
-                wins = raceRunners.filter { raceRunner -> raceRunner.placement == 1 }.size
+                wins = raceRunners.filter { raceRunner -> raceRunner.placement == 1 }.size,
+                averageTime = raceRunners.map { raceRunner -> raceRunner.time ?: league.defaultTime }.sum()
             )
         }
 

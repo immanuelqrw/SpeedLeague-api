@@ -19,7 +19,8 @@ class LeagueController {
         return entity.run {
             val league = League(
                 name = name,
-                startedOn = startedOn
+                startedOn = startedOn,
+                defaultTime = defaultTime
             )
             leagueService.create(league)
         }

@@ -1,7 +1,7 @@
 package com.immanuelqrw.speedleague.api.entity
 
-import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
@@ -14,29 +14,27 @@ import javax.persistence.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "`League`")
-data class League(
+@Table(name = "`PlayoffRule`", uniqueConstraints = [UniqueConstraint(columnNames = ["`leagueId`", "`order`"])])
+data class PlayoffRule(
 
-    @Column(name = "`name`", unique = true, nullable = false)
-    val name: String,
+    @Column(name = "`qualifier`", nullable = false)
+    val qualifier: Qualifier,
+
+    @Column(name = "`count`", nullable = false)
+    val count: Int,
+
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
+    @JoinColumn(name = "`leagueId`", referencedColumnName = "`id`", nullable = false)
+    val league: League,
 
     @JsonSerialize(using = LocalDateTimeSerializer::class)
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
-    @Column(name = "`startedOn`", nullable = false)
-    val startedOn: LocalDateTime,
+    @Column(name = "`addedOn`", nullable = false)
+    val addedOn: LocalDateTime = LocalDateTime.now(),
 
-    @Column(name = "`defaultTime`", nullable = false)
-    val defaultTime: Long
+    @Column(name = "`order`", nullable = false)
+    val order: Int
 
-) : BaseUniqueEntity() {
-
-    @JsonBackReference
-    @OneToMany(mappedBy = "league", cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
-    var races: Set<Race> = emptySet()
-
-    @JsonBackReference
-    @OneToMany(mappedBy = "league", cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
-    var playoffRules: List<PlayoffRule> = emptyList()
-
-}
+) : BaseUniqueEntity()
