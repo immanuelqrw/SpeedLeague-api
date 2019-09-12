@@ -21,8 +21,8 @@ class PlayoffRuleController {
     private lateinit var playoffRuleService: PlayoffRuleService
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun create(@RequestBody entity: LeaguePlayoffRuleDTO): List<PlayoffRule> {
-        return playoffService.addPlayoffRules(entity)
+    fun create(@RequestBody leaguePlayoffRuleDTO: LeaguePlayoffRuleDTO): List<PlayoffRule> {
+        return playoffService.addPlayoffRules(leaguePlayoffRuleDTO)
     }
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])

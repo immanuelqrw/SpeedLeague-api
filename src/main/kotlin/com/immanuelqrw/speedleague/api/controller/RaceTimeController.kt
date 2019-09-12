@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import javax.persistence.EntityNotFoundException
 
 @RestController
 @RequestMapping("/raceTime")
@@ -28,11 +27,11 @@ class RaceTimeController {
     private lateinit var runnerService: RunnerService
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun register(@RequestBody entity: RaceTimeInput): RaceRunner {
+    fun register(@RequestBody raceTimeInput: RaceTimeInput): RaceRunner {
 
-        return entity.run {
-            val race: Race = raceService.findByName(entity.raceName)
-            val runner: Runner = runnerService.findByName(entity.runnerName)
+        return raceTimeInput.run {
+            val race: Race = raceService.findByName(raceTimeInput.raceName)
+            val runner: Runner = runnerService.findByName(raceTimeInput.runnerName)
 
             val raceRunner = RaceRunner(
                 race = race,

@@ -15,8 +15,8 @@ class LeagueController {
     private lateinit var leagueService: LeagueService
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun create(@RequestBody entity: LeagueDTO): League {
-        return entity.run {
+    fun create(@RequestBody leagueDTO: LeagueDTO): League {
+        return leagueDTO.run {
             val league = League(
                 name = name,
                 startedOn = startedOn,

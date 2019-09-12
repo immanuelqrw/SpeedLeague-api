@@ -7,7 +7,6 @@ import com.immanuelqrw.speedleague.api.service.seek.RaceService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
-import javax.persistence.EntityNotFoundException
 
 @RestController
 @RequestMapping("/race")
@@ -20,8 +19,8 @@ class RaceController {
     private lateinit var leagueService: LeagueService
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun create(@RequestBody entity: RaceDTO): Race {
-        return entity.run {
+    fun create(@RequestBody raceDTO: RaceDTO): Race {
+        return raceDTO.run {
             val race = Race(
                 name = raceName ?: "racename", // ! Replace with name generator
                 league = leagueService.findByName(leagueName),

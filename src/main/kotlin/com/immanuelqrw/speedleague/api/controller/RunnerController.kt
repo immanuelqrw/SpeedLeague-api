@@ -15,8 +15,8 @@ class RunnerController {
     private lateinit var runnerService: RunnerService
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun create(@RequestBody entity: RunnerDTO): Runner {
-        return entity.run {
+    fun create(@RequestBody runnerDTO: RunnerDTO): Runner {
+        return runnerDTO.run {
             val runner = Runner(
                 name = name
             )
