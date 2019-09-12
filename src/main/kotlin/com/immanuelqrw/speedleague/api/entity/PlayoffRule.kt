@@ -14,27 +14,27 @@ import javax.persistence.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "`PlayoffRule`", uniqueConstraints = [UniqueConstraint(columnNames = ["`leagueId`", "`order`"])])
+@Table(name = "PlayoffRule", uniqueConstraints = [UniqueConstraint(columnNames = ["leagueId", "order"])])
 data class PlayoffRule(
 
-    @Column(name = "`qualifier`", nullable = false)
+    @Column(name = "qualifier", nullable = false)
     val qualifier: Qualifier,
 
-    @Column(name = "`count`", nullable = false)
+    @Column(name = "count", nullable = false)
     val count: Int,
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
-    @JoinColumn(name = "`leagueId`", referencedColumnName = "`id`", nullable = false)
+    @JoinColumn(name = "leagueId", referencedColumnName = "id", nullable = false)
     val league: League,
 
     @JsonSerialize(using = LocalDateTimeSerializer::class)
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
-    @Column(name = "`addedOn`", nullable = false)
+    @Column(name = "addedOn", nullable = false)
     val addedOn: LocalDateTime = LocalDateTime.now(),
 
-    @Column(name = "`order`", nullable = false)
+    @Column(name = "order", nullable = false)
     val order: Int
 
 ) : BaseUniqueEntity()

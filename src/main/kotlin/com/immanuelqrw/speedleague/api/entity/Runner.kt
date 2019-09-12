@@ -17,10 +17,10 @@ import javax.persistence.Table
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "`Runner`")
+@Table(name = "Runner")
 data class Runner(
 
-    @Column(name = "`name`", unique = true, nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     val name: String,
 
     @JsonSerialize(using = LocalDateTimeSerializer::class)
@@ -28,7 +28,7 @@ data class Runner(
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
     @CreatedDate
     @CreationTimestamp
-    @Column(name = "`joinedOn`", updatable = false, nullable = false)
+    @Column(name = "joinedOn", updatable = false, nullable = false)
     val joinedOn: LocalDateTime = LocalDateTime.now()
 
 ) : BaseUniqueEntity()

@@ -14,19 +14,19 @@ import javax.persistence.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "`League`")
+@Table(name = "League")
 data class League(
 
-    @Column(name = "`name`", unique = true, nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     val name: String,
 
     @JsonSerialize(using = LocalDateTimeSerializer::class)
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
-    @Column(name = "`startedOn`", nullable = false)
+    @Column(name = "startedOn", nullable = false)
     val startedOn: LocalDateTime,
 
-    @Column(name = "`defaultTime`", nullable = false)
+    @Column(name = "defaultTime", nullable = false)
     val defaultTime: Long
 
 ) : BaseUniqueEntity() {

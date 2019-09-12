@@ -14,22 +14,22 @@ import javax.persistence.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "`Race`")
+@Table(name = "Race")
 data class Race(
 
     // ? ! Create unique name generator
-    @Column(name = "`name`", unique = true, nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     val name: String,
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
-    @JoinColumn(name = "`leagueId`", referencedColumnName = "`id`", nullable = false)
+    @JoinColumn(name = "leagueId", referencedColumnName = "id", nullable = false)
     val league: League,
 
     @JsonSerialize(using = LocalDateTimeSerializer::class)
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
-    @Column(name = "`startedOn`", nullable = false)
+    @Column(name = "startedOn", nullable = false)
     val startedOn: LocalDateTime
 
 ) : BaseUniqueEntity()

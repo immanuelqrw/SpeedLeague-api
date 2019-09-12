@@ -59,6 +59,7 @@ class PlayoffService {
                 val qualifier: Qualifier = playoffRule.qualifier
                 val possiblyQualifiedRunners: List<QualifiedRunner> = topRunners[qualifier]
                     ?: throw IllegalStateException("Each Qualifier should have a list of possible runners")
+                // - Consider outputting each qualification method
                 val orderedQualifiedRunners = possiblyQualifiedRunners.take(playoffRule.count)
 
                 qualifiedRunners.addAll(orderedQualifiedRunners)
