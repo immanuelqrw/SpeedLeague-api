@@ -11,6 +11,8 @@ data class League(
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
     val startedOn: LocalDateTime,
 
-    val defaultTime: Long
+    val defaultTime: Long,
+
+    val qualifierRules: List<QualifierRule>
 
 )
