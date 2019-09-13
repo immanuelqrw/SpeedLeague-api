@@ -36,6 +36,24 @@ class PlayoffService {
 
     }
 
+    fun replacePlayoffRules(leagueRule: LeaguePlayoffRule): List<PlayoffRule> {
+        val league: League = leagueService.findByName(leagueRule.leagueName)
+
+        playoffRuleService.deleteAll(league.playoffRules)
+
+        return leagueRule.qualifierRules.mapIndexed { index, qualifierRule ->
+            val playoffRule = PlayoffRule(
+                qualifier = qualifierRule.qualifier,
+                count = qualifierRule.count,
+                league = league,
+                order = index + 1
+            )
+
+            playoffRuleService.create(playoffRule)
+        }
+
+    }
+
     private fun findTopRunners(top: Int, standings: List<Standing>): MutableMap<Qualifier, List<QualifiedRunner>> {
         return mutableMapOf(
             Qualifier.POINTS to standings.sortedByDescending { it.points }.take(top),

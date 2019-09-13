@@ -25,7 +25,7 @@ data class PlayoffRule(
     val count: Int,
 
     @JsonManagedReference
-    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "leagueId", referencedColumnName = "id", nullable = false)
     val league: League,
 

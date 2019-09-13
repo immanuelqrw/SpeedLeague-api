@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/playoffRule")
 class PlayoffRuleController {
 
-    // ! Need way to replace rules
-
     @Autowired
     private lateinit var playoffService: PlayoffService
 
@@ -31,6 +29,11 @@ class PlayoffRuleController {
         search: String?
     ): Iterable<PlayoffRule> {
         return playoffRuleService.findAll(search = search)
+    }
+
+    @PutMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    fun replace(@RequestBody leaguePlayoffRuleDTO: LeaguePlayoffRuleDTO): List<PlayoffRule> {
+        return playoffService.replacePlayoffRules(leaguePlayoffRuleDTO)
     }
 
 }
