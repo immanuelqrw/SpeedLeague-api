@@ -17,6 +17,7 @@ import javax.persistence.*
 @Table(name = "PlayoffRule", uniqueConstraints = [UniqueConstraint(columnNames = ["leagueId", "order"])])
 data class PlayoffRule(
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "qualifier", nullable = false)
     val qualifier: Qualifier,
 
