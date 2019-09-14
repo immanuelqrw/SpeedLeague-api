@@ -1,13 +1,11 @@
 package com.immanuelqrw.speedleague.api.service
 
 import com.immanuelqrw.speedleague.api.dto.output.Standing
-import com.immanuelqrw.speedleague.api.entity.League
-import com.immanuelqrw.speedleague.api.entity.Outcome
-import com.immanuelqrw.speedleague.api.entity.Race
-import com.immanuelqrw.speedleague.api.entity.RaceRunner
+import com.immanuelqrw.speedleague.api.entity.*
 import com.immanuelqrw.speedleague.api.exception.RaceUnfinishedException
 import com.immanuelqrw.speedleague.api.repository.RaceRunnerRepository
 import com.immanuelqrw.speedleague.api.service.seek.LeagueService
+import com.immanuelqrw.speedleague.api.service.seek.PointRuleService
 import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -25,17 +23,10 @@ class StandingService {
     @Autowired
     private lateinit var raceRunnerRepository: RaceRunnerRepository
 
-    private fun racePoints(place: Int?): Int {
-        return when (place) {
-            null -> 0
-            1 -> 10
-            2 -> 7
-            3 -> 5
-            4 -> 4
-            5 -> 3
-            6 -> 2
-            else -> 1
-        }
+    private fun racePoints(pointRules: Set<PointRule>): Map<Int, Int> {
+        return pointRules.map { pointRule ->
+            pointRule.placement to pointRule.amount
+        }.toMap()
     }
 
     fun calculateStandings(leagueName: String): List<Standing> {
@@ -48,8 +39,20 @@ class StandingService {
         }
 
         val raceResults: Map<String, List<RaceRunner>> = raceRunners.groupBy { it.runner.name }
+
+        val pointRules: Set<PointRule> = league.pointRules
+        val pointsForPlacement: Map<Int, Int> = racePoints(pointRules)
+
         val standings: List<Standing> = raceResults.map { (runnerName: String, raceRunners: List<RaceRunner>) ->
-            val points: Int = raceRunners.sumBy { raceRunner -> racePoints(raceRunner.placement) }
+            val points: Int = raceRunners.sumBy { raceRunner ->
+                val placement: Int? = raceRunner.placement
+
+                placement?.let {
+                    pointsForPlacement[placement] ?: league.defaultPoints
+                } ?: run {
+                    0
+                }
+            }
             val raceCount: Int = raceRunners.size
             Standing(
                 runnerName = runnerName,
@@ -73,7 +76,6 @@ class StandingService {
                 throw RaceUnfinishedException("Runner [${raceRunner.runner.name}]'s outcome in Race [${raceRunner.race.name}] is still Pending Verification")
             }
         }
-
 
         val results: Map<Long, List<RaceRunner>> = raceRunners.groupBy { raceRunner ->
             if (raceRunner.outcome == Outcome.DID_NOT_FINISH) {

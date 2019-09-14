@@ -13,6 +13,10 @@ data class League(
 
     val defaultTime: Long,
 
-    val qualifierRules: List<QualifierRule>
+    val defaultPoints: Int,
+
+    val qualifierRules: List<QualifierRule>,
+
+    val pointRules: List<PointRule>
 
 )

@@ -20,9 +20,7 @@ class PlayoffService {
     @Autowired
     private lateinit var playoffRuleService: PlayoffRuleService
 
-    fun addPlayoffRules(leagueRule: LeaguePlayoffRule): List<PlayoffRule> {
-        val league: League = leagueService.findByName(leagueRule.leagueName)
-
+    private fun attachPlayoffRules(league: League, leagueRule: LeaguePlayoffRule): List<PlayoffRule> {
         return leagueRule.qualifierRules.mapIndexed { index, qualifierRule ->
             val playoffRule = PlayoffRule(
                 qualifier = qualifierRule.qualifier,
@@ -33,6 +31,12 @@ class PlayoffService {
 
             playoffRuleService.create(playoffRule)
         }
+    }
+
+    fun addPlayoffRules(leagueRule: LeaguePlayoffRule): List<PlayoffRule> {
+        val league: League = leagueService.findByName(leagueRule.leagueName)
+
+        return attachPlayoffRules(league, leagueRule)
 
     }
 
@@ -41,16 +45,7 @@ class PlayoffService {
 
         playoffRuleService.deleteAll(league.playoffRules)
 
-        return leagueRule.qualifierRules.mapIndexed { index, qualifierRule ->
-            val playoffRule = PlayoffRule(
-                qualifier = qualifierRule.qualifier,
-                count = qualifierRule.count,
-                league = league,
-                order = index + 1
-            )
-
-            playoffRuleService.create(playoffRule)
-        }
+        return attachPlayoffRules(league, leagueRule)
 
     }
 
@@ -87,9 +82,6 @@ class PlayoffService {
 
         return qualifiedRunners.take(top)
 
-
     }
-
-
 
 }

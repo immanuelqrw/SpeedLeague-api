@@ -26,8 +26,14 @@ data class League(
     @Column(name = "startedOn", nullable = false)
     val startedOn: LocalDateTime,
 
+    // ! Min 0
     @Column(name = "defaultTime", nullable = false)
-    val defaultTime: Long
+    val defaultTime: Long,
+
+    // ! Min 0
+    // ! Consider Renaming
+    @Column(name = "defaultPoints", nullable = false)
+    val defaultPoints: Int
 
 ) : BaseUniqueEntity() {
 
@@ -38,5 +44,9 @@ data class League(
     @JsonBackReference
     @OneToMany(mappedBy = "league", cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
     var playoffRules: List<PlayoffRule> = emptyList()
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "league", cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
+    var pointRules: Set<PointRule> = emptySet()
 
 }

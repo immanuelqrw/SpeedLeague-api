@@ -2,8 +2,6 @@ package com.immanuelqrw.speedleague.api.dto.output
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
-import com.immanuelqrw.speedleague.api.entity.PlayoffRule
-import com.immanuelqrw.speedleague.api.entity.Race
 import java.time.LocalDateTime
 
 data class League (
@@ -15,8 +13,6 @@ data class League (
 
     val defaultTime: Long,
 
-    val races: Set<Race>,
-
-    val playoffRules: List<PlayoffRule>
+    val defaultPoints: Int
 
 )

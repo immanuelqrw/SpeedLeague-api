@@ -26,8 +26,7 @@ class LeagueController {
                 name = name,
                 startedOn = startedOn,
                 defaultTime = defaultTime,
-                races = races,
-                playoffRules = playoffRules
+                defaultPoints = defaultPoints
             )
         }
     }
@@ -38,7 +37,8 @@ class LeagueController {
             val league = League(
                 name = name,
                 startedOn = startedOn,
-                defaultTime = defaultTime
+                defaultTime = defaultTime,
+                defaultPoints = defaultPoints
             )
             val createdLeague: League = leagueService.create(league)
 
