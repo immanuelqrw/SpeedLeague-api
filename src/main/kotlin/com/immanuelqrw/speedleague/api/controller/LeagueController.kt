@@ -1,7 +1,8 @@
 package com.immanuelqrw.speedleague.api.controller
 
 import com.immanuelqrw.speedleague.api.dto.input.LeaguePlayoffRule
-import com.immanuelqrw.speedleague.api.dto.input.League as LeagueDTO
+import com.immanuelqrw.speedleague.api.dto.input.League as LeagueInput
+import com.immanuelqrw.speedleague.api.dto.output.League as LeagueOutput
 import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.service.PlayoffService
 import com.immanuelqrw.speedleague.api.service.seek.LeagueService
@@ -19,9 +20,21 @@ class LeagueController {
     @Autowired
     private lateinit var playoffService: PlayoffService
 
+    private fun convertToOutput(league: League): LeagueOutput {
+        return league.run {
+            LeagueOutput(
+                name = name,
+                startedOn = startedOn,
+                defaultTime = defaultTime,
+                races = races,
+                playoffRules = playoffRules
+            )
+        }
+    }
+
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun create(@RequestBody leagueDTO: LeagueDTO): League {
-        return leagueDTO.run {
+    fun create(@RequestBody leagueInput: LeagueInput): LeagueOutput {
+        return leagueInput.run {
             val league = League(
                 name = name,
                 startedOn = startedOn,
@@ -31,12 +44,12 @@ class LeagueController {
 
             val leaguePlayoffRule = LeaguePlayoffRule(
                 leagueName = name,
-                qualifierRules = leagueDTO.qualifierRules
+                qualifierRules = leagueInput.qualifierRules
             )
 
             playoffService.addPlayoffRules(leaguePlayoffRule)
 
-            createdLeague
+            convertToOutput(createdLeague)
         }
     }
 
@@ -44,8 +57,8 @@ class LeagueController {
     fun findAll(
         @RequestParam("search")
         search: String?
-    ): Iterable<League> {
-        return leagueService.findAll(search = search)
+    ): Iterable<LeagueOutput> {
+        return leagueService.findAll(search = search).map { league -> convertToOutput(league) }
     }
 
 }

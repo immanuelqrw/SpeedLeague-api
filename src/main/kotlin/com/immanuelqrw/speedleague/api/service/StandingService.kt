@@ -1,6 +1,5 @@
 package com.immanuelqrw.speedleague.api.service
 
-import com.immanuelqrw.speedleague.api.dto.output.RaceResult as RaceResult
 import com.immanuelqrw.speedleague.api.dto.output.Standing
 import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.entity.Outcome
@@ -66,7 +65,7 @@ class StandingService {
         return standings.sortedBy { standing -> standing.points }
     }
 
-    fun calculateRacePlacements(raceName: String): List<RaceResult> {
+    fun calculateRacePlacements(raceName: String): List<RaceRunner> {
         val raceRunners: List<RaceRunner> = raceRunnerService.findByRace(raceName)
 
         raceRunners.forEach { raceRunner ->
@@ -96,15 +95,7 @@ class StandingService {
             placement += raceRunners.size
         }
 
-        return results.values.flatten().map { raceRunner ->
-            RaceResult(
-                raceName = raceRunner.race.name,
-                runnerName = raceRunner.runner.name,
-                outcome = raceRunner.outcome,
-                time = raceRunner.time,
-                placement = raceRunner.placement
-            )
-        }
+        return results.values.flatten()
     }
 
 }

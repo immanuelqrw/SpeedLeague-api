@@ -1,9 +1,10 @@
 package com.immanuelqrw.speedleague.api.controller
 
 import com.immanuelqrw.speedleague.api.dto.output.QualifiedRunner
+import com.immanuelqrw.speedleague.api.entity.RaceRunner
 import com.immanuelqrw.speedleague.api.service.PlayoffService
-import com.immanuelqrw.speedleague.api.dto.output.RaceResult as RaceResultDTO
-import com.immanuelqrw.speedleague.api.dto.output.Standing as StandingDTO
+import com.immanuelqrw.speedleague.api.dto.output.RaceTime as RaceTimeOutput
+import com.immanuelqrw.speedleague.api.dto.output.Standing as StandingOutput
 import com.immanuelqrw.speedleague.api.service.StandingService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -19,11 +20,23 @@ class StandingController {
     @Autowired
     private lateinit var playoffService: PlayoffService
 
+    private fun convertToOutput(raceRunner: RaceRunner): RaceTimeOutput {
+        return raceRunner.run {
+            RaceTimeOutput(
+                raceName = race.name,
+                runnerName = runner.name,
+                outcome = outcome,
+                time = time,
+                placement = placement
+            )
+        }
+    }
+
     @GetMapping(path = ["/generate"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun generateStandings(
         @RequestParam("leagueName")
         leagueName: String
-    ): Iterable<StandingDTO> {
+    ): Iterable<StandingOutput> {
         return standingService.calculateStandings(leagueName)
     }
 
@@ -34,7 +47,7 @@ class StandingController {
         @RequestParam("top")
         top: Int
     ): Iterable<QualifiedRunner> {
-        val standings: List<StandingDTO> = standingService.calculateStandings(leagueName)
+        val standings: List<StandingOutput> = standingService.calculateStandings(leagueName)
         return playoffService.matchQualifiedRunners(leagueName, top, standings)
     }
 
@@ -43,8 +56,8 @@ class StandingController {
     fun calculatePlacements(
         @RequestParam("raceName")
         raceName: String
-    ): List<RaceResultDTO> {
-        return standingService.calculateRacePlacements(raceName)
+    ): List<RaceTimeOutput> {
+        return standingService.calculateRacePlacements(raceName).map { raceRunner -> convertToOutput(raceRunner) }
     }
 
 }

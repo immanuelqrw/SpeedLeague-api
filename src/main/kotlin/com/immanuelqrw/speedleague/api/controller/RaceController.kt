@@ -1,6 +1,7 @@
 package com.immanuelqrw.speedleague.api.controller
 
-import com.immanuelqrw.speedleague.api.dto.input.Race as RaceDTO
+import com.immanuelqrw.speedleague.api.dto.input.Race as RaceInput
+import com.immanuelqrw.speedleague.api.dto.output.Race as RaceOutput
 import com.immanuelqrw.speedleague.api.entity.Race
 import com.immanuelqrw.speedleague.api.service.seek.LeagueService
 import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerService
@@ -22,15 +23,27 @@ class RaceController {
     @Autowired
     private lateinit var raceRunnerService: RaceRunnerService
 
+    private fun convertToOutput(race: Race): RaceOutput {
+        return race.run {
+            RaceOutput(
+                name = name,
+                leagueName = league.name,
+                startedOn = startedOn
+            )
+        }
+    }
+
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun create(@RequestBody raceDTO: RaceDTO): Race {
-        return raceDTO.run {
+    fun create(@RequestBody raceInput: RaceInput): RaceOutput {
+        return raceInput.run {
             val race = Race(
                 name = raceName ?: "racename", // ! Replace with name generator
                 league = leagueService.findByName(leagueName),
                 startedOn = startedOn
             )
-            raceService.create(race)
+            val createdRace: Race = raceService.create(race)
+
+            convertToOutput(createdRace)
         }
     }
 
@@ -38,16 +51,16 @@ class RaceController {
     fun findAll(
         @RequestParam("search")
         search: String?
-    ): Iterable<Race> {
-        return raceService.findAll(search = search)
+    ): Iterable<RaceOutput> {
+        return raceService.findAll(search = search).map { race -> convertToOutput(race) }
     }
 
     @GetMapping(path = ["/runner/{runnerName}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(
         @PathVariable("runnerName")
         runnerName: String
-    ): List<Race> {
-        return raceRunnerService.findByRunner(runnerName).map { it.race }
+    ): List<RaceOutput> {
+        return raceRunnerService.findByRunner(runnerName).map { convertToOutput(it.race) }
     }
 
 }
