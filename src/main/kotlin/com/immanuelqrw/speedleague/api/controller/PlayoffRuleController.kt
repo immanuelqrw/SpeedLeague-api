@@ -33,21 +33,36 @@ class PlayoffRuleController {
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody leaguePlayoffRuleInput: LeaguePlayoffRuleInput): List<PlayoffRuleOutput> {
-        return playoffService.addPlayoffRules(leaguePlayoffRuleInput).map { playoffRule -> convertToOutput(playoffRule) }
+        return playoffService.addPlayoffRules(leaguePlayoffRuleInput).map { playoffRule ->
+            convertToOutput(playoffRule)
+        }.sortedBy { it.order }
     }
 
-    // ! Need some way to search by League Name
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(
         @RequestParam("search")
         search: String?
     ): Iterable<PlayoffRuleOutput> {
-        return playoffRuleService.findAll(search = search).map { playoffRule -> convertToOutput(playoffRule) }
+        return playoffRuleService.findAll(search = search).map { playoffRule ->
+            convertToOutput(playoffRule)
+        }.sortedBy { it.order }
+    }
+
+    @GetMapping(path = ["/league/{leagueName}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findAll(
+        @PathVariable("leagueName")
+        leagueName: String
+    ): List<PlayoffRuleOutput> {
+        return playoffRuleService.findByLeague(leagueName).map { playoffRule ->
+            convertToOutput(playoffRule)
+        }.sortedBy { it.order }
     }
 
     @PutMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun replace(@RequestBody leaguePlayoffRuleInput: LeaguePlayoffRuleInput): List<PlayoffRuleOutput> {
-        return playoffService.replacePlayoffRules(leaguePlayoffRuleInput).map { playoffRule -> convertToOutput(playoffRule) }
+        return playoffService.replacePlayoffRules(leaguePlayoffRuleInput).map { playoffRule ->
+            convertToOutput(playoffRule)
+        }.sortedBy { it.order }
     }
 
 }

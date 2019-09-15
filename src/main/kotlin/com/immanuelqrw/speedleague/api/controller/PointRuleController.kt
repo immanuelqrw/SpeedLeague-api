@@ -32,21 +32,36 @@ class PointRuleController {
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody leaguePointRuleInput: LeaguePointRuleInput): List<PointRuleOutput> {
-        return pointService.addPointRules(leaguePointRuleInput).map { pointRule -> convertToOutput(pointRule) }
+        return pointService.addPointRules(leaguePointRuleInput).map { pointRule ->
+            convertToOutput(pointRule)
+        }.sortedBy { it.placement }
     }
 
-    // ! Need some way to search by League Name
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(
         @RequestParam("search")
         search: String?
     ): Iterable<PointRuleOutput> {
-        return pointRuleService.findAll(search = search).map { pointRule -> convertToOutput(pointRule) }
+        return pointRuleService.findAll(search = search).map { pointRule ->
+            convertToOutput(pointRule)
+        }.sortedBy { it.placement }
+    }
+
+    @GetMapping(path = ["/league/{leagueName}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findAll(
+        @PathVariable("leagueName")
+        leagueName: String
+    ): List<PointRuleOutput> {
+        return pointRuleService.findByLeague(leagueName).map { pointRule ->
+            convertToOutput(pointRule)
+        }.sortedBy { it.placement }
     }
 
     @PutMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun replace(@RequestBody leaguePointRuleInput: LeaguePointRuleInput): List<PointRuleOutput> {
-        return pointService.replacePointRules(leaguePointRuleInput).map { pointRule -> convertToOutput(pointRule) }
+        return pointService.replacePointRules(leaguePointRuleInput).map { pointRule ->
+            convertToOutput(pointRule)
+        }.sortedBy { it.placement }
     }
 
 }
