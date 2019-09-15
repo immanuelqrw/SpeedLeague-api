@@ -37,7 +37,7 @@ class SpeedrunController {
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody speedrunInput: SpeedrunInput): SpeedrunOutput {
         return speedrunInput.run {
-            val cart: Cart = cartService.findByGameAndSystemAndRegion(gameName, systemName, region)
+            val cart: Cart = cartService.find(gameName, systemName, isEmulated, region, versionName)
             val category: Category = categoryService.findByName(categoryName)
 
             val speedrun = Speedrun(

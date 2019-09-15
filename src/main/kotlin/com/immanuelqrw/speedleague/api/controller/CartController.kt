@@ -42,7 +42,7 @@ class CartController {
     fun create(@RequestBody cartInput: CartInput): CartOutput {
         return cartInput.run {
             val game: Game = gameService.findByName(gameName)
-            val distinctSystem: DistinctSystem = distinctSystemService.findBySystemAndRegionAndVersion(systemName, region, versionName)
+            val distinctSystem: DistinctSystem = distinctSystemService.find(systemName, isEmulated, region, versionName)
 
             val cart = Cart(
                 game = game,

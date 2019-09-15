@@ -45,11 +45,13 @@ class CartService : BaseUniqueService<Cart>(Cart::class.java) {
         }
     }
 
-    fun findByGameAndSystemAndRegion(gameName: String, systemName: String, region: Region): Cart {
+    fun find(gameName: String, systemName: String, isEmulated: Boolean, region: Region, versionName: String): Cart {
         return findAll().firstOrNull { cart ->
             cart.game.name == gameName &&
             cart.distinctSystem.system.name == systemName &&
-            cart.distinctSystem.region == region
+            cart.distinctSystem.system.isEmulated == isEmulated &&
+            cart.distinctSystem.region == region &&
+            cart.distinctSystem.version.name == versionName
         } ?: throw EntityNotFoundException()
     }
 

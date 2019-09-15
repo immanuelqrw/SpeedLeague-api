@@ -152,13 +152,15 @@ class LeagueSpeedrunService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedrun::
         }
     }
 
-    fun findByLeagueAndCategoryAndGameAndSystemAndRegion(leagueName: String, categoryName: String, gameName: String, systemName: String, region: Region): LeagueSpeedrun {
+    fun find(leagueName: String, categoryName: String, gameName: String, systemName: String, isEmulated: Boolean, region: Region, versionName: String): LeagueSpeedrun {
         return findAll().firstOrNull { leagueSpeedrun ->
             leagueSpeedrun.league.name == leagueName &&
             leagueSpeedrun.speedrun.category.name == categoryName &&
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
             leagueSpeedrun.speedrun.cart.distinctSystem.system.name == systemName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.region == region
+            leagueSpeedrun.speedrun.cart.distinctSystem.system.isEmulated == isEmulated &&
+            leagueSpeedrun.speedrun.cart.distinctSystem.region == region &&
+            leagueSpeedrun.speedrun.cart.distinctSystem.version.name == versionName
         } ?: throw EntityNotFoundException()
     }
 

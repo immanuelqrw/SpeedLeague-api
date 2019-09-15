@@ -39,7 +39,7 @@ class LeagueSpeedrunController {
     fun create(@RequestBody leagueSpeedrunInput: LeagueSpeedrunInput): LeagueSpeedrunOutput {
         return leagueSpeedrunInput.run {
             val league: League = leagueService.findByName(leagueName)
-            val speedrun: Speedrun = speedrunService.findByCategoryAndGameAndSystemAndRegion(categoryName, gameName, systemName, region)
+            val speedrun: Speedrun = speedrunService.find(categoryName, gameName, systemName, isEmulated, region, versionName)
 
             val leagueSpeedrun = LeagueSpeedrun(
                 league = league,

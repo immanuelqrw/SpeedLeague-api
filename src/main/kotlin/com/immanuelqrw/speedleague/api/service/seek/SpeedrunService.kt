@@ -75,12 +75,14 @@ class SpeedrunService : BaseUniqueService<Speedrun>(Speedrun::class.java) {
         }
     }
 
-    fun findByCategoryAndGameAndSystemAndRegion(categoryName: String, gameName: String, systemName: String, region: Region): Speedrun {
+    fun find(categoryName: String, gameName: String, systemName: String, isEmulated: Boolean, region: Region, versionName: String): Speedrun {
         return findAll().firstOrNull { speedrun ->
             speedrun.category.name == categoryName &&
             speedrun.cart.game.name == gameName &&
             speedrun.cart.distinctSystem.system.name == systemName &&
-            speedrun.cart.distinctSystem.region == region
+            speedrun.cart.distinctSystem.system.isEmulated == isEmulated &&
+            speedrun.cart.distinctSystem.region == region &&
+            speedrun.cart.distinctSystem.version.name == versionName
         } ?: throw EntityNotFoundException()
     }
 

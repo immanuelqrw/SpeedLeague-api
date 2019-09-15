@@ -45,9 +45,10 @@ class DistinctSystemService : BaseUniqueService<DistinctSystem>(DistinctSystem::
         }
     }
 
-    fun findBySystemAndRegionAndVersion(systemName: String, region: Region, versionName: String): DistinctSystem {
+    fun find(systemName: String, isEmulated: Boolean, region: Region, versionName: String): DistinctSystem {
         return findAll().firstOrNull { distinctSystem ->
             distinctSystem.system.name == systemName &&
+            distinctSystem.system.isEmulated == isEmulated &&
             distinctSystem.region == region &&
             distinctSystem.version.name == versionName
         } ?: throw EntityNotFoundException()
