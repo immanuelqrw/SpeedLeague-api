@@ -25,6 +25,19 @@ VALUES
   ('Ijano Part 1','2019-09-03T15:23:11',0, 1, '2019-09-12T03:08:32.33','2019-09-12T03:08:32.33',NULL,'6b23b367-99f9-4d8a-9c76-3659976b4e54');
 
 INSERT INTO
+  "LeagueRunner" (
+    "leagueId",
+    "runnerId",
+    "joinedOn",
+    "createdOn",
+    "modifiedOn",
+    "removedOn",
+    "id"
+  )
+VALUES
+  ('6b23b367-99f9-4d8a-9c76-3659976b4e54','13c7bd44-0cb3-45ba-b6fd-f20a81695b32','2019-09-12T03:09:00.431','2019-09-12T03:09:00.431','2019-09-12T03:09:00.431',NULL,'68c068d1-b504-40c1-86de-89eab2c1fc13');
+
+INSERT INTO
   "Race" (
     "name",
     "leagueId",
@@ -44,13 +57,14 @@ INSERT INTO
     "time",
     "outcome",
     "placement",
+    "joinedOn",
     "createdOn",
     "modifiedOn",
     "removedOn",
     "id"
   )
 VALUES
-  ('a89f45ea-154e-4856-bb23-81925a4f40d8','13c7bd44-0cb3-45ba-b6fd-f20a81695b32',1290,'COMPLETED',NULL,'2019-09-12T03:09:00.431','2019-09-12T03:09:00.431',NULL,'68c068d1-b504-40c1-86de-89eab2c1fc13');
+  ('a89f45ea-154e-4856-bb23-81925a4f40d8','13c7bd44-0cb3-45ba-b6fd-f20a81695b32',1290,'COMPLETED',NULL,'2019-09-12T03:09:00.431','2019-09-12T03:09:00.431','2019-09-12T03:09:00.431',NULL,'68c068d1-b504-40c1-86de-89eab2c1fc13');
 
 
 INSERT INTO
