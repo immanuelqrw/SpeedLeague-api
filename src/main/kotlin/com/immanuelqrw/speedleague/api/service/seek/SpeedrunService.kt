@@ -39,13 +39,13 @@ class SpeedrunService : BaseUniqueService<Speedrun>(Speedrun::class.java) {
         }
     }
 
-    fun findAllByGameAndRegion(gameName: String, region: Region?): List<Speedrun> {
+    fun findAllByGameAndRegion(gameName: String, region: Region): List<Speedrun> {
         return findAll().filter { speedrun ->
             speedrun.cart.game.name == gameName && speedrun.cart.distinctSystem.region == region
         }
     }
 
-    fun findAllBySystemAndRegion(systemName: String, region: Region?): List<Speedrun> {
+    fun findAllBySystemAndRegion(systemName: String, region: Region): List<Speedrun> {
         return findAll().filter { speedrun ->
             speedrun.cart.distinctSystem.system.name == systemName && speedrun.cart.distinctSystem.region == region
         }
@@ -59,7 +59,7 @@ class SpeedrunService : BaseUniqueService<Speedrun>(Speedrun::class.java) {
         }
     }
 
-    fun findByCategoryAndGameAndRegion(categoryName: String, gameName: String, region: Region?): List<Speedrun> {
+    fun findByCategoryAndGameAndRegion(categoryName: String, gameName: String, region: Region): List<Speedrun> {
         return findAll().filter { speedrun ->
             speedrun.category.name == categoryName &&
             speedrun.cart.game.name == gameName &&
@@ -67,7 +67,7 @@ class SpeedrunService : BaseUniqueService<Speedrun>(Speedrun::class.java) {
         }
     }
 
-    fun findByGameAndSystemAndRegion(gameName: String, systemName: String, region: Region?): List<Speedrun> {
+    fun findByGameAndSystemAndRegion(gameName: String, systemName: String, region: Region): List<Speedrun> {
         return findAll().filter { speedrun ->
             speedrun.cart.game.name == gameName &&
             speedrun.cart.distinctSystem.system.name == systemName &&
@@ -75,13 +75,25 @@ class SpeedrunService : BaseUniqueService<Speedrun>(Speedrun::class.java) {
         }
     }
 
-    fun findByCategoryAndGameAndSystemAndRegion(categoryName: String, gameName: String, systemName: String, region: Region?): Speedrun {
+    fun findByCategoryAndGameAndSystemAndRegion(categoryName: String, gameName: String, systemName: String, region: Region): Speedrun {
         return findAll().firstOrNull { speedrun ->
             speedrun.category.name == categoryName &&
             speedrun.cart.game.name == gameName &&
             speedrun.cart.distinctSystem.system.name == systemName &&
             speedrun.cart.distinctSystem.region == region
         } ?: throw EntityNotFoundException()
+    }
+
+    fun findAll(categoryName: String?, gameName: String?, systemName: String?, isEmulated: Boolean?, region: Region?, versionName: String?): List<Speedrun> {
+        return findAll()
+            .asSequence()
+            .filter { speedrun ->  categoryName?.let { speedrun.category.name == categoryName } ?: true }
+            .filter { speedrun ->  gameName?.let { speedrun.cart.game.name == gameName } ?: true }
+            .filter { speedrun ->  systemName?.let { speedrun.cart.distinctSystem.system.name == systemName } ?: true }
+            .filter { speedrun ->  isEmulated?.let { speedrun.cart.distinctSystem.system.isEmulated == isEmulated } ?: true }
+            .filter { speedrun ->  region?.let { speedrun.cart.distinctSystem.region == region } ?: true }
+            .filter { speedrun ->  versionName?.let { speedrun.cart.distinctSystem.version.name == versionName } ?: true }
+            .toList()
     }
 
 }

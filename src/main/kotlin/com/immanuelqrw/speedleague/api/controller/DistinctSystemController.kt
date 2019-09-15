@@ -3,6 +3,7 @@ package com.immanuelqrw.speedleague.api.controller
 import com.immanuelqrw.speedleague.api.dto.input.DistinctSystem as DistinctSystemInput
 import com.immanuelqrw.speedleague.api.dto.output.DistinctSystem as DistinctSystemOutput
 import com.immanuelqrw.speedleague.api.entity.DistinctSystem
+import com.immanuelqrw.speedleague.api.entity.Region
 import com.immanuelqrw.speedleague.api.entity.Version
 import com.immanuelqrw.speedleague.api.entity.System as SystemEntity
 import com.immanuelqrw.speedleague.api.service.seek.DistinctSystemService
@@ -31,7 +32,7 @@ class DistinctSystemController {
                 systemName = system.name,
                 isEmulated = system.isEmulated,
                 region = region,
-                versionName = version?.name
+                versionName = version.name
             )
         }
     }
@@ -71,6 +72,22 @@ class DistinctSystemController {
         search: String?
     ): Iterable<DistinctSystemOutput> {
         return distinctSystemService.findAll(search = search).map { distinctSystem -> convertToOutput(distinctSystem) }
+    }
+
+    @GetMapping(path = ["/deepSearch"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findAll(
+        @RequestParam("systemName")
+        systemName: String?,
+        @RequestParam("isEmulated")
+        isEmulated: Boolean?,
+        @RequestParam("region")
+        region: Region?,
+        @RequestParam("versionName")
+        versionName: String?
+    ): Iterable<DistinctSystemOutput> {
+        return distinctSystemService
+            .findAll(systemName, isEmulated, region, versionName)
+            .map { distinctSystem -> convertToOutput(distinctSystem) }
     }
 
 }

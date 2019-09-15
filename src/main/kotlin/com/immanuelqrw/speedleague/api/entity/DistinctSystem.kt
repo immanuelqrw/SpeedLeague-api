@@ -15,10 +15,10 @@ data class DistinctSystem(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "region", nullable = true)
-    val region: Region?,
+    val region: Region = Region.ANY,
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
     @JoinColumn(name = "versionId", referencedColumnName = "id", nullable = true)
-    val version: Version?
+    val version: Version
 
 ) : BaseUniqueEntity()

@@ -9,8 +9,8 @@ data class DistinctSystem(
 
     val isEmulated: Boolean,
 
-    val region: Region?,
+    val region: Region,
 
-    val versionName: String?
+    val versionName: String
 
 )

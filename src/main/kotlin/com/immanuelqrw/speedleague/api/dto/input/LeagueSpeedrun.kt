@@ -15,8 +15,8 @@ data class LeagueSpeedrun(
 
     val isEmulated: Boolean = false,
 
-    val region: Region?,
+    val region: Region = Region.ANY,
 
-    val versionName: String
+    val versionName: String = "ANY"
 
 )

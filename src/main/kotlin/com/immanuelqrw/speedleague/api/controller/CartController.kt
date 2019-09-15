@@ -5,6 +5,7 @@ import com.immanuelqrw.speedleague.api.dto.output.Cart as CartOutput
 import com.immanuelqrw.speedleague.api.entity.Cart
 import com.immanuelqrw.speedleague.api.entity.DistinctSystem
 import com.immanuelqrw.speedleague.api.entity.Game
+import com.immanuelqrw.speedleague.api.entity.Region
 import com.immanuelqrw.speedleague.api.service.seek.CartService
 import com.immanuelqrw.speedleague.api.service.seek.DistinctSystemService
 import com.immanuelqrw.speedleague.api.service.seek.GameService
@@ -32,7 +33,7 @@ class CartController {
                 systemName = cart.distinctSystem.system.name,
                 isEmulated = cart.distinctSystem.system.isEmulated,
                 region = cart.distinctSystem.region,
-                versionName = cart.distinctSystem.version?.name
+                versionName = cart.distinctSystem.version.name
             )
         }
     }
@@ -59,6 +60,24 @@ class CartController {
         search: String?
     ): Iterable<CartOutput> {
         return cartService.findAll(search = search).map { cart -> convertToOutput(cart) }
+    }
+
+    @GetMapping(path = ["/deepSearch"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findAll(
+        @RequestParam("gameName")
+        gameName: String?,
+        @RequestParam("systemName")
+        systemName: String?,
+        @RequestParam("isEmulated")
+        isEmulated: Boolean?,
+        @RequestParam("region")
+        region: Region?,
+        @RequestParam("versionName")
+        versionName: String?
+    ): Iterable<CartOutput> {
+        return cartService
+            .findAll(gameName, systemName, isEmulated, region, versionName)
+            .map { cart -> convertToOutput(cart) }
     }
 
 }

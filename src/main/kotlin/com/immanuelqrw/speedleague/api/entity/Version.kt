@@ -12,6 +12,6 @@ import javax.persistence.Table
 data class Version(
 
     @Column(name = "name", unique = true, nullable = false)
-    val name: String
+    val name: String = "ANY"
 
 ) : BaseUniqueEntity()

@@ -29,7 +29,7 @@ class SpeedrunController {
                 systemName = speedrun.cart.distinctSystem.system.name,
                 isEmulated = speedrun.cart.distinctSystem.system.isEmulated,
                 region = speedrun.cart.distinctSystem.region,
-                versionName = speedrun.cart.distinctSystem.version?.name
+                versionName = speedrun.cart.distinctSystem.version.name
             )
         }
     }
@@ -56,6 +56,26 @@ class SpeedrunController {
         search: String?
     ): Iterable<SpeedrunOutput> {
         return speedrunService.findAll(search = search).map { speedrun -> convertToOutput(speedrun) }
+    }
+
+    @GetMapping(path = ["/deepSearch"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findAll(
+        @RequestParam("categoryName")
+        categoryName: String?,
+        @RequestParam("gameName")
+        gameName: String?,
+        @RequestParam("systemName")
+        systemName: String?,
+        @RequestParam("isEmulated")
+        isEmulated: Boolean?,
+        @RequestParam("region")
+        region: Region?,
+        @RequestParam("versionName")
+        versionName: String?
+    ): Iterable<SpeedrunOutput> {
+        return speedrunService
+            .findAll(categoryName, gameName, systemName, isEmulated, region, versionName)
+            .map { speedrun -> convertToOutput(speedrun) }
     }
 
 }

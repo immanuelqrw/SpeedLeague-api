@@ -30,7 +30,7 @@ class LeagueSpeedrunController {
                 systemName = leagueSpeedrun.speedrun.cart.distinctSystem.system.name,
                 isEmulated = leagueSpeedrun.speedrun.cart.distinctSystem.system.isEmulated,
                 region = leagueSpeedrun.speedrun.cart.distinctSystem.region,
-                versionName = leagueSpeedrun.speedrun.cart.distinctSystem.version?.name
+                versionName = leagueSpeedrun.speedrun.cart.distinctSystem.version.name
             )
         }
     }
@@ -57,6 +57,28 @@ class LeagueSpeedrunController {
         search: String?
     ): Iterable<LeagueSpeedrunOutput> {
         return leagueSpeedrunService.findAll(search = search).map { leagueSpeedrun -> convertToOutput(leagueSpeedrun) }
+    }
+
+    @GetMapping(path = ["/deepSearch"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findAll(
+        @RequestParam("leagueName")
+        leagueName: String?,
+        @RequestParam("categoryName")
+        categoryName: String?,
+        @RequestParam("gameName")
+        gameName: String?,
+        @RequestParam("systemName")
+        systemName: String?,
+        @RequestParam("isEmulated")
+        isEmulated: Boolean?,
+        @RequestParam("region")
+        region: Region?,
+        @RequestParam("versionName")
+        versionName: String?
+    ): Iterable<LeagueSpeedrunOutput> {
+        return leagueSpeedrunService
+            .findAll(leagueName, categoryName, gameName, systemName, isEmulated, region, versionName)
+            .map { leagueSpeedrun -> convertToOutput(leagueSpeedrun) }
     }
 
 }
