@@ -14,12 +14,6 @@ class RaceRunnerService : BaseUniqueService<RaceRunner>(RaceRunner::class.java) 
     @Autowired
     private lateinit var raceRunnerRepository: RaceRunnerRepository
 
-    @Autowired
-    private lateinit var raceService: RaceService
-
-    @Autowired
-    private lateinit var runnerService: RunnerService
-
     fun findByRaceAndRunner(raceName: String, runnerName: String): RaceRunner? {
         return findAll().firstOrNull { raceRunner ->
             raceRunner.race.name == raceName && raceRunner.runner.name == runnerName
