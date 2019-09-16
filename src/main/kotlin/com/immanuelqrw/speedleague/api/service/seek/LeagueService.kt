@@ -10,13 +10,9 @@ import javax.persistence.EntityNotFoundException
 @Service
 class LeagueService : BaseUniqueService<League>(League::class.java) {
 
-    @Autowired
-    private lateinit var tierService: TierService
+    fun find(name: String, season: Int, tierLevel: Int): League {
 
-    fun find(name: String, season: Int, tierName: String, tierLevel: Int): League {
-        val tier: Tier? = tierService.findAll(search = "name:$tierName;level:$tierLevel").firstOrNull()
-
-        return findAll(search = "name:$name;season=$season;tierId:${tier?.id}").firstOrNull() ?: throw EntityNotFoundException()
+        return findAll(search = "name:$name;season=$season;tierLevel:$tierLevel").firstOrNull() ?: throw EntityNotFoundException()
     }
 
 }

@@ -35,7 +35,7 @@ class PlayoffService {
 
     fun addPlayoffRules(leagueRule: LeaguePlayoffRule): List<PlayoffRule> {
         return leagueRule.run {
-            val league: League = leagueService.find(leagueName, season, tierName, tierLevel)
+            val league: League = leagueService.find(leagueName, season, tierLevel)
 
             attachPlayoffRules(league, leagueRule)
         }
@@ -43,7 +43,7 @@ class PlayoffService {
 
     fun replacePlayoffRules(leagueRule: LeaguePlayoffRule): List<PlayoffRule> {
         return leagueRule.run {
-            val league: League = leagueService.find(leagueName, season, tierName, tierLevel)
+            val league: League = leagueService.find(leagueName, season, tierLevel)
 
             playoffRuleService.deleteAll(league.playoffRules)
 
@@ -63,7 +63,7 @@ class PlayoffService {
     fun matchQualifiedRunners(leagueName: String, season: Int, tierName: String, tierLevel: Int, top: Int, standings: List<Standing>): List<QualifiedRunner> {
         val topRunners: MutableMap<Qualifier, List<QualifiedRunner>> = findTopRunners(top, standings)
 
-        val league: League = leagueService.find(leagueName, season, tierName, tierLevel)
+        val league: League = leagueService.find(leagueName, season, tierLevel)
 
         val qualifiedRunners: LinkedHashSet<QualifiedRunner> = linkedSetOf()
 

@@ -41,7 +41,7 @@ class LeagueSpeedrunController {
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody leagueSpeedrunInput: LeagueSpeedrunInput): LeagueSpeedrunOutput {
         return leagueSpeedrunInput.run {
-            val league: League = leagueService.find(leagueName, season, tierName, tierLevel)
+            val league: League = leagueService.find(leagueName, season, tierLevel)
             val speedrun: Speedrun = speedrunService.find(categoryName, gameName, systemName, isEmulated, region, versionName)
 
             val leagueSpeedrun = LeagueSpeedrun(

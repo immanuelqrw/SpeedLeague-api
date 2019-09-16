@@ -29,7 +29,7 @@ class StandingService {
     }
 
     fun calculateStandings(leagueName: String, season: Int, tierName: String, tierLevel: Int): List<Standing> {
-        val league: League = leagueService.find(leagueName, season, tierName, tierLevel)
+        val league: League = leagueService.find(leagueName, season, tierLevel)
         val races: Set<Race> = league.races
 
         val raceRunners: List<RaceRunner> = races.mapNotNull { race: Race ->

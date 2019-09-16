@@ -41,7 +41,7 @@ class RaceController {
         return raceInput.run {
             val race = Race(
                 name = raceName ?: "racename", // ! Replace with name generator
-                league = leagueService.find(leagueName, season, tierName, tierLevel),
+                league = leagueService.find(leagueName, season, tierLevel),
                 startedOn = startedOn
             )
             val createdRace: Race = raceService.create(race)

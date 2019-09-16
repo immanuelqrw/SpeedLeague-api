@@ -15,7 +15,7 @@ import javax.persistence.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "League", uniqueConstraints = [UniqueConstraint(columnNames = ["name", "season", "tierId"])])
+@Table(name = "League", uniqueConstraints = [UniqueConstraint(columnNames = ["name", "season", "tierLevel"])])
 data class League(
 
     @Column(name = "name", nullable = false)
@@ -43,8 +43,12 @@ data class League(
     @Column(name = "season", nullable = false)
     val season: Int,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tierId", referencedColumnName = "id", nullable = false)
+    @Embedded
+    @AttributeOverrides(value = [
+        AttributeOverride(name = "name", column = Column(name = "tierName", nullable = false)),
+        // ! Min(0)
+        AttributeOverride(name = "level", column = Column(name = "tierLevel", nullable = false))
+    ])
     val tier: Tier,
 
     @Column(name = "runnerLimit", nullable = false)

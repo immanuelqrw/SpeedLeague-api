@@ -34,7 +34,7 @@ class PointService {
 
     fun addPointRules(leagueRule: LeaguePointRule): List<PointRule> {
         return leagueRule.run {
-            val league: League = leagueService.find(leagueName, season, tierName, tierLevel)
+            val league: League = leagueService.find(leagueName, season, tierLevel)
 
             attachPointRules(league, leagueRule)
         }
@@ -43,7 +43,7 @@ class PointService {
 
     fun replacePointRules(leagueRule: LeaguePointRule): List<PointRule> {
         return leagueRule.run {
-            val league: League = leagueService.find(leagueName, season, tierName, tierLevel)
+            val league: League = leagueService.find(leagueName, season, tierLevel)
 
             pointRuleService.deleteAll(league.pointRules)
 

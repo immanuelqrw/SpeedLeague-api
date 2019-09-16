@@ -7,7 +7,6 @@ import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.entity.Tier
 import com.immanuelqrw.speedleague.api.service.PlayoffService
 import com.immanuelqrw.speedleague.api.service.seek.LeagueService
-import com.immanuelqrw.speedleague.api.service.seek.TierService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -21,9 +20,6 @@ class LeagueController {
 
     @Autowired
     private lateinit var playoffService: PlayoffService
-
-    @Autowired
-    private lateinit var tierService: TierService
 
     private fun convertToOutput(league: League): LeagueOutput {
         return league.run {
@@ -44,11 +40,6 @@ class LeagueController {
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody leagueInput: LeagueInput): LeagueOutput {
         return leagueInput.run {
-            val tier = Tier(
-                name = tierName,
-                level = tierLevel
-            )
-            val createdTier: Tier = tierService.create(tier)
 
             val league = League(
                 name = name,
@@ -57,7 +48,7 @@ class LeagueController {
                 defaultTime = defaultTime,
                 defaultPoints = defaultPoints,
                 season = season,
-                tier = createdTier,
+                tier = Tier(name = tierName, level = tierLevel),
                 runnerLimit = runnerLimit
             )
             val createdLeague: League = leagueService.create(league)

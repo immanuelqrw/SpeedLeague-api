@@ -56,7 +56,7 @@ class RunnerController {
     fun register(@RequestBody leagueRunnerInput: LeagueRunnerInput): LeagueRunnerOutput {
 
         return leagueRunnerInput.run {
-            val league: League = leagueService.find(leagueName, season, tierName, tierLevel)
+            val league: League = leagueService.find(leagueName, season, tierLevel)
             val runner: Runner = runnerService.findByName(runnerName)
 
             val leagueRunner = LeagueRunner(
