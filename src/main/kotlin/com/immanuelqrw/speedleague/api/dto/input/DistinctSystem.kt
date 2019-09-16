@@ -11,6 +11,6 @@ data class DistinctSystem(
 
     val region: Region = Region.ANY,
 
-    val versionName: String = "ANY"
+    val version: String = "ANY"
 
 )

@@ -26,13 +26,13 @@ class LeagueSpeedrunService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedrun::
 
     fun findAllBySystem(systemName: String): List<LeagueSpeedrun> {
         return findAll().filter { leagueSpeedrun ->
-            leagueSpeedrun.speedrun.cart.distinctSystem.system.name == systemName
+            leagueSpeedrun.speedrun.cart.system.name == systemName
         }
     }
 
     fun findAllByRegion(region: Region): List<LeagueSpeedrun> {
         return findAll().filter { leagueSpeedrun ->
-            leagueSpeedrun.speedrun.cart.distinctSystem.region == region
+            leagueSpeedrun.speedrun.cart.region == region
         }
     }
 
@@ -44,13 +44,13 @@ class LeagueSpeedrunService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedrun::
 
     fun findAllByLeagueAndSystem(leagueName: String, systemName: String): List<LeagueSpeedrun> {
         return findAll().filter { leagueSpeedrun ->
-            leagueSpeedrun.league.name == leagueName && leagueSpeedrun.speedrun.cart.distinctSystem.system.name == systemName
+            leagueSpeedrun.league.name == leagueName && leagueSpeedrun.speedrun.cart.system.name == systemName
         }
     }
 
     fun findAllByLeagueAndRegion(leagueName: String, region: Region): List<LeagueSpeedrun> {
         return findAll().filter { leagueSpeedrun ->
-            leagueSpeedrun.league.name == leagueName && leagueSpeedrun.speedrun.cart.distinctSystem.region == region
+            leagueSpeedrun.league.name == leagueName && leagueSpeedrun.speedrun.cart.region == region
         }
     }
 
@@ -62,19 +62,19 @@ class LeagueSpeedrunService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedrun::
 
     fun findAllByGameAndSystem(gameName: String, systemName: String): List<LeagueSpeedrun> {
         return findAll().filter { leagueSpeedrun ->
-            leagueSpeedrun.speedrun.cart.game.name == gameName && leagueSpeedrun.speedrun.cart.distinctSystem.system.name == systemName
+            leagueSpeedrun.speedrun.cart.game.name == gameName && leagueSpeedrun.speedrun.cart.system.name == systemName
         }
     }
 
     fun findAllByGameAndRegion(gameName: String, region: Region): List<LeagueSpeedrun> {
         return findAll().filter { leagueSpeedrun ->
-            leagueSpeedrun.speedrun.cart.game.name == gameName && leagueSpeedrun.speedrun.cart.distinctSystem.region == region
+            leagueSpeedrun.speedrun.cart.game.name == gameName && leagueSpeedrun.speedrun.cart.region == region
         }
     }
 
     fun findAllBySystemAndRegion(systemName: String, region: Region): List<LeagueSpeedrun> {
         return findAll().filter { leagueSpeedrun ->
-            leagueSpeedrun.speedrun.cart.distinctSystem.system.name == systemName && leagueSpeedrun.speedrun.cart.distinctSystem.region == region
+            leagueSpeedrun.speedrun.cart.system.name == systemName && leagueSpeedrun.speedrun.cart.region == region
         }
     }
 
@@ -82,7 +82,7 @@ class LeagueSpeedrunService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedrun::
         return findAll().filter { leagueSpeedrun ->
             leagueSpeedrun.league.name == leagueName &&
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.system.name == systemName
+            leagueSpeedrun.speedrun.cart.system.name == systemName
         }
     }
 
@@ -90,15 +90,15 @@ class LeagueSpeedrunService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedrun::
         return findAll().filter { leagueSpeedrun ->
             leagueSpeedrun.league.name == leagueName &&
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.region == region
+            leagueSpeedrun.speedrun.cart.region == region
         }
     }
 
     fun findByLeagueAndSystemAndRegion(leagueName: String, systemName: String, region: Region): List<LeagueSpeedrun> {
         return findAll().filter { leagueSpeedrun ->
             leagueSpeedrun.league.name == leagueName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.system.name == systemName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.region == region
+            leagueSpeedrun.speedrun.cart.system.name == systemName &&
+            leagueSpeedrun.speedrun.cart.region == region
         }
     }
 
@@ -106,7 +106,7 @@ class LeagueSpeedrunService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedrun::
         return findAll().filter { leagueSpeedrun ->
             leagueSpeedrun.speedrun.category.name == categoryName &&
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.system.name == systemName
+            leagueSpeedrun.speedrun.cart.system.name == systemName
         }
     }
 
@@ -114,15 +114,15 @@ class LeagueSpeedrunService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedrun::
         return findAll().filter { leagueSpeedrun ->
             leagueSpeedrun.speedrun.category.name == categoryName &&
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.region == region
+            leagueSpeedrun.speedrun.cart.region == region
         }
     }
 
     fun findByGameAndSystemAndRegion(gameName: String, systemName: String, region: Region): List<LeagueSpeedrun> {
         return findAll().filter { leagueSpeedrun ->
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.system.name == systemName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.region == region
+            leagueSpeedrun.speedrun.cart.system.name == systemName &&
+            leagueSpeedrun.speedrun.cart.region == region
         }
     }
 
@@ -130,8 +130,8 @@ class LeagueSpeedrunService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedrun::
         return findAll().filter { leagueSpeedrun ->
             leagueSpeedrun.speedrun.category.name == categoryName &&
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.system.name == systemName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.region == region
+            leagueSpeedrun.speedrun.cart.system.name == systemName &&
+            leagueSpeedrun.speedrun.cart.region == region
         }
     }
 
@@ -139,8 +139,8 @@ class LeagueSpeedrunService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedrun::
         return findAll().filter { leagueSpeedrun ->
             leagueSpeedrun.league.name == leagueName &&
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.system.name == systemName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.region == region
+            leagueSpeedrun.speedrun.cart.system.name == systemName &&
+            leagueSpeedrun.speedrun.cart.region == region
         }
     }
 
@@ -149,33 +149,33 @@ class LeagueSpeedrunService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedrun::
             leagueSpeedrun.league.name == leagueName &&
             leagueSpeedrun.speedrun.category.name == categoryName &&
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.region == region
+            leagueSpeedrun.speedrun.cart.region == region
         }
     }
 
-    fun find(leagueName: String, categoryName: String, gameName: String, systemName: String, isEmulated: Boolean, region: Region, versionName: String): LeagueSpeedrun {
+    fun find(leagueName: String, categoryName: String, gameName: String, systemName: String, isEmulated: Boolean, region: Region, version: String): LeagueSpeedrun {
         return findAll().firstOrNull { leagueSpeedrun ->
             leagueSpeedrun.league.name == leagueName &&
             leagueSpeedrun.speedrun.category.name == categoryName &&
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.system.name == systemName &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.system.isEmulated == isEmulated &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.region == region &&
-            leagueSpeedrun.speedrun.cart.distinctSystem.version.name == versionName
+            leagueSpeedrun.speedrun.cart.system.name == systemName &&
+            leagueSpeedrun.speedrun.cart.system.isEmulated == isEmulated &&
+            leagueSpeedrun.speedrun.cart.region == region &&
+            leagueSpeedrun.speedrun.cart.version == version
         } ?: throw EntityNotFoundException()
     }
 
-    fun findAll(leagueName: String?, leagueType: LeagueType?, categoryName: String?, gameName: String?, systemName: String?, isEmulated: Boolean?, region: Region?, versionName: String?): List<LeagueSpeedrun> {
+    fun findAll(leagueName: String?, leagueType: LeagueType?, categoryName: String?, gameName: String?, systemName: String?, isEmulated: Boolean?, region: Region?, version: String?): List<LeagueSpeedrun> {
         return findAll()
             .asSequence()
             .filter { leagueSpeedrun ->  leagueName?.let { leagueSpeedrun.league.name == leagueName } ?: true }
             .filter { leagueSpeedrun ->  leagueType?.let { leagueSpeedrun.league.type == leagueType } ?: true }
             .filter { leagueSpeedrun ->  categoryName?.let { leagueSpeedrun.speedrun.category.name == categoryName } ?: true }
             .filter { leagueSpeedrun ->  gameName?.let { leagueSpeedrun.speedrun.cart.game.name == gameName } ?: true }
-            .filter { leagueSpeedrun ->  systemName?.let { leagueSpeedrun.speedrun.cart.distinctSystem.system.name == systemName } ?: true }
-            .filter { leagueSpeedrun ->  isEmulated?.let { leagueSpeedrun.speedrun.cart.distinctSystem.system.isEmulated == isEmulated } ?: true }
-            .filter { leagueSpeedrun ->  region?.let { leagueSpeedrun.speedrun.cart.distinctSystem.region == region } ?: true }
-            .filter { leagueSpeedrun ->  versionName?.let { leagueSpeedrun.speedrun.cart.distinctSystem.version.name == versionName } ?: true }
+            .filter { leagueSpeedrun ->  systemName?.let { leagueSpeedrun.speedrun.cart.system.name == systemName } ?: true }
+            .filter { leagueSpeedrun ->  isEmulated?.let { leagueSpeedrun.speedrun.cart.system.isEmulated == isEmulated } ?: true }
+            .filter { leagueSpeedrun ->  region?.let { leagueSpeedrun.speedrun.cart.region == region } ?: true }
+            .filter { leagueSpeedrun ->  version?.let { leagueSpeedrun.speedrun.cart.version == version } ?: true }
             .toList()
     }
 

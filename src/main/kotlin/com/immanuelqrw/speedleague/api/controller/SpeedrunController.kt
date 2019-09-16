@@ -26,10 +26,10 @@ class SpeedrunController {
             SpeedrunOutput(
                 categoryName = speedrun.category.name,
                 gameName = speedrun.cart.game.name,
-                systemName = speedrun.cart.distinctSystem.system.name,
-                isEmulated = speedrun.cart.distinctSystem.system.isEmulated,
-                region = speedrun.cart.distinctSystem.region,
-                versionName = speedrun.cart.distinctSystem.version.name
+                systemName = speedrun.cart.system.name,
+                isEmulated = speedrun.cart.system.isEmulated,
+                region = speedrun.cart.region,
+                version = speedrun.cart.version
             )
         }
     }
@@ -37,7 +37,7 @@ class SpeedrunController {
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody speedrunInput: SpeedrunInput): SpeedrunOutput {
         return speedrunInput.run {
-            val cart: Cart = cartService.find(gameName, systemName, isEmulated, region, versionName)
+            val cart: Cart = cartService.find(gameName, systemName, isEmulated, region, version)
             val category: Category = categoryService.findByName(categoryName)
 
             val speedrun = Speedrun(
@@ -71,10 +71,10 @@ class SpeedrunController {
         @RequestParam("region")
         region: Region?,
         @RequestParam("version")
-        versionName: String?
+        version: String?
     ): Iterable<SpeedrunOutput> {
         return speedrunService
-            .findAll(categoryName, gameName, systemName, isEmulated, region, versionName)
+            .findAll(categoryName, gameName, systemName, isEmulated, region, version)
             .map { speedrun -> convertToOutput(speedrun) }
     }
 

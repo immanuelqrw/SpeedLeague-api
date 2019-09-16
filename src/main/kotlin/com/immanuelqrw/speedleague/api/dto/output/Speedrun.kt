@@ -15,6 +15,6 @@ data class Speedrun(
 
     val region: Region,
 
-    val versionName: String
+    val version: String
 
 )

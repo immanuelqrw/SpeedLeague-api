@@ -30,10 +30,10 @@ class LeagueSpeedrunController {
                 tierName = leagueSpeedrun.league.tier.name,
                 categoryName = leagueSpeedrun.speedrun.category.name,
                 gameName = leagueSpeedrun.speedrun.cart.game.name,
-                systemName = leagueSpeedrun.speedrun.cart.distinctSystem.system.name,
-                isEmulated = leagueSpeedrun.speedrun.cart.distinctSystem.system.isEmulated,
-                region = leagueSpeedrun.speedrun.cart.distinctSystem.region,
-                versionName = leagueSpeedrun.speedrun.cart.distinctSystem.version.name
+                systemName = leagueSpeedrun.speedrun.cart.system.name,
+                isEmulated = leagueSpeedrun.speedrun.cart.system.isEmulated,
+                region = leagueSpeedrun.speedrun.cart.region,
+                version = leagueSpeedrun.speedrun.cart.version
             )
         }
     }
@@ -42,7 +42,7 @@ class LeagueSpeedrunController {
     fun create(@RequestBody leagueSpeedrunInput: LeagueSpeedrunInput): LeagueSpeedrunOutput {
         return leagueSpeedrunInput.run {
             val league: League = leagueService.find(leagueName, season, tierLevel)
-            val speedrun: Speedrun = speedrunService.find(categoryName, gameName, systemName, isEmulated, region, versionName)
+            val speedrun: Speedrun = speedrunService.find(categoryName, gameName, systemName, isEmulated, region, version)
 
             val leagueSpeedrun = LeagueSpeedrun(
                 league = league,
@@ -79,10 +79,10 @@ class LeagueSpeedrunController {
         @RequestParam("region")
         region: Region?,
         @RequestParam("version")
-        versionName: String?
+        version: String?
     ): Iterable<LeagueSpeedrunOutput> {
         return leagueSpeedrunService
-            .findAll(leagueName, leagueType, categoryName, gameName, systemName, isEmulated, region, versionName)
+            .findAll(leagueName, leagueType, categoryName, gameName, systemName, isEmulated, region, version)
             .map { leagueSpeedrun -> convertToOutput(leagueSpeedrun) }
     }
 

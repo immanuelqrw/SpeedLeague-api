@@ -23,6 +23,6 @@ data class LeagueSpeedrun(
 
     val region: Region = Region.ANY,
 
-    val versionName: String = "ANY"
+    val version: String = "ANY"
 
 )

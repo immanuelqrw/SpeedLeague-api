@@ -13,6 +13,6 @@ data class Cart(
 
     val region: Region,
 
-    val versionName: String
+    val version: String
 
 )

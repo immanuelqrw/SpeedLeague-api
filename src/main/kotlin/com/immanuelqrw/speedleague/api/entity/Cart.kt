@@ -15,7 +15,7 @@ import javax.persistence.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "Cart", uniqueConstraints = [UniqueConstraint(columnNames = ["gameId", "distinctSystemId"])])
+@Table(name = "Cart", uniqueConstraints = [UniqueConstraint(columnNames = ["gameId", "systemId", "region", "version"])])
 data class Cart(
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
@@ -23,7 +23,14 @@ data class Cart(
     val game: Game,
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
-    @JoinColumn(name = "distinctSystemId", referencedColumnName = "id", nullable = false)
-    val distinctSystem: DistinctSystem
+    @JoinColumn(name = "systemId", referencedColumnName = "id", nullable = false)
+    val system: System,
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "region", nullable = false)
+    val region: Region = Region.ANY,
+
+    @Column(name = "version", nullable = false)
+    val version: String = "ANY"
 
 ) : BaseUniqueEntity()

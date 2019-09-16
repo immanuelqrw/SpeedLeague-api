@@ -3,12 +3,12 @@ package com.immanuelqrw.speedleague.api.controller
 import com.immanuelqrw.speedleague.api.dto.input.Cart as CartInput
 import com.immanuelqrw.speedleague.api.dto.output.Cart as CartOutput
 import com.immanuelqrw.speedleague.api.entity.Cart
-import com.immanuelqrw.speedleague.api.entity.DistinctSystem
 import com.immanuelqrw.speedleague.api.entity.Game
 import com.immanuelqrw.speedleague.api.entity.Region
+import com.immanuelqrw.speedleague.api.entity.System
 import com.immanuelqrw.speedleague.api.service.seek.CartService
-import com.immanuelqrw.speedleague.api.service.seek.DistinctSystemService
 import com.immanuelqrw.speedleague.api.service.seek.GameService
+import com.immanuelqrw.speedleague.api.service.seek.SystemService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -24,16 +24,16 @@ class CartController {
     private lateinit var gameService: GameService
 
     @Autowired
-    private lateinit var distinctSystemService: DistinctSystemService
+    private lateinit var systemService: SystemService
 
     private fun convertToOutput(cart: Cart): CartOutput {
         return cart.run {
             CartOutput(
                 gameName = cart.game.name,
-                systemName = cart.distinctSystem.system.name,
-                isEmulated = cart.distinctSystem.system.isEmulated,
-                region = cart.distinctSystem.region,
-                versionName = cart.distinctSystem.version.name
+                systemName = cart.system.name,
+                isEmulated = cart.system.isEmulated,
+                region = cart.region,
+                version = cart.version
             )
         }
     }
@@ -42,11 +42,13 @@ class CartController {
     fun create(@RequestBody cartInput: CartInput): CartOutput {
         return cartInput.run {
             val game: Game = gameService.findByName(gameName)
-            val distinctSystem: DistinctSystem = distinctSystemService.find(systemName, isEmulated, region, versionName)
+            val system: System = systemService.findByName(systemName)
 
             val cart = Cart(
                 game = game,
-                distinctSystem = distinctSystem
+                system = system,
+                region = region,
+                version = version
             )
             val createdCart: Cart = cartService.create(cart)
 
@@ -73,10 +75,10 @@ class CartController {
         @RequestParam("region")
         region: Region?,
         @RequestParam("version")
-        versionName: String?
+        version: String?
     ): Iterable<CartOutput> {
         return cartService
-            .findAll(gameName, systemName, isEmulated, region, versionName)
+            .findAll(gameName, systemName, isEmulated, region, version)
             .map { cart -> convertToOutput(cart) }
     }
 
