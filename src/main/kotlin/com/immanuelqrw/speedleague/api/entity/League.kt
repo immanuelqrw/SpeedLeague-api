@@ -2,6 +2,7 @@ package com.immanuelqrw.speedleague.api.entity
 
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
@@ -14,10 +15,10 @@ import javax.persistence.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "League")
+@Table(name = "League", uniqueConstraints = [UniqueConstraint(columnNames = ["name", "season", "tierId"])])
 data class League(
 
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name", nullable = false)
     val name: String,
 
     @Enumerated(EnumType.STRING)
@@ -37,7 +38,14 @@ data class League(
     // ! Min 0
     // ! Consider Renaming
     @Column(name = "defaultPoints", nullable = false)
-    val defaultPoints: Int
+    val defaultPoints: Int,
+
+    @Column(name = "season", nullable = false)
+    val season: Int,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tierId", referencedColumnName = "id", nullable = false)
+    val tier: Tier
 
 ) : BaseUniqueEntity() {
 

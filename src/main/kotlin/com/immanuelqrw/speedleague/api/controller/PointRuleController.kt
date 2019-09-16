@@ -25,6 +25,9 @@ class PointRuleController {
                 placement = placement,
                 amount = amount,
                 leagueName = league.name,
+                season = league.season,
+                tierLevel = league.tier.level,
+                tierName = league.tier.name,
                 addedOn = addedOn
             )
         }

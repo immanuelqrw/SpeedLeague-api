@@ -21,6 +21,9 @@ class OpenRaceController {
             RaceOutput(
                 name = name,
                 leagueName = league.name,
+                season = league.season,
+                tierLevel = league.tier.level,
+                tierName = league.tier.name,
                 startedOn = startedOn
             )
         }

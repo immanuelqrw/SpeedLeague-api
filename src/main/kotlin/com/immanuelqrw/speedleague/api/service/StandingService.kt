@@ -28,8 +28,8 @@ class StandingService {
         }.toMap()
     }
 
-    fun calculateStandings(leagueName: String): List<Standing> {
-        val league: League = leagueService.findByName(leagueName)
+    fun calculateStandings(leagueName: String, season: Int, tierName: String, tierLevel: Int): List<Standing> {
+        val league: League = leagueService.find(leagueName, season, tierName, tierLevel)
         val races: Set<Race> = league.races
 
         val raceRunners: List<RaceRunner> = races.mapNotNull { race: Race ->

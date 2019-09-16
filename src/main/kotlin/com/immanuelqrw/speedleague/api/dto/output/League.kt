@@ -16,6 +16,12 @@ data class League (
 
     val defaultTime: Long,
 
-    val defaultPoints: Int
+    val defaultPoints: Int,
+
+    val season: Int,
+
+    val tierLevel: Int,
+
+    val tierName: String
 
 )

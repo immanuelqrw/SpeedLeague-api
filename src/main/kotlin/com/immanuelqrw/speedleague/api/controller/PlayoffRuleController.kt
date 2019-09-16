@@ -25,6 +25,9 @@ class PlayoffRuleController {
                 qualifier = qualifier,
                 count = count,
                 leagueName = league.name,
+                season = league.season,
+                tierLevel = league.tier.level,
+                tierName = league.tier.name,
                 addedOn = addedOn,
                 order = order
             )

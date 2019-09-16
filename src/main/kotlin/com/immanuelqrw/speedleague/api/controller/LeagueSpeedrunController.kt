@@ -25,6 +25,9 @@ class LeagueSpeedrunController {
         return leagueSpeedrun.speedrun.cart.run {
             LeagueSpeedrunOutput(
                 leagueName = leagueSpeedrun.league.name,
+                season = leagueSpeedrun.league.season,
+                tierLevel = leagueSpeedrun.league.tier.level,
+                tierName = leagueSpeedrun.league.tier.name,
                 categoryName = leagueSpeedrun.speedrun.category.name,
                 gameName = leagueSpeedrun.speedrun.cart.game.name,
                 systemName = leagueSpeedrun.speedrun.cart.distinctSystem.system.name,
@@ -38,7 +41,7 @@ class LeagueSpeedrunController {
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody leagueSpeedrunInput: LeagueSpeedrunInput): LeagueSpeedrunOutput {
         return leagueSpeedrunInput.run {
-            val league: League = leagueService.findByName(leagueName)
+            val league: League = leagueService.find(leagueName, season, tierName, tierLevel)
             val speedrun: Speedrun = speedrunService.find(categoryName, gameName, systemName, isEmulated, region, versionName)
 
             val leagueSpeedrun = LeagueSpeedrun(

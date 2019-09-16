@@ -11,9 +11,23 @@ VALUES
   ('Ijano','2019-09-12T02:58:49.385','2019-09-12T02:58:49.384','2019-09-12T02:58:49.385',NULL,'13c7bd44-0cb3-45ba-b6fd-f20a81695b32');
 
 INSERT INTO
+  "Tier" (
+    "name",
+    "level",
+    "createdOn",
+    "modifiedOn",
+    "removedOn",
+    "id"
+  )
+VALUES
+  ('Serie A',1,'2019-09-12T02:58:49.384','2019-09-12T02:58:49.385',NULL,'13c7bd44-0cb3-45ba-b6fd-f20a81695b32');
+
+INSERT INTO
   "League" (
     "name",
     "type",
+    "season",
+    "tierId",
     "startedOn",
     "defaultTime",
     "defaultPoints",
@@ -23,7 +37,7 @@ INSERT INTO
     "id"
   )
 VALUES
-  ('Ijano Part 1','POOL','2019-09-03T15:23:11',0, 1, '2019-09-12T03:08:32.33','2019-09-12T03:08:32.33',NULL,'6b23b367-99f9-4d8a-9c76-3659976b4e54');
+  ('Ijano Part 1','POOL',1,'13c7bd44-0cb3-45ba-b6fd-f20a81695b32','2019-09-03T15:23:11',0, 1, '2019-09-12T03:08:32.33','2019-09-12T03:08:32.33',NULL,'6b23b367-99f9-4d8a-9c76-3659976b4e54');
 
 INSERT INTO
   "LeagueRunner" (

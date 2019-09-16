@@ -10,6 +10,12 @@ data class Race(
 
     val leagueName: String,
 
+    val season: Int,
+
+    val tierLevel: Int,
+
+    val tierName: String,
+
     @JsonSerialize(using = LocalDateTimeSerializer::class)
     val startedOn: LocalDateTime
 

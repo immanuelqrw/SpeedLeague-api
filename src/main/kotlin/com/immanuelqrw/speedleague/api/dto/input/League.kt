@@ -18,6 +18,12 @@ data class League(
 
     val defaultPoints: Int,
 
+    val season: Int,
+
+    val tierLevel: Int,
+
+    val tierName: String,
+
     val qualifierRules: List<QualifierRule>,
 
     val pointRules: List<PointRule>

@@ -56,7 +56,7 @@ class RunnerController {
     fun register(@RequestBody leagueRunnerInput: LeagueRunnerInput): LeagueRunnerOutput {
 
         return leagueRunnerInput.run {
-            val league: League = leagueService.findByName(leagueName)
+            val league: League = leagueService.find(leagueName, season, tierName, tierLevel)
             val runner: Runner = runnerService.findByName(runnerName)
 
             val leagueRunner = LeagueRunner(
@@ -69,7 +69,10 @@ class RunnerController {
             LeagueRunnerOutput(
                 leagueName = createdLeagueRunner.league.name,
                 runnerName = createdLeagueRunner.runner.name,
-                joinedOn = createdLeagueRunner.joinedOn
+                joinedOn = createdLeagueRunner.joinedOn,
+                season = createdLeagueRunner.league.season,
+                tierLevel = createdLeagueRunner.league.tier.level,
+                tierName = createdLeagueRunner.league.tier.name
             )
         }
     }
@@ -83,7 +86,7 @@ class RunnerController {
     }
 
     @GetMapping(path = ["/race/{raceName}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun findAll(
+    fun findAllRunners(
         @PathVariable("raceName")
         raceName: String
     ): List<RunnerOutput> {

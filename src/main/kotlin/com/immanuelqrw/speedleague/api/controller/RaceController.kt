@@ -23,12 +23,15 @@ class RaceController {
     @Autowired
     private lateinit var raceRunnerService: RaceRunnerService
 
-    private fun convertToOutput(race: Race): RaceOutput {
+    private fun convertToOutput(race: Race, season: Int, tierName: String, tierLevel: Int): RaceOutput {
         return race.run {
             RaceOutput(
                 name = name,
                 leagueName = league.name,
-                startedOn = startedOn
+                startedOn = startedOn,
+                season = season,
+                tierLevel = tierLevel,
+                tierName = tierName
             )
         }
     }
@@ -38,12 +41,12 @@ class RaceController {
         return raceInput.run {
             val race = Race(
                 name = raceName ?: "racename", // ! Replace with name generator
-                league = leagueService.findByName(leagueName),
+                league = leagueService.find(leagueName, season, tierName, tierLevel),
                 startedOn = startedOn
             )
             val createdRace: Race = raceService.create(race)
 
-            convertToOutput(createdRace)
+            convertToOutput(createdRace, season, tierName, tierLevel)
         }
     }
 
@@ -52,15 +55,19 @@ class RaceController {
         @RequestParam("search")
         search: String?
     ): Iterable<RaceOutput> {
-        return raceService.findAll(search = search).map { race -> convertToOutput(race) }
+        return raceService.findAll(search = search).map { race ->
+            convertToOutput(race, race.league.season, race.league.tier.name, race.league.tier.level)
+        }
     }
 
     @GetMapping(path = ["/runner/{runnerName}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun findAll(
+    fun findAllRaces(
         @PathVariable("runnerName")
         runnerName: String
     ): List<RaceOutput> {
-        return raceRunnerService.findAllByRunner(runnerName).map { convertToOutput(it.race) }
+        return raceRunnerService.findAllByRunner(runnerName).map { raceRunner ->
+            convertToOutput(raceRunner.race, raceRunner.race.league.season, raceRunner.race.league.tier.name, raceRunner.race.league.tier.level)
+        }
     }
 
 }

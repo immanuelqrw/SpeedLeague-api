@@ -8,6 +8,12 @@ data class Race(
 
     val leagueName: String,
 
+    val season: Int,
+
+    val tierLevel: Int,
+
+    val tierName: String,
+
     val raceName: String?,
 
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)

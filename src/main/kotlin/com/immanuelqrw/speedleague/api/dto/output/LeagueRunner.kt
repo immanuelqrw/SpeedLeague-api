@@ -8,6 +8,12 @@ data class LeagueRunner(
 
     val leagueName: String,
 
+    val season: Int,
+
+    val tierLevel: Int,
+
+    val tierName: String,
+
     val runnerName: String,
 
     @JsonSerialize(using = LocalDateTimeSerializer::class)

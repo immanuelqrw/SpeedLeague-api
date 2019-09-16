@@ -13,6 +13,12 @@ data class PlayoffRule(
 
     val leagueName: String,
 
+    val season: Int,
+
+    val tierLevel: Int,
+
+    val tierName: String,
+
     @JsonSerialize(using = LocalDateTimeSerializer::class)
     val addedOn: LocalDateTime,
 

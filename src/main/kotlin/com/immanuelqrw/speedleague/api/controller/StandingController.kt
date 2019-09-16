@@ -35,20 +35,32 @@ class StandingController {
     @GetMapping(path = ["/generate"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun generateStandings(
         @RequestParam("league")
-        leagueName: String
+        leagueName: String,
+        @RequestParam("season")
+        season: Int,
+        @RequestParam("tierName")
+        tierName: String,
+        @RequestParam("tierLevel")
+        tierLevel: Int
     ): Iterable<StandingOutput> {
-        return standingService.calculateStandings(leagueName)
+        return standingService.calculateStandings(leagueName, season, tierName, tierLevel)
     }
 
     @GetMapping(path = ["/qualifiedRunners"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun qualifiedRunner(
         @RequestParam("league")
         leagueName: String,
+        @RequestParam("season")
+        season: Int,
+        @RequestParam("tierName")
+        tierName: String,
+        @RequestParam("tierLevel")
+        tierLevel: Int,
         @RequestParam("top")
         top: Int
     ): Iterable<QualifiedRunner> {
-        val standings: List<StandingOutput> = standingService.calculateStandings(leagueName)
-        return playoffService.matchQualifiedRunners(leagueName, top, standings)
+        val standings: List<StandingOutput> = standingService.calculateStandings(leagueName, season, tierName, tierLevel)
+        return playoffService.matchQualifiedRunners(leagueName, season, tierName, tierLevel, top, standings)
     }
 
     // ? Consider moving to a different controller/service

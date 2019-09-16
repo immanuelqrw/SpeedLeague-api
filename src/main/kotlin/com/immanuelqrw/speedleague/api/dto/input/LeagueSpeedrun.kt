@@ -7,6 +7,12 @@ data class LeagueSpeedrun(
 
     val leagueName: String,
 
+    val season: Int,
+
+    val tierLevel: Int,
+
+    val tierName: String,
+
     val categoryName: String,
 
     val gameName: String,
