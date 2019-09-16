@@ -13,6 +13,7 @@ import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerService
 import com.immanuelqrw.speedleague.api.service.seek.RaceService
 import com.immanuelqrw.speedleague.api.service.seek.RunnerService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -76,9 +77,9 @@ class RaceTimeController {
         }
     }
 
-    @PatchMapping(path = ["/register/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun registerTime(@PathVariable("id") id: UUID, @RequestBody raceTimeRegister: RaceTimeRegister): RaceTimeOutput {
-        val modifiedRaceRunner: RaceRunner = raceRunnerService.registerRaceTime(id, raceTimeRegister)
+    @PatchMapping(path = ["/verifyTime"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    fun registerTime(@RequestBody raceTimeRegister: RaceTimeRegister): RaceTimeOutput {
+        val modifiedRaceRunner: RaceRunner = raceRunnerService.registerRaceTime(raceTimeRegister)
 
         return convertToOutput(modifiedRaceRunner)
     }

@@ -7,6 +7,7 @@ import com.immanuelqrw.speedleague.api.repository.RaceRunnerRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
+import javax.persistence.EntityNotFoundException
 
 @Service
 class RaceRunnerService : BaseUniqueService<RaceRunner>(RaceRunner::class.java) {
@@ -40,8 +41,9 @@ class RaceRunnerService : BaseUniqueService<RaceRunner>(RaceRunner::class.java) 
         return findAll(search = "runnerId:$runnerId").firstOrNull()
     }
 
-    fun registerRaceTime(raceRunnerId: UUID, raceTimeRegister: RaceTimeRegister): RaceRunner {
-        val raceRunner: RaceRunner = raceRunnerRepository.getOne(raceRunnerId)
+    fun registerRaceTime(raceTimeRegister: RaceTimeRegister): RaceRunner {
+        val raceRunner: RaceRunner = findByRaceAndRunner(raceTimeRegister.raceName, raceTimeRegister.runnerName)
+            ?: throw EntityNotFoundException()
 
         raceRunner.time = raceTimeRegister.time
         raceRunner.outcome = raceTimeRegister.outcome
