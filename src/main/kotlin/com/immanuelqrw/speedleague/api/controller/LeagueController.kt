@@ -24,6 +24,7 @@ class LeagueController {
         return league.run {
             LeagueOutput(
                 name = name,
+                type = type,
                 startedOn = startedOn,
                 defaultTime = defaultTime,
                 defaultPoints = defaultPoints
@@ -36,6 +37,7 @@ class LeagueController {
         return leagueInput.run {
             val league = League(
                 name = name,
+                type = type,
                 startedOn = startedOn,
                 defaultTime = defaultTime,
                 defaultPoints = defaultPoints

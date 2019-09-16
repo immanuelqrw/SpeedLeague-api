@@ -2,6 +2,7 @@ package com.immanuelqrw.speedleague.api.service.seek
 
 import com.immanuelqrw.core.api.service.BaseUniqueService
 import com.immanuelqrw.speedleague.api.entity.LeagueSpeedrun
+import com.immanuelqrw.speedleague.api.entity.LeagueType
 import com.immanuelqrw.speedleague.api.entity.Region
 import org.springframework.stereotype.Service
 import javax.persistence.EntityNotFoundException
@@ -164,10 +165,11 @@ class LeagueSpeedrunService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedrun::
         } ?: throw EntityNotFoundException()
     }
 
-    fun findAll(leagueName: String?, categoryName: String?, gameName: String?, systemName: String?, isEmulated: Boolean?, region: Region?, versionName: String?): List<LeagueSpeedrun> {
+    fun findAll(leagueName: String?, leagueType: LeagueType?, categoryName: String?, gameName: String?, systemName: String?, isEmulated: Boolean?, region: Region?, versionName: String?): List<LeagueSpeedrun> {
         return findAll()
             .asSequence()
             .filter { leagueSpeedrun ->  leagueName?.let { leagueSpeedrun.league.name == leagueName } ?: true }
+            .filter { leagueSpeedrun ->  leagueType?.let { leagueSpeedrun.league.type == leagueType } ?: true }
             .filter { leagueSpeedrun ->  categoryName?.let { leagueSpeedrun.speedrun.category.name == categoryName } ?: true }
             .filter { leagueSpeedrun ->  gameName?.let { leagueSpeedrun.speedrun.cart.game.name == gameName } ?: true }
             .filter { leagueSpeedrun ->  systemName?.let { leagueSpeedrun.speedrun.cart.distinctSystem.system.name == systemName } ?: true }

@@ -20,6 +20,10 @@ data class League(
     @Column(name = "name", unique = true, nullable = false)
     val name: String,
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    val type: LeagueType = LeagueType.POOL,
+
     @JsonSerialize(using = LocalDateTimeSerializer::class)
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)

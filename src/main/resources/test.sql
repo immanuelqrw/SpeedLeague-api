@@ -13,6 +13,7 @@ VALUES
 INSERT INTO
   "League" (
     "name",
+    "type",
     "startedOn",
     "defaultTime",
     "defaultPoints",
@@ -22,7 +23,7 @@ INSERT INTO
     "id"
   )
 VALUES
-  ('Ijano Part 1','2019-09-03T15:23:11',0, 1, '2019-09-12T03:08:32.33','2019-09-12T03:08:32.33',NULL,'6b23b367-99f9-4d8a-9c76-3659976b4e54');
+  ('Ijano Part 1','POOL','2019-09-03T15:23:11',0, 1, '2019-09-12T03:08:32.33','2019-09-12T03:08:32.33',NULL,'6b23b367-99f9-4d8a-9c76-3659976b4e54');
 
 INSERT INTO
   "LeagueRunner" (

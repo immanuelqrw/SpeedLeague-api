@@ -63,6 +63,8 @@ class LeagueSpeedrunController {
     fun findAll(
         @RequestParam("league")
         leagueName: String?,
+        @RequestParam("type")
+        leagueType: LeagueType?,
         @RequestParam("category")
         categoryName: String?,
         @RequestParam("game")
@@ -77,7 +79,7 @@ class LeagueSpeedrunController {
         versionName: String?
     ): Iterable<LeagueSpeedrunOutput> {
         return leagueSpeedrunService
-            .findAll(leagueName, categoryName, gameName, systemName, isEmulated, region, versionName)
+            .findAll(leagueName, leagueType, categoryName, gameName, systemName, isEmulated, region, versionName)
             .map { leagueSpeedrun -> convertToOutput(leagueSpeedrun) }
     }
 
