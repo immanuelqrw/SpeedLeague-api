@@ -60,17 +60,17 @@ class SpeedrunController {
 
     @GetMapping(path = ["/deepSearch"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(
-        @RequestParam("categoryName")
+        @RequestParam("category")
         categoryName: String?,
-        @RequestParam("gameName")
+        @RequestParam("game")
         gameName: String?,
-        @RequestParam("systemName")
+        @RequestParam("system")
         systemName: String?,
         @RequestParam("isEmulated")
         isEmulated: Boolean?,
         @RequestParam("region")
         region: Region?,
-        @RequestParam("versionName")
+        @RequestParam("version")
         versionName: String?
     ): Iterable<SpeedrunOutput> {
         return speedrunService

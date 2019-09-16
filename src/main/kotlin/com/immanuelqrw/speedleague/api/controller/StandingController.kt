@@ -34,7 +34,7 @@ class StandingController {
 
     @GetMapping(path = ["/generate"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun generateStandings(
-        @RequestParam("leagueName")
+        @RequestParam("league")
         leagueName: String
     ): Iterable<StandingOutput> {
         return standingService.calculateStandings(leagueName)
@@ -42,7 +42,7 @@ class StandingController {
 
     @GetMapping(path = ["/qualifiedRunners"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun qualifiedRunner(
-        @RequestParam("leagueName")
+        @RequestParam("league")
         leagueName: String,
         @RequestParam("top")
         top: Int
@@ -54,7 +54,7 @@ class StandingController {
     // ? Consider moving to a different controller/service
     @GetMapping(path = ["/calculatePlacements"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun calculatePlacements(
-        @RequestParam("raceName")
+        @RequestParam("race")
         raceName: String
     ): List<RaceTimeOutput> {
         return standingService.calculateRacePlacements(raceName).map { raceRunner -> convertToOutput(raceRunner) }
