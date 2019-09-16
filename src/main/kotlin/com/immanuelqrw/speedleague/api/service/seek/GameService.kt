@@ -12,4 +12,8 @@ class GameService : BaseUniqueService<Game>(Game::class.java) {
         return findAll(search = "name:$name").firstOrNull() ?: throw EntityNotFoundException()
     }
 
+    fun findByShorthand(shorthand: String): Game {
+        return findAll(search = "shorthand:$shorthand").firstOrNull() ?: throw EntityNotFoundException()
+    }
+
 }

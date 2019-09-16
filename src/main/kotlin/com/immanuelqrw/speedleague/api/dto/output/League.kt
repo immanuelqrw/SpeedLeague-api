@@ -22,6 +22,8 @@ data class League (
 
     val tierLevel: Int,
 
-    val tierName: String
+    val tierName: String,
+
+    val runnerLimit: Int
 
 )

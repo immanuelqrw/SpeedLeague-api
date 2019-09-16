@@ -45,7 +45,10 @@ data class League(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tierId", referencedColumnName = "id", nullable = false)
-    val tier: Tier
+    val tier: Tier,
+
+    @Column(name = "runnerLimit", nullable = false)
+    val runnerLimit: Int
 
 ) : BaseUniqueEntity() {
 

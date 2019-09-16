@@ -24,6 +24,8 @@ data class League(
 
     val tierName: String,
 
+    val runnerLimit: Int,
+
     val qualifierRules: List<QualifierRule>,
 
     val pointRules: List<PointRule>

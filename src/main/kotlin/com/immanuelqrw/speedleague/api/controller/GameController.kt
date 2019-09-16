@@ -18,7 +18,8 @@ class GameController {
     private fun convertToOutput(game: Game): GameOutput {
         return game.run {
             GameOutput(
-                name = name
+                name = name,
+                shorthand = shorthand
             )
         }
     }
@@ -27,7 +28,8 @@ class GameController {
     fun create(@RequestBody gameInput: GameInput): GameOutput {
         return gameInput.run {
             val game = Game(
-                name = name
+                name = name,
+                shorthand = shorthand
             )
             val createdGame: Game = gameService.create(game)
 

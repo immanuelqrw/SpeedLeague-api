@@ -12,6 +12,9 @@ import javax.persistence.Table
 data class Game(
 
     @Column(name = "name", unique = true, nullable = false)
-    val name: String
+    val name: String,
+
+    @Column(name = "shorthand", unique = true, nullable = false)
+    val shorthand: String
 
 ) : BaseUniqueEntity()
