@@ -52,7 +52,7 @@ class PointRuleController {
         @PathVariable("leagueName")
         leagueName: String
     ): List<PointRuleOutput> {
-        return pointRuleService.findByLeague(leagueName).map { pointRule ->
+        return pointRuleService.findAllByLeague(leagueName).map { pointRule ->
             convertToOutput(pointRule)
         }.sortedBy { it.placement }
     }

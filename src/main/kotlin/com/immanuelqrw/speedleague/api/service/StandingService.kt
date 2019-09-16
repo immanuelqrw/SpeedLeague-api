@@ -5,7 +5,6 @@ import com.immanuelqrw.speedleague.api.entity.*
 import com.immanuelqrw.speedleague.api.exception.RaceUnfinishedException
 import com.immanuelqrw.speedleague.api.repository.RaceRunnerRepository
 import com.immanuelqrw.speedleague.api.service.seek.LeagueService
-import com.immanuelqrw.speedleague.api.service.seek.PointRuleService
 import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -69,7 +68,7 @@ class StandingService {
     }
 
     fun calculateRacePlacements(raceName: String): List<RaceRunner> {
-        val raceRunners: List<RaceRunner> = raceRunnerService.findByRace(raceName)
+        val raceRunners: List<RaceRunner> = raceRunnerService.findAllByRace(raceName)
 
         raceRunners.forEach { raceRunner ->
             if (raceRunner.outcome == Outcome.PENDING_VERIFICATION) {

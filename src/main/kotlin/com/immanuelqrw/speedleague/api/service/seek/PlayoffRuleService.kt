@@ -13,7 +13,7 @@ class PlayoffRuleService : BaseUniqueService<PlayoffRule>(PlayoffRule::class.jav
     @Autowired
     private lateinit var playoffRuleRepository: PlayoffRuleRepository
 
-    fun findByLeague(leagueName: String): List<PlayoffRule> {
+    fun findAllByLeague(leagueName: String): List<PlayoffRule> {
         return findAll().filter { playoffRule ->
             playoffRule.league.name == leagueName
         }

@@ -21,13 +21,13 @@ class RaceRunnerService : BaseUniqueService<RaceRunner>(RaceRunner::class.java) 
         }
     }
 
-    fun findByRace(raceName: String): List<RaceRunner> {
+    fun findAllByRace(raceName: String): List<RaceRunner> {
         return findAll().filter { raceRunner ->
             raceRunner.race.name == raceName
         }
     }
 
-    fun findByRunner(runnerName: String): List<RaceRunner> {
+    fun findAllByRunner(runnerName: String): List<RaceRunner> {
         return findAll().filter { raceRunner ->
             raceRunner.runner.name == runnerName
         }

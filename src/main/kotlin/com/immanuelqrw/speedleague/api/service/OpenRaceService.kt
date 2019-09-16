@@ -4,7 +4,6 @@ import com.immanuelqrw.speedleague.api.entity.Outcome
 import com.immanuelqrw.speedleague.api.entity.Race
 import com.immanuelqrw.speedleague.api.entity.RaceRunner
 import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerService
-import com.immanuelqrw.speedleague.api.service.seek.RaceService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -26,7 +25,7 @@ class OpenRaceService {
     }
 
     fun isRaceOpen(raceName: String): Boolean {
-        val raceRunners: List<RaceRunner> = raceRunnerService.findByRace(raceName)
+        val raceRunners: List<RaceRunner> = raceRunnerService.findAllByRace(raceName)
 
         return raceRunners.all { raceRunner ->
             raceRunner.outcome != Outcome.PENDING_VERIFICATION

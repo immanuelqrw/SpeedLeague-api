@@ -13,7 +13,7 @@ class PointRuleService : BaseUniqueService<PointRule>(PointRule::class.java) {
     @Autowired
     private lateinit var pointRuleRepository: PointRuleRepository
 
-    fun findByLeague(leagueName: String): List<PointRule> {
+    fun findAllByLeague(leagueName: String): List<PointRule> {
         return findAll().filter { pointRule ->
             pointRule.league.name == leagueName
         }

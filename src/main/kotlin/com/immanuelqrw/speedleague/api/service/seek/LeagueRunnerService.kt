@@ -14,13 +14,13 @@ class LeagueRunnerService : BaseUniqueService<LeagueRunner>(LeagueRunner::class.
         }
     }
 
-    fun findByLeague(leagueName: String): List<LeagueRunner> {
+    fun findAllByLeague(leagueName: String): List<LeagueRunner> {
         return findAll().filter { leagueRunner ->
             leagueRunner.league.name == leagueName
         }
     }
 
-    fun findByRunner(runnerName: String): List<LeagueRunner> {
+    fun findAllByRunner(runnerName: String): List<LeagueRunner> {
         return findAll().filter { leagueRunner ->
             leagueRunner.runner.name == runnerName
         }

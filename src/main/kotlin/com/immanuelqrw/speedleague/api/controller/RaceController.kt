@@ -60,7 +60,7 @@ class RaceController {
         @PathVariable("runnerName")
         runnerName: String
     ): List<RaceOutput> {
-        return raceRunnerService.findByRunner(runnerName).map { convertToOutput(it.race) }
+        return raceRunnerService.findAllByRunner(runnerName).map { convertToOutput(it.race) }
     }
 
 }

@@ -53,7 +53,7 @@ class PlayoffRuleController {
         @PathVariable("leagueName")
         leagueName: String
     ): List<PlayoffRuleOutput> {
-        return playoffRuleService.findByLeague(leagueName).map { playoffRule ->
+        return playoffRuleService.findAllByLeague(leagueName).map { playoffRule ->
             convertToOutput(playoffRule)
         }.sortedBy { it.order }
     }
