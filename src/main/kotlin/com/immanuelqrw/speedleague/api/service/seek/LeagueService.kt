@@ -11,8 +11,9 @@ import javax.persistence.EntityNotFoundException
 class LeagueService : BaseUniqueService<League>(League::class.java) {
 
     fun find(name: String, season: Int, tierLevel: Int): League {
-
-        return findAll(search = "name:$name;season=$season;tierLevel:$tierLevel").firstOrNull() ?: throw EntityNotFoundException()
+        return findAll(search = "name:$name;season:$season")
+            .firstOrNull { league -> league.tier.level == tierLevel }
+            ?: throw EntityNotFoundException()
     }
 
 }

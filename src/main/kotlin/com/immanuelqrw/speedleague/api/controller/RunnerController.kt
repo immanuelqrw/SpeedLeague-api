@@ -3,6 +3,8 @@ package com.immanuelqrw.speedleague.api.controller
 import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.entity.LeagueRunner
 import com.immanuelqrw.speedleague.api.entity.Runner
+import com.immanuelqrw.speedleague.api.exception.LeagueHasEndedException
+import com.immanuelqrw.speedleague.api.exception.LeagueIsFullException
 import com.immanuelqrw.speedleague.api.service.seek.LeagueRunnerService
 import com.immanuelqrw.speedleague.api.service.seek.LeagueService
 import com.immanuelqrw.speedleague.api.dto.input.Runner as RunnerInput
@@ -14,6 +16,7 @@ import com.immanuelqrw.speedleague.api.service.seek.RunnerService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/runner")
@@ -54,10 +57,21 @@ class RunnerController {
 
     @PostMapping(path = ["/registerToLeague"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun register(@RequestBody leagueRunnerInput: LeagueRunnerInput): LeagueRunnerOutput {
-
         return leagueRunnerInput.run {
             val league: League = leagueService.find(leagueName, season, tierLevel)
             val runner: Runner = runnerService.findByName(runnerName)
+
+            val currentTime: LocalDateTime = LocalDateTime.now()
+            league.endedOn?.let {
+                if (currentTime >= it) {
+                    throw LeagueHasEndedException("Runner $runnerName cannot be registered due to league being full [${league.runnerLimit} runners]")
+                }
+            }
+
+            val currentRunnerCount: Int = leagueRunnerService.findAllByLeague(leagueName).size
+            if (currentRunnerCount >= league.runnerLimit) {
+                throw LeagueIsFullException("Runner $runnerName cannot be registered due to league being full [${league.runnerLimit} runners]")
+            }
 
             val leagueRunner = LeagueRunner(
                 league = league,

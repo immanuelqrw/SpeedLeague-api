@@ -26,6 +26,8 @@ data class League(
 
     val runnerLimit: Int,
 
+    val registrationEndedOn: LocalDateTime? = null,
+
     val qualifierRules: List<QualifierRule>,
 
     val pointRules: List<PointRule>

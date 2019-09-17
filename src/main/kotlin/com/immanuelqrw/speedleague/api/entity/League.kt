@@ -31,6 +31,12 @@ data class League(
     @Column(name = "startedOn", nullable = false)
     val startedOn: LocalDateTime,
 
+    @JsonSerialize(using = LocalDateTimeSerializer::class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer::class)
+    @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
+    @Column(name = "endedOn")
+    val endedOn: LocalDateTime? = null,
+
     // ! Min 0
     @Column(name = "defaultTime", nullable = false)
     val defaultTime: Long,
@@ -52,7 +58,13 @@ data class League(
     val tier: Tier,
 
     @Column(name = "runnerLimit", nullable = false)
-    val runnerLimit: Int
+    val runnerLimit: Int,
+
+    @JsonSerialize(using = LocalDateTimeSerializer::class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer::class)
+    @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
+    @Column(name = "registrationEndedOn")
+    val registrationEndedOn: LocalDateTime? = null
 
 ) : BaseUniqueEntity() {
 

@@ -14,6 +14,9 @@ data class League (
     @JsonSerialize(using = LocalDateTimeSerializer::class)
     val startedOn: LocalDateTime,
 
+    @JsonSerialize(using = LocalDateTimeSerializer::class)
+    val endedOn: LocalDateTime?,
+
     val defaultTime: Long,
 
     val defaultPoints: Int,
@@ -24,6 +27,9 @@ data class League (
 
     val tierName: String,
 
-    val runnerLimit: Int
+    val runnerLimit: Int,
+
+    @JsonSerialize(using = LocalDateTimeSerializer::class)
+    val registrationEndedOn: LocalDateTime?
 
 )

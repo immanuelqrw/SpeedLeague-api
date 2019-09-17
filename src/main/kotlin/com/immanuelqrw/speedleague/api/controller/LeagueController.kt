@@ -27,12 +27,14 @@ class LeagueController {
                 name = name,
                 type = type,
                 startedOn = startedOn,
+                endedOn = endedOn,
                 defaultTime = defaultTime,
                 defaultPoints = defaultPoints,
                 season = season,
                 tierLevel = tier.level,
                 tierName = tier.name,
-                runnerLimit = runnerLimit
+                runnerLimit = runnerLimit,
+                registrationEndedOn = registrationEndedOn
             )
         }
     }
@@ -45,11 +47,13 @@ class LeagueController {
                 name = name,
                 type = type,
                 startedOn = startedOn,
+                endedOn = null,
                 defaultTime = defaultTime,
                 defaultPoints = defaultPoints,
                 season = season,
                 tier = Tier(name = tierName, level = tierLevel),
-                runnerLimit = runnerLimit
+                runnerLimit = runnerLimit,
+                registrationEndedOn = registrationEndedOn
             )
             val createdLeague: League = leagueService.create(league)
 
