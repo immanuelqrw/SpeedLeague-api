@@ -26,6 +26,7 @@ data class League(
 
     val runnerLimit: Int,
 
+    @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
     val registrationEndedOn: LocalDateTime? = null,
 
     val qualifierRules: List<QualifierRule>,

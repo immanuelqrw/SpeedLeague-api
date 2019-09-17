@@ -19,9 +19,6 @@ class StandingService {
     @Autowired
     private lateinit var raceRunnerService: RaceRunnerService
 
-    @Autowired
-    private lateinit var raceRunnerRepository: RaceRunnerRepository
-
     private fun racePoints(pointRules: Set<PointRule>): Map<Int, Int> {
         return pointRules.map { pointRule ->
             pointRule.placement to pointRule.amount
@@ -91,7 +88,7 @@ class StandingService {
 
             raceRunners.forEach { raceRunner ->
                 raceRunner.placement = placement
-                raceRunnerRepository.save(raceRunner)
+                raceRunnerService.create(raceRunner)
             }
             placement += raceRunners.size
         }

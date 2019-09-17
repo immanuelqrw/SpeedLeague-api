@@ -35,7 +35,7 @@ data class League(
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
     @Column(name = "endedOn")
-    val endedOn: LocalDateTime? = null,
+    var endedOn: LocalDateTime? = null,
 
     // ! Min 0
     @Column(name = "defaultTime", nullable = false)
