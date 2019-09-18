@@ -16,4 +16,10 @@ class LeagueService : BaseUniqueService<League>(League::class.java) {
             ?: throw EntityNotFoundException()
     }
 
+    fun findBottomLeague(name: String, season: Int): League {
+        return findAll(search = "name:$name;season:$season;")
+            .maxBy { league -> league.tier.level }
+            ?: throw EntityNotFoundException()
+    }
+
 }

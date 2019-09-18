@@ -11,10 +11,6 @@ data class LeagueRunner(
 
     val season: Int,
 
-    val tierLevel: Int,
-
-    val tierName: String,
-
     val runnerName: String,
 
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)

@@ -58,7 +58,8 @@ class RunnerController {
     @PostMapping(path = ["/registerToLeague"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun register(@RequestBody leagueRunnerInput: LeagueRunnerInput): LeagueRunnerOutput {
         return leagueRunnerInput.run {
-            val league: League = leagueService.find(leagueName, season, tierLevel)
+            // Can only be registered to bottom league
+            val league: League = leagueService.findBottomLeague(leagueName, season)
             val runner: Runner = runnerService.findByName(runnerName)
 
             val currentTime: LocalDateTime = LocalDateTime.now()
