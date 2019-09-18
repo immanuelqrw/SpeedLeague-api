@@ -63,8 +63,8 @@ class LeagueController {
                 endedOn = null,
                 defaultTime = defaultTime,
                 defaultPoints = defaultPoints,
-                season = season,
-                tier = Tier(name = tierName, level = tierLevel),
+                season = 1,
+                tier = Tier(name = tierName, level = 1),
                 runnerLimit = runnerLimit,
                 registrationEndedOn = registrationEndedOn
             )
@@ -82,8 +82,8 @@ class LeagueController {
 
             val leaguePointRule = LeaguePointRule(
                 leagueName = name,
-                season = season,
-                tierLevel = tierLevel,
+                season = 1,
+                tierLevel = 1,
                 tierName = tierName,
                 pointRules = pointRules
             )

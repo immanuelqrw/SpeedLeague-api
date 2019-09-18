@@ -12,15 +12,11 @@ data class League(
     val type: LeagueType = LeagueType.POOL,
 
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
-    val startedOn: LocalDateTime,
+    val startedOn: LocalDateTime = LocalDateTime.now(),
 
     val defaultTime: Long,
 
     val defaultPoints: Int,
-
-    val season: Int,
-
-    val tierLevel: Int,
 
     val tierName: String,
 
