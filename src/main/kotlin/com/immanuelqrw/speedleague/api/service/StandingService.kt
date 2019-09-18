@@ -25,7 +25,7 @@ class StandingService {
         }.toMap()
     }
 
-    fun calculateStandings(leagueName: String, season: Int, tierName: String, tierLevel: Int): List<Standing> {
+    fun calculateStandings(leagueName: String, season: Int, tierLevel: Int): List<Standing> {
         val league: League = leagueService.find(leagueName, season, tierLevel)
         val races: Set<Race> = league.races
 

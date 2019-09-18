@@ -1,53 +1,54 @@
 package com.immanuelqrw.speedleague.api.service
 
-import com.immanuelqrw.speedleague.api.dto.input.LeaguePlayoffRule
+import com.immanuelqrw.speedleague.api.dto.input.LeaguePromotionRule
 import com.immanuelqrw.speedleague.api.dto.output.QualifiedRunner
 import com.immanuelqrw.speedleague.api.dto.output.Standing
 import com.immanuelqrw.speedleague.api.entity.League
-import com.immanuelqrw.speedleague.api.entity.PlayoffRule
+import com.immanuelqrw.speedleague.api.entity.PromotionRule
 import com.immanuelqrw.speedleague.api.entity.Qualifier
 import com.immanuelqrw.speedleague.api.service.seek.LeagueService
-import com.immanuelqrw.speedleague.api.service.seek.PlayoffRuleService
+import com.immanuelqrw.speedleague.api.service.seek.PromotionRuleService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import sun.jvm.hotspot.oops.CellTypeState.top
 
 @Service
-class PlayoffService {
+class PromotionService {
     
     @Autowired
     private lateinit var leagueService: LeagueService
 
     @Autowired
-    private lateinit var playoffRuleService: PlayoffRuleService
+    private lateinit var promotionRuleService: PromotionRuleService
 
-    private fun attachPlayoffRules(league: League, leagueRule: LeaguePlayoffRule): List<PlayoffRule> {
+    private fun attachPromotionRules(league: League, leagueRule: LeaguePromotionRule): List<PromotionRule> {
         return leagueRule.qualifierRules.mapIndexed { index, qualifierRule ->
-            val playoffRule = PlayoffRule(
+            val promotionRule = PromotionRule(
                 qualifier = qualifierRule.qualifier,
                 count = qualifierRule.count,
                 league = league,
                 order = index + 1
             )
 
-            playoffRuleService.create(playoffRule)
+            promotionRuleService.create(promotionRule)
         }
     }
 
-    fun addPlayoffRules(leagueRule: LeaguePlayoffRule): List<PlayoffRule> {
+    fun addPromotionRules(leagueRule: LeaguePromotionRule): List<PromotionRule> {
         return leagueRule.run {
             val league: League = leagueService.find(leagueName, season, tierLevel)
 
-            attachPlayoffRules(league, leagueRule)
+            attachPromotionRules(league, leagueRule)
         }
     }
 
-    fun replacePlayoffRules(leagueRule: LeaguePlayoffRule): List<PlayoffRule> {
+    fun replacePromotionRules(leagueRule: LeaguePromotionRule): List<PromotionRule> {
         return leagueRule.run {
             val league: League = leagueService.find(leagueName, season, tierLevel)
 
-            playoffRuleService.deleteAll(league.playoffRules)
+            promotionRuleService.deleteAll(league.promotionRules)
 
-            attachPlayoffRules(league, leagueRule)
+            attachPromotionRules(league, leagueRule)
         }
     }
 
@@ -60,25 +61,26 @@ class PlayoffService {
         )
     }
 
-    fun matchQualifiedRunners(leagueName: String, season: Int, tierLevel: Int, top: Int, standings: List<Standing>): List<QualifiedRunner> {
-        val topRunners: MutableMap<Qualifier, List<QualifiedRunner>> = findTopRunners(top, standings)
-
+    fun matchQualifiedRunners(leagueName: String, season: Int, tierLevel: Int, standings: List<Standing>): List<QualifiedRunner> {
         val league: League = leagueService.find(leagueName, season, tierLevel)
+
+        val top: Int = league.promotions
+        val topRunners: MutableMap<Qualifier, List<QualifiedRunner>> = findTopRunners(top, standings)
 
         val qualifiedRunners: LinkedHashSet<QualifiedRunner> = linkedSetOf()
 
         // ! There might be an issue with infinite loop if less runners than top
-        val orderedPlayoffRules: List<PlayoffRule> = league.playoffRules.sortedBy { it.order }
+        val orderedPromotionRules: List<PromotionRule> = league.promotionRules.sortedBy { it.order }
         while (qualifiedRunners.size < top) {
-            orderedPlayoffRules.forEach { playoffRule ->
-                val qualifier: Qualifier = playoffRule.qualifier
+            orderedPromotionRules.forEach { promotionRule ->
+                val qualifier: Qualifier = promotionRule.qualifier
                 val possiblyQualifiedRunners: List<QualifiedRunner> = topRunners[qualifier]
                     ?: throw IllegalStateException("Each Qualifier should have a list of possible runners")
                 // - Consider outputting each qualification method
-                val orderedQualifiedRunners = possiblyQualifiedRunners.take(playoffRule.count)
+                val orderedQualifiedRunners = possiblyQualifiedRunners.take(promotionRule.count)
 
                 qualifiedRunners.addAll(orderedQualifiedRunners)
-                topRunners[qualifier] = possiblyQualifiedRunners.drop(playoffRule.count)
+                topRunners[qualifier] = possiblyQualifiedRunners.drop(promotionRule.count)
             }
         }
 

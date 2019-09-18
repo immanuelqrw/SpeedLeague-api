@@ -20,6 +20,8 @@ INSERT INTO
     "startedOn",
     "endedOn",
     "registrationEndedOn",
+    "promotions",
+    "relegations",
     "defaultTime",
     "defaultPoints",
     "runnerLimit",
@@ -29,7 +31,7 @@ INSERT INTO
     "id"
   )
 VALUES
-  ('Neverending','POOL',1,'Serie A',1,'2019-09-03T15:23:11',NULL,NULL,0,1,20,'2019-09-12T03:08:32.33','2019-09-12T03:08:32.33',NULL,'6b23b367-99f9-4d8a-9c76-3659976b4e54');
+  ('Neverending','POOL',1,'Serie A',1,'2019-09-03T15:23:11',NULL,NULL,0,0,0,1,20,'2019-09-12T03:08:32.33','2019-09-12T03:08:32.33',NULL,'6b23b367-99f9-4d8a-9c76-3659976b4e54');
 
 INSERT INTO
   "LeagueRunner" (

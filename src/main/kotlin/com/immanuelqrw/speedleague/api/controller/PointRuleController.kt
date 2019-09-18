@@ -50,12 +50,16 @@ class PointRuleController {
         }.sortedBy { it.placement }
     }
 
-    @GetMapping(path = ["/league/{leagueName}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(path = ["/league/{leagueName}/{season}/{tierLevel}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(
         @PathVariable("leagueName")
-        leagueName: String
+        leagueName: String,
+        @PathVariable("season")
+        season: Int,
+        @PathVariable("tierLevel")
+        tierLevel: Int
     ): List<PointRuleOutput> {
-        return pointRuleService.findAllByLeague(leagueName).map { pointRule ->
+        return pointRuleService.findAllByLeague(leagueName, season, tierLevel).map { pointRule ->
             convertToOutput(pointRule)
         }.sortedBy { it.placement }
     }

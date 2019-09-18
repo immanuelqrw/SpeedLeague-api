@@ -8,15 +8,20 @@ import java.util.UUID
 @Service
 class LeagueRunnerService : BaseUniqueService<LeagueRunner>(LeagueRunner::class.java) {
 
-    fun findByLeagueAndRunner(leagueName: String, runnerName: String): LeagueRunner? {
+    fun findByLeagueAndRunner(leagueName: String, season: Int, tierLevel: Int, runnerName: String): LeagueRunner? {
         return findAll().firstOrNull { leagueRunner ->
-            leagueRunner.league.name == leagueName && leagueRunner.runner.name == runnerName
+            leagueRunner.league.name == leagueName &&
+            leagueRunner.league.season == season &&
+            leagueRunner.league.tier.level == tierLevel
+            leagueRunner.runner.name == runnerName
         }
     }
 
-    fun findAllByLeague(leagueName: String): List<LeagueRunner> {
+    fun findAllByLeague(leagueName: String, season: Int, tierLevel: Int): List<LeagueRunner> {
         return findAll().filter { leagueRunner ->
-            leagueRunner.league.name == leagueName
+            leagueRunner.league.name == leagueName &&
+            leagueRunner.league.season == season &&
+            leagueRunner.league.tier.level == tierLevel
         }
     }
 

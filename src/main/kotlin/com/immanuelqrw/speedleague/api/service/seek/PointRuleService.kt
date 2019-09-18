@@ -13,9 +13,11 @@ class PointRuleService : BaseUniqueService<PointRule>(PointRule::class.java) {
     @Autowired
     private lateinit var pointRuleRepository: PointRuleRepository
 
-    fun findAllByLeague(leagueName: String): List<PointRule> {
+    fun findAllByLeague(leagueName: String, season: Int, tierLevel: Int): List<PointRule> {
         return findAll().filter { pointRule ->
-            pointRule.league.name == leagueName
+            pointRule.league.name == leagueName &&
+            pointRule.league.season == season &&
+            pointRule.league.tier.level == tierLevel
         }
     }
 

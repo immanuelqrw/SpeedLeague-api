@@ -51,12 +51,16 @@ class PlayoffRuleController {
         }.sortedBy { it.order }
     }
 
-    @GetMapping(path = ["/league/{leagueName}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(path = ["/league/{leagueName}/{season}/{tierLevel}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(
         @PathVariable("leagueName")
-        leagueName: String
+        leagueName: String,
+        @PathVariable("season")
+        season: Int,
+        @PathVariable("tierLevel")
+        tierLevel: Int
     ): List<PlayoffRuleOutput> {
-        return playoffRuleService.findAllByLeague(leagueName).map { playoffRule ->
+        return playoffRuleService.findAllByLeague(leagueName, season, tierLevel).map { playoffRule ->
             convertToOutput(playoffRule)
         }.sortedBy { it.order }
     }

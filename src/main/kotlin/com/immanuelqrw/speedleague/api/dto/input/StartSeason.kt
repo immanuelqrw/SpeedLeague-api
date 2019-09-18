@@ -12,8 +12,6 @@ data class StartSeason(
 
     val season: Int,
 
-    val tierLevel: Int,
-
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
     val startedOn: LocalDateTime = LocalDateTime.now(),
 
@@ -24,6 +22,10 @@ data class StartSeason(
     val runnerLimit: Int? = null,
 
     val registrationEndedOn: LocalDateTime? = null,
+
+    val promotions: Int = 0,
+
+    val relegations: Int = 0,
 
     val qualifierRules: List<QualifierRule>? = null,
 

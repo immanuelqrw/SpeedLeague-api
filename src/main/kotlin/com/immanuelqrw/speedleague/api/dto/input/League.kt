@@ -25,8 +25,16 @@ data class League(
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
     val registrationEndedOn: LocalDateTime? = null,
 
+    val promotions: Int = 0,
+
+    val relegations: Int = 0,
+
     val qualifierRules: List<QualifierRule>,
 
-    val pointRules: List<PointRule>
+    val pointRules: List<PointRule>,
+
+    val promotionRules: List<QualifierRule>,
+
+    val relegationRules: List<QualifierRule>
 
 )

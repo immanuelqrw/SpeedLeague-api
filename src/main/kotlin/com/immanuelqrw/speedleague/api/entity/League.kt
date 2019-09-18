@@ -64,7 +64,13 @@ data class League(
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
     @Column(name = "registrationEndedOn")
-    val registrationEndedOn: LocalDateTime? = null
+    val registrationEndedOn: LocalDateTime? = null,
+
+    @Column(name = "promotions", nullable = false)
+    val promotions: Int = 0,
+
+    @Column(name = "relegations", nullable = false)
+    val relegations: Int = 0
 
 ) : BaseUniqueEntity() {
 
@@ -79,5 +85,13 @@ data class League(
     @JsonBackReference
     @OneToMany(mappedBy = "league", cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
     var pointRules: Set<PointRule> = emptySet()
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "league", cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
+    var promotionRules: List<PromotionRule> = emptyList()
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "league", cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
+    var relegationRules: List<RelegationRule> = emptyList()
 
 }

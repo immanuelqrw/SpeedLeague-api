@@ -69,7 +69,7 @@ class RunnerController {
                 }
             }
 
-            val currentRunnerCount: Int = leagueRunnerService.findAllByLeague(leagueName).size
+            val currentRunnerCount: Int = leagueRunnerService.findAllByLeague(league.name, league.season, league.tier.level).size
             if (currentRunnerCount >= league.runnerLimit) {
                 throw LeagueIsFullException("Runner $runnerName cannot be registered due to league being full [${league.runnerLimit} runners]")
             }

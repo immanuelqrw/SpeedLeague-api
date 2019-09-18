@@ -12,9 +12,11 @@ class LeagueSpeedrunService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedrun::
 
     // ! Need to add findByVersion -- possibly at Controller level for convenience
 
-    fun findAllByLeague(leagueName: String): List<LeagueSpeedrun> {
+    fun findAllByLeague(leagueName: String, season: Int, tierLevel: Int): List<LeagueSpeedrun> {
         return findAll().filter { leagueSpeedrun ->
-            leagueSpeedrun.league.name == leagueName
+            leagueSpeedrun.league.name == leagueName &&
+            leagueSpeedrun.league.season == season &&
+            leagueSpeedrun.league.tier.level == tierLevel
         }
     }
 

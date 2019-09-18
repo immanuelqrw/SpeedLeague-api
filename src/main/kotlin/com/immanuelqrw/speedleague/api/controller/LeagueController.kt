@@ -8,6 +8,7 @@ import com.immanuelqrw.speedleague.api.entity.Tier
 import com.immanuelqrw.speedleague.api.repository.LeagueRepository
 import com.immanuelqrw.speedleague.api.service.PlayoffService
 import com.immanuelqrw.speedleague.api.service.PointService
+import com.immanuelqrw.speedleague.api.service.SeasonService
 import com.immanuelqrw.speedleague.api.service.seek.LeagueService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -28,7 +29,7 @@ class LeagueController {
     private lateinit var pointService: PointService
 
     @Autowired
-    private lateinit var leagueRepository: LeagueRepository
+    private lateinit var seasonService: SeasonService
 
     private fun convertToOutput(league: League): LeagueOutput {
         return league.run {
@@ -111,53 +112,60 @@ class LeagueController {
     }
 
     @PostMapping(path = ["/startNewSeason"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun startNewSeason(@RequestBody startSeason: StartSeason): LeagueOutput {
+    fun startNewSeason(@RequestBody startSeason: StartSeason): List<LeagueOutput> {
         return startSeason.run {
-            val oldLeague: League = leagueService.find(leagueName, season, tierLevel)
-            oldLeague.endedOn?.let {
-                oldLeague.endedOn = LocalDateTime.now()
-                leagueService.create(oldLeague)
-            }
+            val allLeagues: List<League> = leagueService.findAllTiers(leagueName, season)
+            val newLeagues: List<LeagueOutput> = allLeagues.map { oldLeague ->
+                oldLeague.endedOn?.let {
+                    oldLeague.endedOn = LocalDateTime.now()
+                    leagueService.create(oldLeague)
+                }
 
-            val league = League(
-                name = oldLeague.name,
-                type = oldLeague.type,
-                startedOn = startedOn,
-                endedOn = null,
-                defaultTime = defaultTime ?: oldLeague.defaultTime,
-                defaultPoints = defaultPoints ?: oldLeague.defaultPoints,
-                season = season + 1,
-                tier = Tier(name = oldLeague.tier.name, level = oldLeague.tier.level),
-                runnerLimit = runnerLimit ?: oldLeague.runnerLimit,
-                registrationEndedOn = registrationEndedOn
-            )
-            val createdLeague: League = leagueService.create(league)
-
-            qualifierRules?.let {
-                val leaguePlayoffRule = LeaguePlayoffRule(
-                    leagueName = createdLeague.name,
-                    season = createdLeague.season,
-                    tierLevel = createdLeague.tier.level,
-                    tierName = createdLeague.tier.name,
-                    qualifierRules = it
+                val league = League(
+                    name = oldLeague.name,
+                    type = oldLeague.type,
+                    startedOn = startedOn,
+                    endedOn = null,
+                    defaultTime = defaultTime ?: oldLeague.defaultTime,
+                    defaultPoints = defaultPoints ?: oldLeague.defaultPoints,
+                    season = season + 1,
+                    tier = Tier(name = oldLeague.tier.name, level = oldLeague.tier.level),
+                    runnerLimit = runnerLimit ?: oldLeague.runnerLimit,
+                    registrationEndedOn = registrationEndedOn
                 )
+                val createdLeague: League = leagueService.create(league)
 
-                playoffService.addPlayoffRules(leaguePlayoffRule)
+                qualifierRules?.let {
+                    val leaguePlayoffRule = LeaguePlayoffRule(
+                        leagueName = createdLeague.name,
+                        season = createdLeague.season,
+                        tierLevel = createdLeague.tier.level,
+                        tierName = createdLeague.tier.name,
+                        qualifierRules = it
+                    )
+
+                    playoffService.addPlayoffRules(leaguePlayoffRule)
+                }
+
+                pointRules?.let {
+                    val leaguePointRule = LeaguePointRule(
+                        leagueName = createdLeague.name,
+                        season = createdLeague.season,
+                        tierLevel = createdLeague.tier.level,
+                        tierName = createdLeague.tier.name,
+                        pointRules = it
+                    )
+
+                    pointService.addPointRules(leaguePointRule)
+                }
+
+                convertToOutput(createdLeague)
             }
 
-            pointRules?.let {
-                val leaguePointRule = LeaguePointRule(
-                    leagueName = createdLeague.name,
-                    season = createdLeague.season,
-                    tierLevel = createdLeague.tier.level,
-                    tierName = createdLeague.tier.name,
-                    pointRules = it
-                )
+            // ! Add LeagueRunners to same league if no change
+            seasonService.promoteAndRelegate(allLeagues)
 
-                pointService.addPointRules(leaguePointRule)
-            }
-
-            convertToOutput(createdLeague)
+            newLeagues
         }
     }
 
@@ -211,6 +219,8 @@ class LeagueController {
             )
 
             pointService.addPointRules(leaguePointRule)
+
+            // ! Add promotion and relegation rules
 
             convertToOutput(childLeague)
         }
