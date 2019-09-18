@@ -64,7 +64,7 @@ class RunnerController {
             val currentTime: LocalDateTime = LocalDateTime.now()
             league.endedOn?.let {
                 if (currentTime >= it) {
-                    throw LeagueHasEndedException("Runner $runnerName cannot be registered due to league being full [${league.runnerLimit} runners]")
+                    throw LeagueHasEndedException("Runner $runnerName cannot be registered due to league being over [Ended on $it]")
                 }
             }
 

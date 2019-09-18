@@ -12,8 +12,6 @@ data class Race(
 
     val tierLevel: Int,
 
-    val tierName: String,
-
     val raceName: String?,
 
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
