@@ -126,11 +126,11 @@ class LeagueController {
                     type = oldLeague.type,
                     startedOn = startedOn,
                     endedOn = null,
-                    defaultTime = defaultTime ?: oldLeague.defaultTime,
-                    defaultPoints = defaultPoints ?: oldLeague.defaultPoints,
+                    defaultTime = oldLeague.defaultTime,
+                    defaultPoints = oldLeague.defaultPoints,
                     season = season + 1,
                     tier = Tier(name = oldLeague.tier.name, level = oldLeague.tier.level),
-                    runnerLimit = runnerLimit ?: oldLeague.runnerLimit,
+                    runnerLimit =  oldLeague.runnerLimit,
                     registrationEndedOn = registrationEndedOn
                 )
                 val createdLeague: League = leagueService.create(league)
