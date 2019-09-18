@@ -1,13 +1,9 @@
 package com.immanuelqrw.speedleague.api.controller
 
-import com.immanuelqrw.speedleague.api.dto.input.EndSeason
-import com.immanuelqrw.speedleague.api.dto.input.LeaguePlayoffRule
-import com.immanuelqrw.speedleague.api.dto.input.LeaguePointRule
-import com.immanuelqrw.speedleague.api.dto.input.StartSeason
+import com.immanuelqrw.speedleague.api.dto.input.*
 import com.immanuelqrw.speedleague.api.dto.input.League as LeagueInput
 import com.immanuelqrw.speedleague.api.dto.output.League as LeagueOutput
 import com.immanuelqrw.speedleague.api.entity.League
-import com.immanuelqrw.speedleague.api.entity.PointRule
 import com.immanuelqrw.speedleague.api.entity.Tier
 import com.immanuelqrw.speedleague.api.repository.LeagueRepository
 import com.immanuelqrw.speedleague.api.service.PlayoffService
@@ -162,6 +158,61 @@ class LeagueController {
             }
 
             convertToOutput(createdLeague)
+        }
+    }
+
+    @PostMapping(path = ["/addLowerTier"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    fun addLowerTier(@RequestBody lowerTier: LowerTier): LeagueOutput {
+        return lowerTier.run {
+            val parentLeague: League = leagueService.find(leagueName, season, parentTierLevel)
+
+            val league = League(
+                name = leagueName,
+                type = parentLeague.type,
+                startedOn = startedOn,
+                endedOn = null,
+                defaultTime = defaultTime ?: parentLeague.defaultTime,
+                defaultPoints = defaultPoints ?: parentLeague.defaultPoints,
+                season = season,
+                tier = Tier(name = tierName, level = parentLeague.tier.level + 1),
+                runnerLimit = runnerLimit ?: parentLeague.runnerLimit,
+                registrationEndedOn = registrationEndedOn
+            )
+            val childLeague: League = leagueService.create(league)
+
+            val childQualifierRules: List<QualifierRule> = qualifierRules ?: parentLeague.playoffRules.map { playoffRule ->
+                QualifierRule(
+                    qualifier = playoffRule.qualifier,
+                    count = playoffRule.count
+                )
+            }
+            val leaguePlayoffRule = LeaguePlayoffRule(
+                leagueName = childLeague.name,
+                season = childLeague.season,
+                tierLevel = childLeague.tier.level,
+                tierName = childLeague.tier.name,
+                qualifierRules = childQualifierRules
+            )
+
+            playoffService.addPlayoffRules(leaguePlayoffRule)
+
+            val childPointRules: List<PointRule> = pointRules ?: parentLeague.pointRules.map { pointRule ->
+                PointRule(
+                    placement = pointRule.placement,
+                    amount = pointRule.amount
+                )
+            }
+            val leaguePointRule = LeaguePointRule(
+                leagueName = childLeague.name,
+                season = childLeague.season,
+                tierLevel = childLeague.tier.level,
+                tierName = childLeague.tier.name,
+                pointRules = childPointRules
+            )
+
+            pointService.addPointRules(leaguePointRule)
+
+            convertToOutput(childLeague)
         }
     }
 
