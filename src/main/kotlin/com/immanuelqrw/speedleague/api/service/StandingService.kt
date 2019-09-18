@@ -29,10 +29,9 @@ class StandingService {
         val league: League = leagueService.find(leagueName, season, tierLevel)
         val races: Set<Race> = league.races
 
-        val raceRunners: List<RaceRunner> = races.mapNotNull { race: Race ->
-            val raceId: UUID = race.id
-            raceRunnerService.findByRace(raceId)
-        }
+        val raceRunners: List<RaceRunner> = races.map { race: Race ->
+            raceRunnerService.findAllByRace(race.name)
+        }.flatten()
 
         val raceResults: Map<String, List<RaceRunner>> = raceRunners.groupBy { it.runner.name }
 

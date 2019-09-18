@@ -49,9 +49,9 @@ class RaceTimeController {
 
     private fun validateLeagueRegistration(race: Race, runner: Runner) {
         val raceLeague: League = race.league
-        val runnerLeague: League? = leagueRunnerService.findByRunner(runner.id)?.league
+        val runnerLeagues: List<League> = leagueRunnerService.findAllByRunner(runner.name).map {leagueRunner -> leagueRunner.league}
 
-        if (raceLeague != runnerLeague) {
+        if (raceLeague !in runnerLeagues) {
             throw NotRegisteredException("Runner ${runner.name} is not a part of League ${race.league.name}")
         }
     }

@@ -63,6 +63,21 @@ class SeasonService {
                     leagueRunnerService.create(leagueRunner)
                 }
             }
+
+            val relegatedRunnerNames: Set<String> = relegatedRunners.map { relegatedRunner -> relegatedRunner.runnerName }.toSet()
+            val promotedRunnerNames: Set<String> = promotedRunners.map { promotedRunner -> promotedRunner.runnerName }.toSet()
+            val leagueRunners: Set<LeagueRunner> = leagueRunnerService.findAllByLeague(league.name, league.season, league.tier.level).toSet()
+
+            leagueRunners.forEach { leagueRunner ->
+                if (!relegatedRunnerNames.contains(leagueRunner.runner.name) && !promotedRunnerNames.contains(leagueRunner.runner.name)) {
+                    val newLeague: League = leagueService.find(league.name, league.season + 1, league.tier.level)
+                    val newLeagueRunner = LeagueRunner(
+                        league = newLeague,
+                        runner = leagueRunner.runner
+                    )
+                    leagueRunnerService.create(newLeagueRunner)
+                }
+            }
         }
     }
 

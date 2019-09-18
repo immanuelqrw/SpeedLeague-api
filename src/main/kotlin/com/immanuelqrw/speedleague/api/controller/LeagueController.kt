@@ -162,7 +162,6 @@ class LeagueController {
                 convertToOutput(createdLeague)
             }
 
-            // ! Add LeagueRunners to same league if no change
             seasonService.promoteAndRelegate(allLeagues)
 
             newLeagues

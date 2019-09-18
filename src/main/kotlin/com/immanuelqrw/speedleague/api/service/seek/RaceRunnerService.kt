@@ -33,14 +33,6 @@ class RaceRunnerService : BaseUniqueService<RaceRunner>(RaceRunner::class.java) 
         }
     }
 
-    fun findByRace(raceId: UUID): RaceRunner? {
-        return findAll(search = "raceId:$raceId").firstOrNull()
-    }
-
-    fun findByRunner(runnerId: UUID): RaceRunner? {
-        return findAll(search = "runnerId:$runnerId").firstOrNull()
-    }
-
     fun registerRaceTime(raceTimeRegister: RaceTimeRegister): RaceRunner {
         val raceRunner: RaceRunner = findByRaceAndRunner(raceTimeRegister.raceName, raceTimeRegister.runnerName)
             ?: throw EntityNotFoundException()

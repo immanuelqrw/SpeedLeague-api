@@ -38,8 +38,6 @@ class StandingController {
         leagueName: String,
         @RequestParam("season")
         season: Int,
-        @RequestParam("tierName")
-        tierName: String,
         @RequestParam("tierLevel")
         tierLevel: Int
     ): Iterable<StandingOutput> {

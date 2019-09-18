@@ -31,12 +31,4 @@ class LeagueRunnerService : BaseUniqueService<LeagueRunner>(LeagueRunner::class.
         }
     }
 
-    fun findByLeague(leagueId: UUID): LeagueRunner? {
-        return findAll(search = "leagueId:$leagueId").firstOrNull()
-    }
-
-    fun findByRunner(runnerId: UUID): LeagueRunner? {
-        return findAll(search = "runnerId:$runnerId").firstOrNull()
-    }
-
 }
