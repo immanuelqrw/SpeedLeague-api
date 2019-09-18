@@ -38,7 +38,7 @@ class SeasonService {
 
             val relegatedRunners: List<QualifiedRunner> = relegationService.matchQualifiedRunners(league.name, league.season, league.tier.level, standings)
             if (relegatedRunners.isNotEmpty()) {
-                val relegatedLeague: League = leagueService.find(league.name, league.season, league.tier.level + 1)
+                val relegatedLeague: League = leagueService.find(league.name, league.season + 1, league.tier.level + 1)
 
                 relegatedRunners.forEach { relegatedRunner ->
                     val leagueRunner = LeagueRunner(
@@ -52,7 +52,7 @@ class SeasonService {
 
             val promotedRunners: List<QualifiedRunner> = promotionService.matchQualifiedRunners(league.name, league.season, league.tier.level, standings)
             if (promotedRunners.isNotEmpty()) {
-                val promotedLeague: League = leagueService.find(league.name, league.season, league.tier.level - 1)
+                val promotedLeague: League = leagueService.find(league.name, league.season + 1, league.tier.level - 1)
 
                 promotedRunners.forEach { promotedRunner ->
                     val leagueRunner = LeagueRunner(
