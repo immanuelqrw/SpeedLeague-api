@@ -38,7 +38,7 @@ class StandingController {
         leagueName: String,
         @RequestParam("season")
         season: Int,
-        @RequestParam("tierLevel")
+        @RequestParam("tier")
         tierLevel: Int
     ): Iterable<StandingOutput> {
         return standingService.calculateStandings(leagueName, season, tierLevel)
@@ -50,7 +50,7 @@ class StandingController {
         leagueName: String,
         @RequestParam("season")
         season: Int,
-        @RequestParam("tierLevel")
+        @RequestParam("tier")
         tierLevel: Int,
         @RequestParam("top")
         top: Int

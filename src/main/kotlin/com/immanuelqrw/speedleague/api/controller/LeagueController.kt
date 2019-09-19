@@ -4,12 +4,13 @@ import com.immanuelqrw.speedleague.api.dto.input.*
 import com.immanuelqrw.speedleague.api.dto.input.League as LeagueInput
 import com.immanuelqrw.speedleague.api.dto.output.League as LeagueOutput
 import com.immanuelqrw.speedleague.api.entity.League
+import com.immanuelqrw.speedleague.api.entity.LeagueSpeedrun
 import com.immanuelqrw.speedleague.api.entity.Tier
-import com.immanuelqrw.speedleague.api.repository.LeagueRepository
 import com.immanuelqrw.speedleague.api.service.PlayoffService
 import com.immanuelqrw.speedleague.api.service.PointService
 import com.immanuelqrw.speedleague.api.service.SeasonService
 import com.immanuelqrw.speedleague.api.service.seek.LeagueService
+import com.immanuelqrw.speedleague.api.service.seek.LeagueSpeedrunService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -30,6 +31,9 @@ class LeagueController {
 
     @Autowired
     private lateinit var seasonService: SeasonService
+
+    @Autowired
+    private lateinit var leagueSpeedrunService: LeagueSpeedrunService
 
     private fun convertToOutput(league: League): LeagueOutput {
         return league.run {
@@ -159,6 +163,8 @@ class LeagueController {
                     pointService.addPointRules(leaguePointRule)
                 }
 
+                copySpeedrunsToNewLeague(oldLeague, createdLeague)
+
                 convertToOutput(createdLeague)
             }
 
@@ -220,8 +226,24 @@ class LeagueController {
             pointService.addPointRules(leaguePointRule)
 
             // ! Add promotion and relegation rules
+            copySpeedrunsToNewLeague(parentLeague, childLeague)
 
             convertToOutput(childLeague)
+        }
+    }
+
+    private fun copySpeedrunsToNewLeague(sourceLeague: League, destinationLeague: League) {
+        val sourceLeagueSpeedruns: Iterable<LeagueSpeedrun> = sourceLeague.run {
+            leagueSpeedrunService.findAllByLeague(name, season, tier.level)
+        }
+
+        sourceLeagueSpeedruns.forEach { oldLeagueSpeedrun ->
+            val leagueSpeedrun = LeagueSpeedrun(
+                league = destinationLeague,
+                speedrun = oldLeagueSpeedrun.speedrun
+            )
+
+            leagueSpeedrunService.create(leagueSpeedrun)
         }
     }
 

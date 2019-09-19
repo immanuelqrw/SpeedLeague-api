@@ -30,8 +30,6 @@ class SeasonService {
     @Autowired
     private lateinit var standingService: StandingService
 
-    // private
-
     fun promoteAndRelegate(leagues: List<League>) {
         leagues.forEach { league ->
             val standings: List<Standing> = standingService.calculateStandings(league.name, league.season, league.tier.level)

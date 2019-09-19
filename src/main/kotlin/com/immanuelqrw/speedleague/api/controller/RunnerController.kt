@@ -108,4 +108,16 @@ class RunnerController {
         return raceRunnerService.findAllByRace(raceName).map { convertToOutput(it.runner) }
     }
 
+    @GetMapping(path = ["/league/{league}/{season}/{tier}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findAllRunners(
+        @PathVariable("league")
+        leagueName: String,
+        @PathVariable("season")
+        season: Int,
+        @PathVariable("tier")
+        tierLevel: Int
+    ): List<RunnerOutput> {
+        return leagueRunnerService.findAllByLeague(leagueName, season, tierLevel).map { convertToOutput(it.runner) }
+    }
+
 }

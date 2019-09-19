@@ -51,13 +51,13 @@ class PromotionRuleController {
         }.sortedBy { it.order }
     }
 
-    @GetMapping(path = ["/league/{leagueName}/{season}/{tierLevel}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(path = ["/league/{league}/{season}/{tier}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(
-        @PathVariable("leagueName")
+        @PathVariable("league")
         leagueName: String,
         @PathVariable("season")
         season: Int,
-        @PathVariable("tierLevel")
+        @PathVariable("tier")
         tierLevel: Int
     ): List<PromotionRuleOutput> {
         return promotionRuleService.findAllByLeague(leagueName, season, tierLevel).map { promotionRule ->
