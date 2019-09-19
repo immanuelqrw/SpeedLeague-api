@@ -31,7 +31,7 @@ data class LowerTier(
 
     val pointRules: List<PointRule>? = null,
 
-    val shifts: Int = 0,
+    val divisionShifts: Int = 0,
 
     val promotionRules: List<QualifierRule>? = null,
 

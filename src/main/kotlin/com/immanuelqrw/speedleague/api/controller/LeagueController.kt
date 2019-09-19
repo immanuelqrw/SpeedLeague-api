@@ -191,12 +191,12 @@ class LeagueController {
                 tier = Tier(name = tierName, level = parentLeague.tier.level + 1),
                 runnerLimit = runnerLimit ?: parentLeague.runnerLimit,
                 registrationEndedOn = registrationEndedOn,
-                promotions = shifts
+                promotions = divisionShifts
             )
             val childLeague: League = leagueService.create(league)
 
             // Update Parent league
-            parentLeague.relegations = shifts
+            parentLeague.relegations = divisionShifts
             leagueService.create(parentLeague)
 
             val childQualifierRules: List<QualifierRule> = qualifierRules ?: parentLeague.playoffRules.map { playoffRule ->
