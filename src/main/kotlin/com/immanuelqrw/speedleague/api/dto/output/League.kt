@@ -30,6 +30,10 @@ data class League (
     val runnerLimit: Int,
 
     @JsonSerialize(using = LocalDateTimeSerializer::class)
-    val registrationEndedOn: LocalDateTime?
+    val registrationEndedOn: LocalDateTime?,
+
+    val promotions: Int,
+
+    val relegations: Int
 
 )

@@ -1,6 +1,7 @@
 package com.immanuelqrw.speedleague.api.controller
 
 import com.immanuelqrw.speedleague.api.dto.input.*
+import com.immanuelqrw.speedleague.api.dto.update.LeagueDivisionShift as LeagueDivisionShiftUpdate
 import com.immanuelqrw.speedleague.api.dto.input.League as LeagueInput
 import com.immanuelqrw.speedleague.api.dto.output.League as LeagueOutput
 import com.immanuelqrw.speedleague.api.entity.League
@@ -49,7 +50,9 @@ class LeagueController {
                 tierLevel = tier.level,
                 tierName = tier.name,
                 runnerLimit = runnerLimit,
-                registrationEndedOn = registrationEndedOn
+                registrationEndedOn = registrationEndedOn,
+                promotions = promotions,
+                relegations = relegations
             )
         }
     }
@@ -68,7 +71,9 @@ class LeagueController {
                 season = 1,
                 tier = Tier(name = tierName, level = 1),
                 runnerLimit = runnerLimit,
-                registrationEndedOn = registrationEndedOn
+                registrationEndedOn = registrationEndedOn,
+                promotions = promotions,
+                relegations = relegations
             )
             val createdLeague: League = leagueService.create(league)
 
@@ -258,6 +263,14 @@ class LeagueController {
 
             convertToOutput(childLeague)
         }
+    }
+
+    @PatchMapping(path = ["/divisionShifts"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    fun modifyDivisionShifts(@RequestBody leagueDivisionShift: LeagueDivisionShiftUpdate): LeagueOutput {
+
+        val modifiedLeague: League = leagueService.updateDivisionShifts(leagueDivisionShift)
+
+        return convertToOutput(modifiedLeague)
     }
 
     private fun copySpeedrunsToNewLeague(sourceLeague: League, destinationLeague: League) {

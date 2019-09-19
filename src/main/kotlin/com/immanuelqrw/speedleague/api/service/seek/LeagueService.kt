@@ -1,14 +1,18 @@
 package com.immanuelqrw.speedleague.api.service.seek
 
 import com.immanuelqrw.core.api.service.BaseUniqueService
+import com.immanuelqrw.speedleague.api.dto.update.LeagueDivisionShift
 import com.immanuelqrw.speedleague.api.entity.League
-import com.immanuelqrw.speedleague.api.entity.Tier
+import com.immanuelqrw.speedleague.api.repository.LeagueRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import javax.persistence.EntityNotFoundException
 
 @Service
 class LeagueService : BaseUniqueService<League>(League::class.java) {
+
+    @Autowired
+    private lateinit var leagueRepository: LeagueRepository
 
     fun find(name: String, season: Int, tierLevel: Int): League {
         return findAll(search = "name:$name;season:$season;tier.level:$tierLevel")
@@ -24,6 +28,32 @@ class LeagueService : BaseUniqueService<League>(League::class.java) {
         return findAll(search = "name:$name;season:$season;")
             .maxBy { league -> league.tier.level }
             ?: throw EntityNotFoundException()
+    }
+
+    fun updateDivisionShifts(leagueDivisionShift: LeagueDivisionShift): League {
+        val modifiedLeague: League = leagueDivisionShift.run {
+            val mainLeague: League = find(leagueName, season, tierLevel)
+
+            promotions?.let {
+                val promotedLeague: League = find(leagueName, season, tierLevel - 1)
+                mainLeague.promotions = promotions
+                promotedLeague.relegations = promotions
+
+                leagueRepository.save(promotedLeague)
+            }
+
+            relegations?.let {
+                val relegatedLeague: League = find(leagueName, season, tierLevel + 1)
+                mainLeague.relegations = relegations
+                relegatedLeague.promotions = relegations
+
+                leagueRepository.save(relegatedLeague)
+            }
+
+            mainLeague
+        }
+
+        return leagueRepository.save(modifiedLeague)
     }
 
 }
