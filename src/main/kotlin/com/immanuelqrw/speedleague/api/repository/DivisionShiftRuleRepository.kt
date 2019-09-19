@@ -1,8 +1,8 @@
 package com.immanuelqrw.speedleague.api.repository
 
 import com.immanuelqrw.core.api.repository.BaseUniqueRepository
-import com.immanuelqrw.speedleague.api.entity.RelegationRule
+import com.immanuelqrw.speedleague.api.entity.DivisionShiftRule
 import org.springframework.stereotype.Repository
 
 @Repository
-interface RelegationRuleRepository : BaseUniqueRepository<RelegationRule>
+interface DivisionShiftRuleRepository : BaseUniqueRepository<DivisionShiftRule>

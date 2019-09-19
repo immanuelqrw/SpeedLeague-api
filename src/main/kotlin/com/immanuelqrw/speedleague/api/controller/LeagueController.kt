@@ -6,7 +6,6 @@ import com.immanuelqrw.speedleague.api.dto.output.League as LeagueOutput
 import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.entity.LeagueSpeedrun
 import com.immanuelqrw.speedleague.api.entity.Tier
-import com.immanuelqrw.speedleague.api.exception.UnbalancedPromotionException
 import com.immanuelqrw.speedleague.api.service.*
 import com.immanuelqrw.speedleague.api.service.seek.LeagueService
 import com.immanuelqrw.speedleague.api.service.seek.LeagueSpeedrunService
@@ -35,10 +34,7 @@ class LeagueController {
     private lateinit var leagueSpeedrunService: LeagueSpeedrunService
 
     @Autowired
-    private lateinit var relegationService: RelegationService
-
-    @Autowired
-    private lateinit var promotionService: PromotionService
+    private lateinit var divisionShiftService: DivisionShiftService
 
     private fun convertToOutput(league: League): LeagueOutput {
         return league.run {
@@ -173,7 +169,7 @@ class LeagueController {
                 convertToOutput(createdLeague)
             }
 
-            seasonService.promoteAndRelegate(allLeagues)
+            seasonService.shiftDivisions(allLeagues)
 
             newLeagues
         }
@@ -195,12 +191,12 @@ class LeagueController {
                 tier = Tier(name = tierName, level = parentLeague.tier.level + 1),
                 runnerLimit = runnerLimit ?: parentLeague.runnerLimit,
                 registrationEndedOn = registrationEndedOn,
-                promotions = transfers
+                promotions = shifts
             )
             val childLeague: League = leagueService.create(league)
 
             // Update Parent league
-            parentLeague.relegations = transfers
+            parentLeague.relegations = shifts
             leagueService.create(parentLeague)
 
             val childQualifierRules: List<QualifierRule> = qualifierRules ?: parentLeague.playoffRules.map { playoffRule ->
@@ -237,25 +233,25 @@ class LeagueController {
 
             if (relegationRules != null && promotionRules != null) {
 
-                val leagueRelegationRule = LeagueRelegationRule(
+                val leagueRelegationRule = LeagueDivisionShiftRule(
                     leagueName = parentLeague.name,
                     season = parentLeague.season,
                     tierLevel = parentLeague.tier.level,
                     tierName = parentLeague.tier.name,
-                    qualifierRules = relegationRules
+                    relegationRules = relegationRules
                 )
 
-                relegationService.addRelegationRules(leagueRelegationRule)
+                divisionShiftService.addRelegationRules(leagueRelegationRule)
 
-                val leaguePromotionRule = LeaguePromotionRule(
+                val leaguePromotionRule = LeagueDivisionShiftRule(
                     leagueName = childLeague.name,
                     season = childLeague.season,
                     tierLevel = childLeague.tier.level,
                     tierName = childLeague.tier.name,
-                    qualifierRules = promotionRules
+                    promotionRules = promotionRules
                 )
 
-                promotionService.addPromotionRules(leaguePromotionRule)
+                divisionShiftService.addPromotionRules(leaguePromotionRule)
             }
 
             copySpeedrunsToNewLeague(parentLeague, childLeague)

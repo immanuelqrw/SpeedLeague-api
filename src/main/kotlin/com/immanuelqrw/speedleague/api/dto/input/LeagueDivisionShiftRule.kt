@@ -1,7 +1,7 @@
 package com.immanuelqrw.speedleague.api.dto.input
 
 
-data class LeagueRelegationRule(
+data class LeagueDivisionShiftRule(
 
     val leagueName: String,
 
@@ -11,6 +11,8 @@ data class LeagueRelegationRule(
 
     val tierName: String,
 
-    val qualifierRules: List<QualifierRule>
+    val promotionRules: List<QualifierRule> = listOf(),
+
+    val relegationRules: List<QualifierRule> = listOf()
 
 )

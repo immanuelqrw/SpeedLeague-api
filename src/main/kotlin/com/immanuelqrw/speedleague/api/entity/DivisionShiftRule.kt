@@ -14,8 +14,8 @@ import javax.persistence.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "RelegationRule", uniqueConstraints = [UniqueConstraint(columnNames = ["leagueId", "order"])])
-data class RelegationRule(
+@Table(name = "DivisionShiftRule", uniqueConstraints = [UniqueConstraint(columnNames = ["leagueId", "shift", "order"])])
+data class DivisionShiftRule(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "qualifier", nullable = false)
@@ -23,6 +23,10 @@ data class RelegationRule(
 
     @Column(name = "count", nullable = false)
     val count: Int,
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "shift", nullable = false)
+    val shift: Shift,
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)

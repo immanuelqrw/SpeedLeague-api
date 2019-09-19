@@ -124,9 +124,10 @@ VALUES
 
 
 INSERT INTO
-  "RelegationRule" (
+  "DivisionShiftRule" (
     "qualifier",
     "count",
+    "shift",
     "leagueId",
     "addedOn",
     "order",
@@ -136,22 +137,8 @@ INSERT INTO
     "id"
   )
 VALUES
-  ('POINTS',1,'6b23b367-99f9-4d8a-9c76-3659976b4e54','2019-09-10T04:26:01.379',1,'2019-09-10T04:26:01.502','2019-09-10T04:26:01.502',NULL,'1e29e7b6-7389-495f-9a6d-924061d4f219');
-
-INSERT INTO
-  "PromotionRule" (
-    "qualifier",
-    "count",
-    "leagueId",
-    "addedOn",
-    "order",
-    "createdOn",
-    "modifiedOn",
-    "removedOn",
-    "id"
-  )
-VALUES
-  ('POINTS',1,'6b23b368-99f9-4d8a-9c76-3659976b4e54','2019-09-10T04:26:01.379',1,'2019-09-10T04:26:01.502','2019-09-10T04:26:01.502',NULL,'1e29e7b7-7389-495f-9a6d-924061d4f219');
+  ('POINTS',1,'RELEGATION','6b23b367-99f9-4d8a-9c76-3659976b4e54','2019-09-10T04:26:01.379',1,'2019-09-10T04:26:01.502','2019-09-10T04:26:01.502',NULL,'1e29e7b6-7389-495f-9a6d-924061d4f219'),
+  ('POINTS',1,'PROMOTION','6b23b368-99f9-4d8a-9c76-3659976b4e54','2019-09-10T04:26:01.379',1,'2019-09-10T04:26:01.502','2019-09-10T04:26:01.502',NULL,'1e29e7b7-7389-495f-9a6d-924061d4f219');
 
 --
 

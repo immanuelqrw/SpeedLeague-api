@@ -88,10 +88,16 @@ data class League(
 
     @JsonBackReference
     @OneToMany(mappedBy = "league", cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
-    var promotionRules: List<PromotionRule> = emptyList()
+    var divisionShiftRules: List<DivisionShiftRule> = emptyList()
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "league", cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
-    var relegationRules: List<RelegationRule> = emptyList()
+    val promotionRules: List<DivisionShiftRule>
+        get() {
+            return divisionShiftRules.filter { divisionShiftRule -> divisionShiftRule.shift == Shift.PROMOTION }
+        }
+
+    val relegationRules: List<DivisionShiftRule>
+        get() {
+            return divisionShiftRules.filter { divisionShiftRule -> divisionShiftRule.shift == Shift.RELEGATION }
+        }
 
 }
