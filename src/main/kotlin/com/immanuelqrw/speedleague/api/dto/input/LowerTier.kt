@@ -27,14 +27,14 @@ data class LowerTier(
 
     val registrationEndedOn: LocalDateTime? = null,
 
-    val promotions: Int = 0,
-
-    val relegations: Int = 0,
-
     val qualifierRules: List<QualifierRule>? = null,
 
-    val pointRules: List<PointRule>? = null
+    val pointRules: List<PointRule>? = null,
 
-    // ! Add promotion and relegation rules
+    val transfers: Int = 0,
+
+    val promotionRules: List<QualifierRule>? = null,
+
+    val relegationRules: List<QualifierRule>? = null
 
 )

@@ -10,7 +10,6 @@ import com.immanuelqrw.speedleague.api.service.seek.LeagueService
 import com.immanuelqrw.speedleague.api.service.seek.PromotionRuleService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import sun.jvm.hotspot.oops.CellTypeState.top
 
 @Service
 class PromotionService {

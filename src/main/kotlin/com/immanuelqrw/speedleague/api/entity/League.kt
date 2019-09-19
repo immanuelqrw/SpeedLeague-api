@@ -64,13 +64,13 @@ data class League(
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
     @Column(name = "registrationEndedOn")
-    val registrationEndedOn: LocalDateTime? = null,
+    var registrationEndedOn: LocalDateTime? = null,
 
     @Column(name = "promotions", nullable = false)
-    val promotions: Int = 0,
+    var promotions: Int = 0,
 
     @Column(name = "relegations", nullable = false)
-    val relegations: Int = 0
+    var relegations: Int = 0
 
 ) : BaseUniqueEntity() {
 

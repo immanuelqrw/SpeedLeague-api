@@ -8,10 +8,10 @@ data class RaceTime(
 
     val runnerName: String,
 
-    var time: Long?,
+    val time: Long?,
 
-    var outcome: Outcome,
+    val outcome: Outcome,
 
-    var placement: Int?
+    val placement: Int?
 
 )
