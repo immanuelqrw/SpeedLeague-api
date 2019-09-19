@@ -126,8 +126,8 @@ class LeagueController {
         return startSeason.run {
             val allLeagues: List<League> = leagueService.findAllTiers(leagueName, season)
             val newLeagues: List<LeagueOutput> = allLeagues.map { oldLeague ->
-                oldLeague.endedOn?.let {
-                    oldLeague.endedOn = LocalDateTime.now()
+                oldLeague.endedOn ?: run {
+                    oldLeague.endedOn = endedOn
                     leagueService.create(oldLeague)
                 }
 

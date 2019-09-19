@@ -15,6 +15,9 @@ data class StartSeason(
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
     val startedOn: LocalDateTime = LocalDateTime.now(),
 
+    @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
+    val endedOn: LocalDateTime = LocalDateTime.now(),
+
     val registrationEndedOn: LocalDateTime? = null,
 
     val qualifierRules: List<QualifierRule>? = null,
