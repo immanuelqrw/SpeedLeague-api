@@ -34,15 +34,6 @@ class RunnerController {
     @Autowired
     private lateinit var leagueRunnerService: LeagueRunnerService
 
-    private fun convertToOutput(runner: Runner): RunnerOutput {
-        return runner.run {
-            RunnerOutput(
-                name = name,
-                joinedOn = joinedOn
-            )
-        }
-    }
-
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody runnerInput: RunnerInput): RunnerOutput {
         return runnerInput.run {
@@ -51,7 +42,7 @@ class RunnerController {
             )
             val createdRunner: Runner = runnerService.create(runner)
 
-            convertToOutput(createdRunner)
+            createdRunner.output
         }
     }
 
@@ -97,7 +88,7 @@ class RunnerController {
         @RequestParam("search")
         search: String?
     ): Iterable<RunnerOutput> {
-        return runnerService.findAll(search = search).map { runner -> convertToOutput(runner) }
+        return runnerService.findAll(search = search).map { runner -> runner.output }
     }
 
     @GetMapping(path = ["/race/{raceName}"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -105,7 +96,7 @@ class RunnerController {
         @PathVariable("raceName")
         raceName: String
     ): List<RunnerOutput> {
-        return raceRunnerService.findAllByRace(raceName).map { convertToOutput(it.runner) }
+        return raceRunnerService.findAllByRace(raceName).map { it.runner.output }
     }
 
     @GetMapping(path = ["/league/{league}/{season}/{tier}"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -117,7 +108,7 @@ class RunnerController {
         @PathVariable("tier")
         tierLevel: Int
     ): List<RunnerOutput> {
-        return leagueRunnerService.findAllByLeague(leagueName, season, tierLevel).map { convertToOutput(it.runner) }
+        return leagueRunnerService.findAllByLeague(leagueName, season, tierLevel).map { it.runner.output }
     }
 
 }

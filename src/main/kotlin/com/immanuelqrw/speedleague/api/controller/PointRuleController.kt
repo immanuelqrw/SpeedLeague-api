@@ -2,7 +2,6 @@ package com.immanuelqrw.speedleague.api.controller
 
 import com.immanuelqrw.speedleague.api.dto.input.LeaguePointRule as LeaguePointRuleInput
 import com.immanuelqrw.speedleague.api.dto.output.PointRule as PointRuleOutput
-import com.immanuelqrw.speedleague.api.entity.PointRule
 import com.immanuelqrw.speedleague.api.service.PointService
 import com.immanuelqrw.speedleague.api.service.seek.PointRuleService
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,24 +18,10 @@ class PointRuleController {
     @Autowired
     private lateinit var pointRuleService: PointRuleService
 
-    private fun convertToOutput(pointRule: PointRule): PointRuleOutput {
-        return pointRule.run {
-            PointRuleOutput(
-                placement = placement,
-                amount = amount,
-                leagueName = league.name,
-                season = league.season,
-                tierLevel = league.tier.level,
-                tierName = league.tier.name,
-                addedOn = addedOn
-            )
-        }
-    }
-
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody leaguePointRuleInput: LeaguePointRuleInput): List<PointRuleOutput> {
         return pointService.addPointRules(leaguePointRuleInput).map { pointRule ->
-            convertToOutput(pointRule)
+            pointRule.output
         }.sortedBy { it.placement }
     }
 
@@ -46,7 +31,7 @@ class PointRuleController {
         search: String?
     ): Iterable<PointRuleOutput> {
         return pointRuleService.findAll(search = search).map { pointRule ->
-            convertToOutput(pointRule)
+            pointRule.output
         }.sortedBy { it.placement }
     }
 
@@ -60,14 +45,14 @@ class PointRuleController {
         tierLevel: Int
     ): List<PointRuleOutput> {
         return pointRuleService.findAllByLeague(leagueName, season, tierLevel).map { pointRule ->
-            convertToOutput(pointRule)
+            pointRule.output
         }.sortedBy { it.placement }
     }
 
     @PutMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun replace(@RequestBody leaguePointRuleInput: LeaguePointRuleInput): List<PointRuleOutput> {
         return pointService.replacePointRules(leaguePointRuleInput).map { pointRule ->
-            convertToOutput(pointRule)
+            pointRule.output
         }.sortedBy { it.placement }
     }
 

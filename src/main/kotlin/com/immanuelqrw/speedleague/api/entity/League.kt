@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import com.immanuelqrw.core.entity.BaseUniqueEntity
 import com.immanuelqrw.core.util.DateTimeFormatter
+import com.immanuelqrw.speedleague.api.dto.output.League as LeagueOutput
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -97,6 +98,25 @@ data class League(
     val relegationRules: List<DivisionShiftRule>
         get() {
             return divisionShiftRules.filter { divisionShiftRule -> divisionShiftRule.shift == Shift.RELEGATION }
+        }
+
+    val output: LeagueOutput
+        get() {
+            return LeagueOutput(
+                name = name,
+                type = type,
+                startedOn = startedOn,
+                endedOn = endedOn,
+                defaultTime = defaultTime,
+                defaultPoints = defaultPoints,
+                season = season,
+                tierLevel = tier.level,
+                tierName = tier.name,
+                runnerLimit = runnerLimit,
+                registrationEndedOn = registrationEndedOn,
+                promotions = promotions,
+                relegations = relegations
+            )
         }
 
 }

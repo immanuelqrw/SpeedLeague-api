@@ -15,15 +15,6 @@ class SystemController {
     @Autowired
     private lateinit var systemService: SystemService
 
-    private fun convertToOutput(system: System): SystemOutput {
-        return system.run {
-            SystemOutput(
-                name = name,
-                isEmulated = isEmulated
-            )
-        }
-    }
-
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody systemInput: SystemInput): SystemOutput {
         return systemInput.run {
@@ -33,7 +24,7 @@ class SystemController {
             )
             val createdSystem: System = systemService.create(system)
 
-            convertToOutput(createdSystem)
+            createdSystem.output
         }
     }
 
@@ -42,7 +33,7 @@ class SystemController {
         @RequestParam("search")
         search: String?
     ): Iterable<SystemOutput> {
-        return systemService.findAll(search = search).map { system -> convertToOutput(system) }
+        return systemService.findAll(search = search).map { system -> system.output }
     }
 
 }

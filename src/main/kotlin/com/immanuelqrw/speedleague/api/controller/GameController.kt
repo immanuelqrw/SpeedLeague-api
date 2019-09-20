@@ -15,15 +15,6 @@ class GameController {
     @Autowired
     private lateinit var gameService: GameService
 
-    private fun convertToOutput(game: Game): GameOutput {
-        return game.run {
-            GameOutput(
-                name = name,
-                shorthand = shorthand
-            )
-        }
-    }
-
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody gameInput: GameInput): GameOutput {
         return gameInput.run {
@@ -33,7 +24,7 @@ class GameController {
             )
             val createdGame: Game = gameService.create(game)
 
-            convertToOutput(createdGame)
+            createdGame.output
         }
     }
 
@@ -42,7 +33,7 @@ class GameController {
         @RequestParam("search")
         search: String?
     ): Iterable<GameOutput> {
-        return gameService.findAll(search = search).map { game -> convertToOutput(game) }
+        return gameService.findAll(search = search).map { game -> game.output }
     }
 
 }

@@ -2,6 +2,7 @@ package com.immanuelqrw.speedleague.api.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.immanuelqrw.core.entity.BaseUniqueEntity
+import com.immanuelqrw.speedleague.api.dto.output.Speedrun as SpeedrunOutput
 import javax.persistence.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,4 +18,18 @@ data class Speedrun(
     @JoinColumn(name = "categoryId", referencedColumnName = "id", nullable = false)
     val category: Category
 
-) : BaseUniqueEntity()
+) : BaseUniqueEntity() {
+
+    val output: SpeedrunOutput
+        get() {
+            return SpeedrunOutput(
+                categoryName = category.name,
+                gameName = cart.game.name,
+                systemName = cart.system.name,
+                isEmulated = cart.system.isEmulated,
+                region = cart.region,
+                version = cart.version
+            )
+        }
+
+}

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import com.immanuelqrw.core.entity.BaseUniqueEntity
 import com.immanuelqrw.core.util.DateTimeFormatter
+import com.immanuelqrw.speedleague.api.dto.output.PointRule as PointRuleOutput
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -35,4 +36,19 @@ data class PointRule(
     @Column(name = "addedOn", nullable = false)
     val addedOn: LocalDateTime = LocalDateTime.now()
 
-) : BaseUniqueEntity()
+) : BaseUniqueEntity() {
+
+    val output: PointRuleOutput
+        get() {
+            return PointRuleOutput(
+                placement = placement,
+                amount = amount,
+                leagueName = league.name,
+                season = league.season,
+                tierLevel = league.tier.level,
+                tierName = league.tier.name,
+                addedOn = addedOn
+            )
+        }
+
+}

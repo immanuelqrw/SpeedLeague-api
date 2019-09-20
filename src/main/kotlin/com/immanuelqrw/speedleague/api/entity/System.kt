@@ -2,6 +2,7 @@ package com.immanuelqrw.speedleague.api.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.immanuelqrw.core.entity.BaseUniqueEntity
+import com.immanuelqrw.speedleague.api.dto.output.System as SystemOutput
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Table
@@ -18,4 +19,14 @@ data class System(
     @Column(name = "isEmulated", nullable = false)
     val isEmulated: Boolean = false
 
-) : BaseUniqueEntity()
+) : BaseUniqueEntity() {
+
+    val output: SystemOutput
+        get() {
+            return SystemOutput(
+                name = name,
+                isEmulated = isEmulated
+            )
+        }
+
+}

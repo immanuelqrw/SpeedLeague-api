@@ -21,23 +21,6 @@ class LeagueSpeedrunController {
     @Autowired
     private lateinit var speedrunService: SpeedrunService
 
-    private fun convertToOutput(leagueSpeedrun: LeagueSpeedrun): LeagueSpeedrunOutput {
-        return leagueSpeedrun.speedrun.cart.run {
-            LeagueSpeedrunOutput(
-                leagueName = leagueSpeedrun.league.name,
-                season = leagueSpeedrun.league.season,
-                tierLevel = leagueSpeedrun.league.tier.level,
-                tierName = leagueSpeedrun.league.tier.name,
-                categoryName = leagueSpeedrun.speedrun.category.name,
-                gameName = leagueSpeedrun.speedrun.cart.game.name,
-                systemName = leagueSpeedrun.speedrun.cart.system.name,
-                isEmulated = leagueSpeedrun.speedrun.cart.system.isEmulated,
-                region = leagueSpeedrun.speedrun.cart.region,
-                version = leagueSpeedrun.speedrun.cart.version
-            )
-        }
-    }
-
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody leagueSpeedrunInput: LeagueSpeedrunInput): LeagueSpeedrunOutput {
         return leagueSpeedrunInput.run {
@@ -50,7 +33,7 @@ class LeagueSpeedrunController {
             )
             val createdLeagueSpeedrun: LeagueSpeedrun = leagueSpeedrunService.create(leagueSpeedrun)
 
-            convertToOutput(createdLeagueSpeedrun)
+            createdLeagueSpeedrun.output
         }
     }
 
@@ -59,7 +42,7 @@ class LeagueSpeedrunController {
         @RequestParam("search")
         search: String?
     ): Iterable<LeagueSpeedrunOutput> {
-        return leagueSpeedrunService.findAll(search = search).map { leagueSpeedrun -> convertToOutput(leagueSpeedrun) }
+        return leagueSpeedrunService.findAll(search = search).map { leagueSpeedrun -> leagueSpeedrun.output }
     }
 
     @GetMapping(path = ["/deepSearch"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -83,7 +66,7 @@ class LeagueSpeedrunController {
     ): Iterable<LeagueSpeedrunOutput> {
         return leagueSpeedrunService
             .findAll(leagueName, leagueType, categoryName, gameName, systemName, isEmulated, region, version)
-            .map { leagueSpeedrun -> convertToOutput(leagueSpeedrun) }
+            .map { leagueSpeedrun -> leagueSpeedrun.output }
     }
 
 }

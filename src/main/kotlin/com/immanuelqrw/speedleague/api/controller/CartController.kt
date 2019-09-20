@@ -26,18 +26,6 @@ class CartController {
     @Autowired
     private lateinit var systemService: SystemService
 
-    private fun convertToOutput(cart: Cart): CartOutput {
-        return cart.run {
-            CartOutput(
-                gameName = cart.game.name,
-                systemName = cart.system.name,
-                isEmulated = cart.system.isEmulated,
-                region = cart.region,
-                version = cart.version
-            )
-        }
-    }
-
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody cartInput: CartInput): CartOutput {
         return cartInput.run {
@@ -52,7 +40,7 @@ class CartController {
             )
             val createdCart: Cart = cartService.create(cart)
 
-            convertToOutput(createdCart)
+            createdCart.output
         }
     }
 
@@ -61,7 +49,7 @@ class CartController {
         @RequestParam("search")
         search: String?
     ): Iterable<CartOutput> {
-        return cartService.findAll(search = search).map { cart -> convertToOutput(cart) }
+        return cartService.findAll(search = search).map { cart -> cart.output }
     }
 
     @GetMapping(path = ["/deepSearch"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -79,7 +67,7 @@ class CartController {
     ): Iterable<CartOutput> {
         return cartService
             .findAll(gameName, systemName, isEmulated, region, version)
-            .map { cart -> convertToOutput(cart) }
+            .map { cart -> cart.output }
     }
 
 }

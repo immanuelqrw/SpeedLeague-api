@@ -20,18 +20,6 @@ class StandingController {
     @Autowired
     private lateinit var playoffService: PlayoffService
 
-    private fun convertToOutput(raceRunner: RaceRunner): RaceTimeOutput {
-        return raceRunner.run {
-            RaceTimeOutput(
-                raceName = race.name,
-                runnerName = runner.name,
-                outcome = outcome,
-                time = time,
-                placement = placement
-            )
-        }
-    }
-
     @GetMapping(path = ["/generate"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun generateStandings(
         @RequestParam("league")
@@ -65,7 +53,7 @@ class StandingController {
         @RequestParam("race")
         raceName: String
     ): List<RaceTimeOutput> {
-        return standingService.calculateRacePlacements(raceName).map { raceRunner -> convertToOutput(raceRunner) }
+        return standingService.calculateRacePlacements(raceName).map { raceRunner -> raceRunner.output }
     }
 
 }

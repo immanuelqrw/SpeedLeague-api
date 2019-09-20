@@ -13,7 +13,6 @@ import com.immanuelqrw.speedleague.api.service.seek.LeagueSpeedrunService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/league")
@@ -36,26 +35,6 @@ class LeagueController {
 
     @Autowired
     private lateinit var divisionShiftService: DivisionShiftService
-
-    private fun convertToOutput(league: League): LeagueOutput {
-        return league.run {
-            LeagueOutput(
-                name = name,
-                type = type,
-                startedOn = startedOn,
-                endedOn = endedOn,
-                defaultTime = defaultTime,
-                defaultPoints = defaultPoints,
-                season = season,
-                tierLevel = tier.level,
-                tierName = tier.name,
-                runnerLimit = runnerLimit,
-                registrationEndedOn = registrationEndedOn,
-                promotions = promotions,
-                relegations = relegations
-            )
-        }
-    }
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody leagueInput: LeagueInput): LeagueOutput {
@@ -96,7 +75,7 @@ class LeagueController {
             )
             pointService.addPointRules(leaguePointRule)
 
-            convertToOutput(createdLeague)
+            createdLeague.output
         }
     }
 
@@ -105,7 +84,7 @@ class LeagueController {
         @RequestParam("search")
         search: String?
     ): Iterable<LeagueOutput> {
-        return leagueService.findAll(search = search).map { league -> convertToOutput(league) }
+        return leagueService.findAll(search = search).map { league -> league.output }
     }
 
     @PostMapping(path = ["/endSeason"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
@@ -117,7 +96,7 @@ class LeagueController {
                 leagueService.create(oldLeague)
             }
 
-            convertToOutput(oldLeague)
+            oldLeague.output
         }
     }
 
@@ -171,7 +150,7 @@ class LeagueController {
 
                 copySpeedrunsToNewLeague(oldLeague, createdLeague)
 
-                convertToOutput(createdLeague)
+                createdLeague.output
             }
 
             seasonService.shiftDivisions(allLeagues)
@@ -261,7 +240,7 @@ class LeagueController {
 
             copySpeedrunsToNewLeague(parentLeague, childLeague)
 
-            convertToOutput(childLeague)
+            childLeague.output
         }
     }
 
@@ -270,7 +249,7 @@ class LeagueController {
 
         val modifiedLeague: League = leagueService.updateDivisionShifts(leagueDivisionShift)
 
-        return convertToOutput(modifiedLeague)
+        return modifiedLeague.output
     }
 
     private fun copySpeedrunsToNewLeague(sourceLeague: League, destinationLeague: League) {

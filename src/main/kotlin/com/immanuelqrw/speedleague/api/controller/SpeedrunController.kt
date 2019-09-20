@@ -21,19 +21,6 @@ class SpeedrunController {
     @Autowired
     private lateinit var categoryService: CategoryService
 
-    private fun convertToOutput(speedrun: Speedrun): SpeedrunOutput {
-        return speedrun.cart.run {
-            SpeedrunOutput(
-                categoryName = speedrun.category.name,
-                gameName = speedrun.cart.game.name,
-                systemName = speedrun.cart.system.name,
-                isEmulated = speedrun.cart.system.isEmulated,
-                region = speedrun.cart.region,
-                version = speedrun.cart.version
-            )
-        }
-    }
-
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody speedrunInput: SpeedrunInput): SpeedrunOutput {
         return speedrunInput.run {
@@ -46,7 +33,7 @@ class SpeedrunController {
             )
             val createdSpeedrun: Speedrun = speedrunService.create(speedrun)
 
-            convertToOutput(createdSpeedrun)
+            createdSpeedrun.output
         }
     }
 
@@ -55,7 +42,7 @@ class SpeedrunController {
         @RequestParam("search")
         search: String?
     ): Iterable<SpeedrunOutput> {
-        return speedrunService.findAll(search = search).map { speedrun -> convertToOutput(speedrun) }
+        return speedrunService.findAll(search = search).map { speedrun -> speedrun.output }
     }
 
     @GetMapping(path = ["/deepSearch"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -75,7 +62,7 @@ class SpeedrunController {
     ): Iterable<SpeedrunOutput> {
         return speedrunService
             .findAll(categoryName, gameName, systemName, isEmulated, region, version)
-            .map { speedrun -> convertToOutput(speedrun) }
+            .map { speedrun -> speedrun.output }
     }
 
 }

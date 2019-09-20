@@ -1,16 +1,8 @@
 package com.immanuelqrw.speedleague.api.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import com.immanuelqrw.core.entity.BaseUniqueEntity
-import com.immanuelqrw.core.util.DateTimeFormatter
-import org.hibernate.annotations.CreationTimestamp
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.format.annotation.DateTimeFormat
-import java.time.LocalDateTime
+import com.immanuelqrw.speedleague.api.dto.output.Cart as CartOutput
 import javax.persistence.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -33,4 +25,17 @@ data class Cart(
     @Column(name = "version", nullable = false)
     val version: String = "ANY"
 
-) : BaseUniqueEntity()
+) : BaseUniqueEntity() {
+
+    val output: CartOutput
+        get() {
+            return CartOutput(
+                gameName = game.name,
+                systemName = system.name,
+                isEmulated = system.isEmulated,
+                region = region,
+                version = version
+            )
+        }
+
+}

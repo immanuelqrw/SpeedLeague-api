@@ -13,10 +13,8 @@ import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerService
 import com.immanuelqrw.speedleague.api.service.seek.RaceService
 import com.immanuelqrw.speedleague.api.service.seek.RunnerService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 @RestController
 @RequestMapping("/raceTime")
@@ -33,19 +31,6 @@ class RaceTimeController {
 
     @Autowired
     private lateinit var runnerService: RunnerService
-
-    // ? Add method to interface for Controllers
-    private fun convertToOutput(raceRunner: RaceRunner): RaceTimeOutput {
-        return raceRunner.run {
-            RaceTimeOutput(
-                raceName = race.name,
-                runnerName = runner.name,
-                time = time,
-                outcome = outcome,
-                placement = placement
-            )
-        }
-    }
 
     private fun validateLeagueRegistration(race: Race, runner: Runner) {
         val raceLeague: League = race.league
@@ -73,7 +58,7 @@ class RaceTimeController {
             )
             val createdRaceRunner: RaceRunner = raceRunnerService.create(raceRunner)
 
-            convertToOutput(createdRaceRunner)
+            createdRaceRunner.output
         }
     }
 
@@ -81,7 +66,7 @@ class RaceTimeController {
     fun registerTime(@RequestBody raceTimeRegister: RaceTimeRegister): RaceTimeOutput {
         val modifiedRaceRunner: RaceRunner = raceRunnerService.registerRaceTime(raceTimeRegister)
 
-        return convertToOutput(modifiedRaceRunner)
+        return modifiedRaceRunner.output
     }
 
 }

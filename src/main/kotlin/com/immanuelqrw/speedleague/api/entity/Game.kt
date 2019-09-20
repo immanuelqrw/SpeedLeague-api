@@ -2,6 +2,7 @@ package com.immanuelqrw.speedleague.api.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.immanuelqrw.core.entity.BaseUniqueEntity
+import com.immanuelqrw.speedleague.api.dto.output.Game as GameOutput
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Table
@@ -17,4 +18,14 @@ data class Game(
     @Column(name = "shorthand", unique = true, nullable = false)
     val shorthand: String
 
-) : BaseUniqueEntity()
+) : BaseUniqueEntity() {
+
+    val output: GameOutput
+        get() {
+            return GameOutput(
+                name = name,
+                shorthand = shorthand
+            )
+        }
+
+}

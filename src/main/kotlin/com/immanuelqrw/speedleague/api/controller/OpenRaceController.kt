@@ -16,26 +16,13 @@ class OpenRaceController {
     @Autowired
     private lateinit var openRaceService: OpenRaceService
 
-    private fun convertToOutput(race: Race): RaceOutput {
-        return race.run {
-            RaceOutput(
-                name = name,
-                leagueName = league.name,
-                season = league.season,
-                tierLevel = league.tier.level,
-                tierName = league.tier.name,
-                startedOn = startedOn
-            )
-        }
-    }
-
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         @RequestParam("startedOn")
         startedOn: LocalDateTime
     ): List<RaceOutput> {
-        return openRaceService.findOpenRaces(startedOn).map { race -> convertToOutput(race) }
+        return openRaceService.findOpenRaces(startedOn).map { race -> race.output }
     }
 
     @GetMapping(path = ["/isRaceCompleted/{race}"], produces = [MediaType.APPLICATION_JSON_VALUE])

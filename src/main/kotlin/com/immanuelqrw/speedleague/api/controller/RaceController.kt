@@ -26,19 +26,6 @@ class RaceController {
     @Autowired
     private lateinit var raceRunnerService: RaceRunnerService
 
-    private fun convertToOutput(race: Race): RaceOutput {
-        return race.run {
-            RaceOutput(
-                name = name,
-                leagueName = league.name,
-                startedOn = startedOn,
-                season = league.season,
-                tierLevel = league.tier.level,
-                tierName = league.tier.name
-            )
-        }
-    }
-
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody raceInput: RaceInput): RaceOutput {
         return raceInput.run {
@@ -59,7 +46,7 @@ class RaceController {
             )
             val createdRace: Race = raceService.create(race)
 
-            convertToOutput(createdRace)
+            createdRace.output
         }
     }
 
@@ -69,7 +56,7 @@ class RaceController {
         search: String?
     ): Iterable<RaceOutput> {
         return raceService.findAll(search = search).map { race ->
-            convertToOutput(race)
+            race.output
         }
     }
 
@@ -79,7 +66,7 @@ class RaceController {
         runnerName: String
     ): List<RaceOutput> {
         return raceRunnerService.findAllByRunner(runnerName).map { raceRunner ->
-            convertToOutput(raceRunner.race)
+            raceRunner.race.output
         }
     }
 

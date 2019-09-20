@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import com.immanuelqrw.core.entity.BaseUniqueEntity
 import com.immanuelqrw.core.util.DateTimeFormatter
+import com.immanuelqrw.speedleague.api.dto.output.Runner as RunnerOutput
 import org.hibernate.annotations.CreationTimestamp
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.format.annotation.DateTimeFormat
@@ -31,4 +32,14 @@ data class Runner(
     @Column(name = "joinedOn", updatable = false, nullable = false)
     val joinedOn: LocalDateTime = LocalDateTime.now()
 
-) : BaseUniqueEntity()
+) : BaseUniqueEntity() {
+
+    val output: RunnerOutput
+        get() {
+            return RunnerOutput(
+                name = name,
+                joinedOn = joinedOn
+            )
+        }
+
+}

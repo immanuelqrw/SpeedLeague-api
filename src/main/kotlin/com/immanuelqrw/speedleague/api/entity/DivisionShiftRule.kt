@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import com.immanuelqrw.core.entity.BaseUniqueEntity
 import com.immanuelqrw.core.util.DateTimeFormatter
+import com.immanuelqrw.speedleague.api.dto.output.DivisionShiftRule as DivisionShiftRuleOutput
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -42,4 +43,21 @@ data class DivisionShiftRule(
     @Column(name = "order", nullable = false)
     val order: Int
 
-) : BaseUniqueEntity()
+) : BaseUniqueEntity() {
+
+    val output: DivisionShiftRuleOutput
+        get() {
+            return DivisionShiftRuleOutput(
+                qualifier = qualifier,
+                count = count,
+                shift = shift,
+                leagueName = league.name,
+                season = league.season,
+                tierLevel = league.tier.level,
+                tierName = league.tier.name,
+                addedOn = addedOn,
+                order = order
+            )
+        }
+
+}
