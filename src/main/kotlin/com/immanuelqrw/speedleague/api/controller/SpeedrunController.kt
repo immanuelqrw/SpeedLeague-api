@@ -1,9 +1,9 @@
 package com.immanuelqrw.speedleague.api.controller
 
-import com.immanuelqrw.speedleague.api.entity.*
+import com.immanuelqrw.speedleague.api.entity.Region
+import com.immanuelqrw.speedleague.api.service.SpeedrunService
 import com.immanuelqrw.speedleague.api.dto.input.Speedrun as SpeedrunInput
 import com.immanuelqrw.speedleague.api.dto.output.Speedrun as SpeedrunOutput
-import com.immanuelqrw.speedleague.api.service.seek.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -15,26 +15,9 @@ class SpeedrunController {
     @Autowired
     private lateinit var speedrunService: SpeedrunService
 
-    @Autowired
-    private lateinit var cartService: CartService
-
-    @Autowired
-    private lateinit var categoryService: CategoryService
-
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody speedrunInput: SpeedrunInput): SpeedrunOutput {
-        return speedrunInput.run {
-            val cart: Cart = cartService.find(gameName, systemName, isEmulated, region, version)
-            val category: Category = categoryService.findByName(categoryName)
-
-            val speedrun = Speedrun(
-                cart = cart,
-                category = category
-            )
-            val createdSpeedrun: Speedrun = speedrunService.create(speedrun)
-
-            createdSpeedrun.output
-        }
+        return speedrunService.create(speedrunInput)
     }
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -42,7 +25,7 @@ class SpeedrunController {
         @RequestParam("search")
         search: String?
     ): Iterable<SpeedrunOutput> {
-        return speedrunService.findAll(search = search).map { speedrun -> speedrun.output }
+        return speedrunService.findAll(search = search)
     }
 
     @GetMapping(path = ["/deepSearch"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -62,7 +45,6 @@ class SpeedrunController {
     ): Iterable<SpeedrunOutput> {
         return speedrunService
             .findAll(categoryName, gameName, systemName, isEmulated, region, version)
-            .map { speedrun -> speedrun.output }
     }
 
 }

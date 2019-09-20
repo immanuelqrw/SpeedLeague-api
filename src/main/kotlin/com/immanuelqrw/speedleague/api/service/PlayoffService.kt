@@ -1,13 +1,14 @@
 package com.immanuelqrw.speedleague.api.service
 
-import com.immanuelqrw.speedleague.api.dto.input.LeaguePlayoffRule
+import com.immanuelqrw.speedleague.api.dto.input.LeaguePlayoffRule as LeaguePlayoffRuleInput
+import com.immanuelqrw.speedleague.api.dto.output.PlayoffRule as PlayoffRuleOutput
 import com.immanuelqrw.speedleague.api.dto.output.QualifiedRunner
 import com.immanuelqrw.speedleague.api.dto.output.Standing
 import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.entity.PlayoffRule
 import com.immanuelqrw.speedleague.api.entity.Qualifier
-import com.immanuelqrw.speedleague.api.service.seek.LeagueService
-import com.immanuelqrw.speedleague.api.service.seek.PlayoffRuleService
+import com.immanuelqrw.speedleague.api.service.seek.LeagueSeekService
+import com.immanuelqrw.speedleague.api.service.seek.PlayoffRuleSeekService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -15,12 +16,12 @@ import org.springframework.stereotype.Service
 class PlayoffService {
     
     @Autowired
-    private lateinit var leagueService: LeagueService
+    private lateinit var leagueSeekService: LeagueSeekService
 
     @Autowired
-    private lateinit var playoffRuleService: PlayoffRuleService
+    private lateinit var playoffRuleSeekService: PlayoffRuleSeekService
 
-    private fun attachPlayoffRules(league: League, leagueRule: LeaguePlayoffRule): List<PlayoffRule> {
+    private fun attachRules(league: League, leagueRule: LeaguePlayoffRuleInput): List<PlayoffRule> {
         return leagueRule.qualifierRules.mapIndexed { index, qualifierRule ->
             val playoffRule = PlayoffRule(
                 qualifier = qualifierRule.qualifier,
@@ -29,25 +30,25 @@ class PlayoffService {
                 order = index + 1
             )
 
-            playoffRuleService.create(playoffRule)
+            playoffRuleSeekService.create(playoffRule)
         }
     }
 
-    fun addPlayoffRules(leagueRule: LeaguePlayoffRule): List<PlayoffRule> {
+    fun addRules(leagueRule: LeaguePlayoffRuleInput): List<PlayoffRule> {
         return leagueRule.run {
-            val league: League = leagueService.find(leagueName, season, tierLevel)
+            val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
-            attachPlayoffRules(league, leagueRule)
+            attachRules(league, leagueRule)
         }
     }
 
-    fun replacePlayoffRules(leagueRule: LeaguePlayoffRule): List<PlayoffRule> {
+    private fun replaceRules(leagueRule: LeaguePlayoffRuleInput): List<PlayoffRule> {
         return leagueRule.run {
-            val league: League = leagueService.find(leagueName, season, tierLevel)
+            val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
-            playoffRuleService.deleteAll(league.playoffRules)
+            playoffRuleSeekService.deleteAll(league.playoffRules)
 
-            attachPlayoffRules(league, leagueRule)
+            attachRules(league, leagueRule)
         }
     }
 
@@ -63,7 +64,7 @@ class PlayoffService {
     fun matchQualifiedRunners(leagueName: String, season: Int, tierLevel: Int, top: Int, standings: List<Standing>): List<QualifiedRunner> {
         val topRunners: MutableMap<Qualifier, List<QualifiedRunner>> = findTopRunners(top, standings)
 
-        val league: League = leagueService.find(leagueName, season, tierLevel)
+        val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
         val qualifiedRunners: LinkedHashSet<QualifiedRunner> = linkedSetOf()
 
@@ -84,6 +85,30 @@ class PlayoffService {
 
         return qualifiedRunners.take(top)
 
+    }
+
+    fun create(leaguePlayoffRuleInput: LeaguePlayoffRuleInput): List<PlayoffRuleOutput> {
+        return addRules(leaguePlayoffRuleInput).map { playoffRule ->
+            playoffRule.output
+        }.sortedBy { it.order }
+    }
+
+    fun findAll(search: String?): Iterable<PlayoffRuleOutput> {
+        return playoffRuleSeekService.findAll(search = search).map { playoffRule ->
+            playoffRule.output
+        }.sortedBy { it.order }
+    }
+
+    fun findAll(leagueName: String, season: Int, tierLevel: Int): List<PlayoffRuleOutput> {
+        return playoffRuleSeekService.findAllByLeague(leagueName, season, tierLevel).map { playoffRule ->
+            playoffRule.output
+        }.sortedBy { it.order }
+    }
+
+    fun replace(leaguePlayoffRuleInput: LeaguePlayoffRuleInput): List<PlayoffRuleOutput> {
+        return replaceRules(leaguePlayoffRuleInput).map { playoffRule ->
+            playoffRule.output
+        }.sortedBy { it.order }
     }
 
 }

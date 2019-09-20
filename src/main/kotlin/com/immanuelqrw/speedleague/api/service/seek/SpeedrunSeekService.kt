@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import javax.persistence.EntityNotFoundException
 
 @Service
-class SpeedrunService : BaseUniqueService<Speedrun>(Speedrun::class.java) {
+class SpeedrunSeekService : BaseUniqueService<Speedrun>(Speedrun::class.java) {
 
     fun findAllByGame(gameName: String): List<Speedrun> {
         return findAll().filter { speedrun ->

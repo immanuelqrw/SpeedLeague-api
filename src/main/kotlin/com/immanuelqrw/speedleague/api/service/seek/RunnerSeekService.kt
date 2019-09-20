@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 import javax.persistence.EntityNotFoundException
 
 @Service
-class RunnerService : BaseUniqueService<Runner>(Runner::class.java) {
+class RunnerSeekService : BaseUniqueService<Runner>(Runner::class.java) {
 
     fun findByName(name: String): Runner {
         return findAll(search = "name:$name").firstOrNull() ?: throw EntityNotFoundException()

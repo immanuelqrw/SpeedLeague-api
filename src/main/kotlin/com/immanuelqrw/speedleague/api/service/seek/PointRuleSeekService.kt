@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class PointRuleService : BaseUniqueService<PointRule>(PointRule::class.java) {
+class PointRuleSeekService : BaseUniqueService<PointRule>(PointRule::class.java) {
 
     @Autowired
     private lateinit var pointRuleRepository: PointRuleRepository

@@ -1,13 +1,11 @@
 package com.immanuelqrw.speedleague.api.service
 
-import com.immanuelqrw.speedleague.api.dto.input.LeaguePointRule
-import com.immanuelqrw.speedleague.api.dto.output.QualifiedRunner
-import com.immanuelqrw.speedleague.api.dto.output.Standing
+import com.immanuelqrw.speedleague.api.dto.input.LeaguePointRule as LeaguePointRuleInput
+import com.immanuelqrw.speedleague.api.dto.output.PointRule as PointRuleOutput
 import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.entity.PointRule
-import com.immanuelqrw.speedleague.api.entity.Qualifier
-import com.immanuelqrw.speedleague.api.service.seek.LeagueService
-import com.immanuelqrw.speedleague.api.service.seek.PointRuleService
+import com.immanuelqrw.speedleague.api.service.seek.LeagueSeekService
+import com.immanuelqrw.speedleague.api.service.seek.PointRuleSeekService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -15,12 +13,12 @@ import org.springframework.stereotype.Service
 class PointService {
     
     @Autowired
-    private lateinit var leagueService: LeagueService
+    private lateinit var leagueSeekService: LeagueSeekService
 
     @Autowired
-    private lateinit var pointRuleService: PointRuleService
+    private lateinit var pointRuleSeekService: PointRuleSeekService
 
-    private fun attachPointRules(league: League, leagueRule: LeaguePointRule): List<PointRule> {
+    private fun attachRules(league: League, leagueRule: LeaguePointRuleInput): List<PointRule> {
         return leagueRule.pointRules.map {
             val pointRule = PointRule(
                 placement = it.placement,
@@ -28,28 +26,52 @@ class PointService {
                 league = league
             )
 
-            pointRuleService.create(pointRule)
+            pointRuleSeekService.create(pointRule)
         }
     }
 
-    fun addPointRules(leagueRule: LeaguePointRule): List<PointRule> {
+    fun addRules(leagueRule: LeaguePointRuleInput): List<PointRule> {
         return leagueRule.run {
-            val league: League = leagueService.find(leagueName, season, tierLevel)
+            val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
-            attachPointRules(league, leagueRule)
+            attachRules(league, leagueRule)
         }
 
     }
 
-    fun replacePointRules(leagueRule: LeaguePointRule): List<PointRule> {
+    private fun replaceRules(leagueRule: LeaguePointRuleInput): List<PointRule> {
         return leagueRule.run {
-            val league: League = leagueService.find(leagueName, season, tierLevel)
+            val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
-            pointRuleService.deleteAll(league.pointRules)
+            pointRuleSeekService.deleteAll(league.pointRules)
 
-            attachPointRules(league, leagueRule)
+            attachRules(league, leagueRule)
         }
 
+    }
+
+    fun create(leaguePointRuleInput: LeaguePointRuleInput): List<PointRuleOutput> {
+        return addRules(leaguePointRuleInput).map { pointRule ->
+            pointRule.output
+        }.sortedBy { it.placement }
+    }
+
+    fun findAll(search: String?): Iterable<PointRuleOutput> {
+        return pointRuleSeekService.findAll(search = search).map { pointRule ->
+            pointRule.output
+        }.sortedBy { it.placement }
+    }
+
+    fun findAll(leagueName: String, season: Int, tierLevel: Int): List<PointRuleOutput> {
+        return pointRuleSeekService.findAllByLeague(leagueName, season, tierLevel).map { pointRule ->
+            pointRule.output
+        }.sortedBy { it.placement }
+    }
+
+    fun replace(leaguePointRuleInput: LeaguePointRuleInput): List<PointRuleOutput> {
+        return replaceRules(leaguePointRuleInput).map { pointRule ->
+            pointRule.output
+        }.sortedBy { it.placement }
     }
 
 }

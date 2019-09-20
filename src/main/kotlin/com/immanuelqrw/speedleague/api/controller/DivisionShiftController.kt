@@ -1,10 +1,8 @@
 package com.immanuelqrw.speedleague.api.controller
 
-import com.immanuelqrw.speedleague.api.entity.DivisionShiftRule
 import com.immanuelqrw.speedleague.api.dto.input.LeagueDivisionShiftRule as LeagueDivisionShiftRuleInput
 import com.immanuelqrw.speedleague.api.dto.output.DivisionShiftRule as DivisionShiftRuleOutput
 import com.immanuelqrw.speedleague.api.service.DivisionShiftService
-import com.immanuelqrw.speedleague.api.service.seek.DivisionShiftRuleService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -16,14 +14,9 @@ class DivisionShiftController {
     @Autowired
     private lateinit var divisionShiftService: DivisionShiftService
 
-    @Autowired
-    private lateinit var divisionShiftRuleService: DivisionShiftRuleService
-
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody leagueDivisionShiftRuleInput: LeagueDivisionShiftRuleInput): List<DivisionShiftRuleOutput> {
-        return divisionShiftService.addDivisionShiftRules(leagueDivisionShiftRuleInput).map { divisionShiftRule ->
-            divisionShiftRule.output
-        }.sortedBy { it.order }
+        return divisionShiftService.create(leagueDivisionShiftRuleInput)
     }
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -31,9 +24,7 @@ class DivisionShiftController {
         @RequestParam("search")
         search: String?
     ): Iterable<DivisionShiftRuleOutput> {
-        return divisionShiftRuleService.findAll(search = search).map { divisionShiftRule ->
-            divisionShiftRule.output
-        }.sortedBy { it.order }
+        return divisionShiftService.findAll(search = search)
     }
 
     @GetMapping(path = ["/divisionShift/{league}/{season}/{tier}"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -45,23 +36,17 @@ class DivisionShiftController {
         @PathVariable("tier")
         tierLevel: Int
     ): List<DivisionShiftRuleOutput> {
-        return divisionShiftRuleService.findAllByLeague(leagueName, season, tierLevel).map { divisionShiftRule ->
-            divisionShiftRule.output
-        }.sortedBy { it.order }
+        return divisionShiftService.findAll(leagueName, season, tierLevel)
     }
 
     @PutMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun replace(@RequestBody leagueDivisionShiftRuleInput: LeagueDivisionShiftRuleInput): List<DivisionShiftRuleOutput> {
-        return divisionShiftService.replaceDivisionShiftRules(leagueDivisionShiftRuleInput).map { divisionShiftRule ->
-            divisionShiftRule.output
-        }.sortedBy { it.order }
+        return divisionShiftService.replace(leagueDivisionShiftRuleInput)
     }
 
     @PostMapping(path = ["/promotion"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun createPromotionRules(@RequestBody leagueDivisionShiftRuleInput: LeagueDivisionShiftRuleInput): List<DivisionShiftRuleOutput> {
-        return divisionShiftService.addDivisionShiftRules(leagueDivisionShiftRuleInput).map { promotionRule ->
-            promotionRule.output
-        }.sortedBy { it.order }
+        return divisionShiftService.createPromotionRules(leagueDivisionShiftRuleInput)
     }
 
     @GetMapping(path = ["/promotion/{league}/{season}/{tier}"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -73,23 +58,17 @@ class DivisionShiftController {
         @PathVariable("tier")
         tierLevel: Int
     ): List<DivisionShiftRuleOutput> {
-        return divisionShiftRuleService.findAllPromotionByLeague(leagueName, season, tierLevel).map { promotionRule ->
-            promotionRule.output
-        }.sortedBy { it.order }
+        return divisionShiftService.findAllPromotionRules(leagueName, season, tierLevel)
     }
 
     @PutMapping(path = ["/promotion"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun replacePromotionRules(@RequestBody leagueDivisionShiftRuleInput: LeagueDivisionShiftRuleInput): List<DivisionShiftRuleOutput> {
-        return divisionShiftService.replacePromotionRules(leagueDivisionShiftRuleInput).map { promotionRule ->
-            promotionRule.output
-        }.sortedBy { it.order }
+        return divisionShiftService.replacePromotionRules(leagueDivisionShiftRuleInput)
     }
 
     @PostMapping(path = ["/relegation"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun createRelegationRules(@RequestBody leagueDivisionShiftRuleInput: LeagueDivisionShiftRuleInput): List<DivisionShiftRuleOutput> {
-        return divisionShiftService.addDivisionShiftRules(leagueDivisionShiftRuleInput).map { relegationRule ->
-            relegationRule.output
-        }.sortedBy { it.order }
+        return divisionShiftService.createRelegationRules(leagueDivisionShiftRuleInput)
     }
 
     @GetMapping(path = ["/relegation/{league}/{season}/{tier}"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -101,16 +80,12 @@ class DivisionShiftController {
         @PathVariable("tier")
         tierLevel: Int
     ): List<DivisionShiftRuleOutput> {
-        return divisionShiftRuleService.findAllRelegationByLeague(leagueName, season, tierLevel).map { relegationRule ->
-            relegationRule.output
-        }.sortedBy { it.order }
+        return divisionShiftService.findAllRelegationRules(leagueName, season, tierLevel)
     }
 
     @PutMapping(path = ["/relegation"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun replaceRelegationRules(@RequestBody leagueDivisionShiftRuleInput: LeagueDivisionShiftRuleInput): List<DivisionShiftRuleOutput> {
-        return divisionShiftService.replaceRelegationRules(leagueDivisionShiftRuleInput).map { relegationRule ->
-            relegationRule.output
-        }.sortedBy { it.order }
+        return divisionShiftService.replaceRelegationRules(leagueDivisionShiftRuleInput)
     }
 
 }

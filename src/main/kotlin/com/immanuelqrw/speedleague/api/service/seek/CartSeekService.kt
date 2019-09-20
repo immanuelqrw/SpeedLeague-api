@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import javax.persistence.EntityNotFoundException
 
 @Service
-class CartService : BaseUniqueService<Cart>(Cart::class.java) {
+class CartSeekService : BaseUniqueService<Cart>(Cart::class.java) {
 
     fun findAllByGame(gameName: String): List<Cart> {
         return findAll().filter { cart ->

@@ -1,9 +1,9 @@
 package com.immanuelqrw.speedleague.api.service
 
+import com.immanuelqrw.speedleague.api.dto.output.Race as RaceOutput
 import com.immanuelqrw.speedleague.api.entity.Outcome
-import com.immanuelqrw.speedleague.api.entity.Race
 import com.immanuelqrw.speedleague.api.entity.RaceRunner
-import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerService
+import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerSeekService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -12,20 +12,20 @@ import java.time.LocalDateTime
 class OpenRaceService {
 
     @Autowired
-    private lateinit var raceRunnerService: RaceRunnerService
+    private lateinit var raceRunnerSeekService: RaceRunnerSeekService
 
-    fun findOpenRaces(startedOn: LocalDateTime): List<Race> {
-        val raceRunners: Iterable<RaceRunner> = raceRunnerService.findAll().filter { raceRunner ->
+    fun findOpenRaces(startedOn: LocalDateTime): List<RaceOutput> {
+        val raceRunners: Iterable<RaceRunner> = raceRunnerSeekService.findAll().filter { raceRunner ->
             raceRunner.race.startedOn > startedOn
         }
 
         return raceRunners
             .filter { raceRunner -> isRaceOpen(raceRunner.race.name) }
-            .map { raceRunner -> raceRunner.race }
+            .map { raceRunner -> raceRunner.race.output }
     }
 
     fun isRaceOpen(raceName: String): Boolean {
-        val raceRunners: List<RaceRunner> = raceRunnerService.findAllByRace(raceName)
+        val raceRunners: List<RaceRunner> = raceRunnerSeekService.findAllByRace(raceName)
 
         return raceRunners.all { raceRunner ->
             raceRunner.outcome != Outcome.PENDING_VERIFICATION

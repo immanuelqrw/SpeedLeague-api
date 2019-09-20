@@ -1,26 +1,29 @@
 package com.immanuelqrw.speedleague.api.service
 
-import com.immanuelqrw.speedleague.api.dto.input.LeagueDivisionShiftRule
+import com.immanuelqrw.speedleague.api.dto.input.LeagueDivisionShiftRule as LeagueDivisionShiftRuleInput
 import com.immanuelqrw.speedleague.api.dto.input.QualifierRule
+import com.immanuelqrw.speedleague.api.dto.output.DivisionShiftRule as DivisionShiftRuleOutput
 import com.immanuelqrw.speedleague.api.dto.output.QualifiedRunner
 import com.immanuelqrw.speedleague.api.dto.output.Standing
 import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.entity.DivisionShiftRule
 import com.immanuelqrw.speedleague.api.entity.Qualifier
 import com.immanuelqrw.speedleague.api.entity.Shift
-import com.immanuelqrw.speedleague.api.service.seek.LeagueService
-import com.immanuelqrw.speedleague.api.service.seek.DivisionShiftRuleService
+import com.immanuelqrw.speedleague.api.service.seek.LeagueSeekService
+import com.immanuelqrw.speedleague.api.service.seek.DivisionShiftRuleSeekService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
+import org.springframework.web.bind.annotation.*
 
 @Service
 class DivisionShiftService {
     
     @Autowired
-    private lateinit var leagueService: LeagueService
+    private lateinit var leagueSeekService: LeagueSeekService
 
     @Autowired
-    private lateinit var divisionShiftRuleService: DivisionShiftRuleService
+    private lateinit var divisionShiftRuleSeekService: DivisionShiftRuleSeekService
 
     private fun attachDivisionShiftRules(league: League, qualifierRules: List<QualifierRule>, shift: Shift): List<DivisionShiftRule> {
         return qualifierRules.mapIndexed { index, qualifierRule ->
@@ -32,66 +35,66 @@ class DivisionShiftService {
                 order = index + 1
             )
 
-            divisionShiftRuleService.create(divisionShiftRule)
+            divisionShiftRuleSeekService.create(divisionShiftRule)
         }
     }
 
-    private fun attachDivisionShiftRules(league: League, leagueRule: LeagueDivisionShiftRule): List<DivisionShiftRule> {
+    private fun attachDivisionShiftRules(league: League, leagueRule: LeagueDivisionShiftRuleInput): List<DivisionShiftRule> {
         val promotionRules: List<DivisionShiftRule> = attachDivisionShiftRules(league, leagueRule.promotionRules, Shift.PROMOTION)
         val relegationRules: List<DivisionShiftRule> = attachDivisionShiftRules(league, leagueRule.relegationRules, Shift.RELEGATION)
 
         return promotionRules.union(relegationRules).toList()
     }
 
-    fun addDivisionShiftRules(leagueRule: LeagueDivisionShiftRule): List<DivisionShiftRule> {
+    fun addDivisionShiftRules(leagueRule: LeagueDivisionShiftRuleInput): List<DivisionShiftRule> {
         return leagueRule.run {
-            val league: League = leagueService.find(leagueName, season, tierLevel)
+            val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
             attachDivisionShiftRules(league, leagueRule)
         }
     }
 
-    fun addPromotionRules(leagueRule: LeagueDivisionShiftRule): List<DivisionShiftRule> {
+    fun addPromotionRules(leagueRule: LeagueDivisionShiftRuleInput): List<DivisionShiftRule> {
         return leagueRule.run {
-            val league: League = leagueService.find(leagueName, season, tierLevel)
+            val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
             attachDivisionShiftRules(league, leagueRule.promotionRules, Shift.PROMOTION)
         }
     }
 
-    fun addRelegationRules(leagueRule: LeagueDivisionShiftRule): List<DivisionShiftRule> {
+    fun addRelegationRules(leagueRule: LeagueDivisionShiftRuleInput): List<DivisionShiftRule> {
         return leagueRule.run {
-            val league: League = leagueService.find(leagueName, season, tierLevel)
+            val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
             attachDivisionShiftRules(league, leagueRule.relegationRules, Shift.RELEGATION)
         }
     }
 
-    fun replaceDivisionShiftRules(leagueRule: LeagueDivisionShiftRule): List<DivisionShiftRule> {
+    private fun substituteDivisionShiftRules(leagueRule: LeagueDivisionShiftRuleInput): List<DivisionShiftRule> {
         return leagueRule.run {
-            val league: League = leagueService.find(leagueName, season, tierLevel)
+            val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
-            divisionShiftRuleService.deleteAll(league.divisionShiftRules)
+            divisionShiftRuleSeekService.deleteAll(league.divisionShiftRules)
 
             attachDivisionShiftRules(league, leagueRule)
         }
     }
 
-    fun replacePromotionRules(leagueRule: LeagueDivisionShiftRule): List<DivisionShiftRule> {
+    private fun substitutePromotionRules(leagueRule: LeagueDivisionShiftRuleInput): List<DivisionShiftRule> {
         return leagueRule.run {
-            val league: League = leagueService.find(leagueName, season, tierLevel)
+            val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
-            divisionShiftRuleService.deleteAll(league.promotionRules)
+            divisionShiftRuleSeekService.deleteAll(league.promotionRules)
 
             attachDivisionShiftRules(league, leagueRule.promotionRules, Shift.PROMOTION)
         }
     }
 
-    fun replaceRelegationRules(leagueRule: LeagueDivisionShiftRule): List<DivisionShiftRule> {
+    private fun substituteRelegationRules(leagueRule: LeagueDivisionShiftRuleInput): List<DivisionShiftRule> {
         return leagueRule.run {
-            val league: League = leagueService.find(leagueName, season, tierLevel)
+            val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
-            divisionShiftRuleService.deleteAll(league.relegationRules)
+            divisionShiftRuleSeekService.deleteAll(league.relegationRules)
 
             attachDivisionShiftRules(league, leagueRule.relegationRules, Shift.RELEGATION)
         }
@@ -119,7 +122,7 @@ class DivisionShiftService {
     }
 
     fun matchQualifiedRunners(leagueName: String, season: Int, tierLevel: Int, standings: List<Standing>, shift: Shift): List<QualifiedRunner> {
-        val league: League = leagueService.find(leagueName, season, tierLevel)
+        val league: League = leagueSeekService.find(leagueName, season, tierLevel)
         val qualifiedRunners: LinkedHashSet<QualifiedRunner> = linkedSetOf()
 
         val top: Int = when(shift) {
@@ -148,6 +151,67 @@ class DivisionShiftService {
 
         return qualifiedRunners.take(top)
 
+    }
+
+    fun create(leagueDivisionShiftRuleInput: LeagueDivisionShiftRuleInput): List<DivisionShiftRuleOutput> {
+        return addDivisionShiftRules(leagueDivisionShiftRuleInput).map { divisionShiftRule ->
+            divisionShiftRule.output
+        }.sortedBy { it.order }
+    }
+
+    fun findAll(search: String?): Iterable<DivisionShiftRuleOutput> {
+        return divisionShiftRuleSeekService.findAll(search = search).map { divisionShiftRule ->
+            divisionShiftRule.output
+        }.sortedBy { it.order }
+    }
+
+    fun findAll(leagueName: String, season: Int, tierLevel: Int): List<DivisionShiftRuleOutput> {
+        return divisionShiftRuleSeekService.findAllByLeague(leagueName, season, tierLevel).map { divisionShiftRule ->
+            divisionShiftRule.output
+        }.sortedBy { it.order }
+    }
+
+    @PutMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    fun replace(@RequestBody leagueDivisionShiftRuleInput: LeagueDivisionShiftRuleInput): List<DivisionShiftRuleOutput> {
+        return substituteDivisionShiftRules(leagueDivisionShiftRuleInput).map { divisionShiftRule ->
+            divisionShiftRule.output
+        }.sortedBy { it.order }
+    }
+
+    fun createPromotionRules(leagueDivisionShiftRuleInput: LeagueDivisionShiftRuleInput): List<DivisionShiftRuleOutput> {
+        return addPromotionRules(leagueDivisionShiftRuleInput).map { promotionRule ->
+            promotionRule.output
+        }.sortedBy { it.order }
+    }
+
+    fun findAllPromotionRules(leagueName: String, season: Int, tierLevel: Int): List<DivisionShiftRuleOutput> {
+        return divisionShiftRuleSeekService.findAllPromotionByLeague(leagueName, season, tierLevel).map { promotionRule ->
+            promotionRule.output
+        }.sortedBy { it.order }
+    }
+
+    fun replacePromotionRules(leagueDivisionShiftRuleInput: LeagueDivisionShiftRuleInput): List<DivisionShiftRuleOutput> {
+        return substitutePromotionRules(leagueDivisionShiftRuleInput).map { promotionRule ->
+            promotionRule.output
+        }.sortedBy { it.order }
+    }
+
+    fun createRelegationRules(leagueDivisionShiftRuleInput: LeagueDivisionShiftRuleInput): List<DivisionShiftRuleOutput> {
+        return addRelegationRules(leagueDivisionShiftRuleInput).map { relegationRule ->
+            relegationRule.output
+        }.sortedBy { it.order }
+    }
+
+    fun findAllRelegationRules(leagueName: String, season: Int, tierLevel: Int): List<DivisionShiftRuleOutput> {
+        return divisionShiftRuleSeekService.findAllRelegationByLeague(leagueName, season, tierLevel).map { relegationRule ->
+            relegationRule.output
+        }.sortedBy { it.order }
+    }
+
+    fun replaceRelegationRules(leagueDivisionShiftRuleInput: LeagueDivisionShiftRuleInput): List<DivisionShiftRuleOutput> {
+        return substituteRelegationRules(leagueDivisionShiftRuleInput).map { relegationRule ->
+            relegationRule.output
+        }.sortedBy { it.order }
     }
 
 }

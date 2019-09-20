@@ -1,23 +1,27 @@
 package com.immanuelqrw.speedleague.api.service
 
+import com.immanuelqrw.speedleague.api.dto.output.QualifiedRunner
 import com.immanuelqrw.speedleague.api.dto.output.Standing
+import com.immanuelqrw.speedleague.api.dto.output.RaceTime as RaceTimeOutput
+import com.immanuelqrw.speedleague.api.dto.output.Standing as StandingOutput
 import com.immanuelqrw.speedleague.api.entity.*
 import com.immanuelqrw.speedleague.api.exception.RaceUnfinishedException
-import com.immanuelqrw.speedleague.api.repository.RaceRunnerRepository
-import com.immanuelqrw.speedleague.api.service.seek.LeagueService
-import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerService
+import com.immanuelqrw.speedleague.api.service.seek.LeagueSeekService
+import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerSeekService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class StandingService {
-    
-    @Autowired
-    private lateinit var leagueService: LeagueService
 
     @Autowired
-    private lateinit var raceRunnerService: RaceRunnerService
+    private lateinit var playoffService: PlayoffService
+    
+    @Autowired
+    private lateinit var leagueSeekService: LeagueSeekService
+
+    @Autowired
+    private lateinit var raceRunnerSeekService: RaceRunnerSeekService
 
     private fun racePoints(pointRules: Set<PointRule>): Map<Int, Int> {
         return pointRules.map { pointRule ->
@@ -26,11 +30,11 @@ class StandingService {
     }
 
     fun calculateStandings(leagueName: String, season: Int, tierLevel: Int): List<Standing> {
-        val league: League = leagueService.find(leagueName, season, tierLevel)
+        val league: League = leagueSeekService.find(leagueName, season, tierLevel)
         val races: Set<Race> = league.races
 
         val raceRunners: List<RaceRunner> = races.map { race: Race ->
-            raceRunnerService.findAllByRace(race.name)
+            raceRunnerSeekService.findAllByRace(race.name)
         }.flatten()
 
         val raceResults: Map<String, List<RaceRunner>> = raceRunners.groupBy { it.runner.name }
@@ -63,8 +67,8 @@ class StandingService {
         return standings.sortedBy { standing -> standing.points }
     }
 
-    fun calculateRacePlacements(raceName: String): List<RaceRunner> {
-        val raceRunners: List<RaceRunner> = raceRunnerService.findAllByRace(raceName)
+    private fun calculateRacePlacements(raceName: String): List<RaceRunner> {
+        val raceRunners: List<RaceRunner> = raceRunnerSeekService.findAllByRace(raceName)
 
         raceRunners.forEach { raceRunner ->
             if (raceRunner.outcome == Outcome.PENDING_VERIFICATION) {
@@ -87,12 +91,25 @@ class StandingService {
 
             raceRunners.forEach { raceRunner ->
                 raceRunner.placement = placement
-                raceRunnerService.create(raceRunner)
+                raceRunnerSeekService.create(raceRunner)
             }
             placement += raceRunners.size
         }
 
         return results.values.flatten()
+    }
+
+    fun generateStandings(leagueName: String, season: Int, tierLevel: Int): Iterable<StandingOutput> {
+        return calculateStandings(leagueName, season, tierLevel)
+    }
+
+    fun findQualifiedRunners(leagueName: String, season: Int, tierLevel: Int, top: Int): Iterable<QualifiedRunner> {
+        val standings: List<StandingOutput> = calculateStandings(leagueName, season, tierLevel)
+        return playoffService.matchQualifiedRunners(leagueName, season, tierLevel, top, standings)
+    }
+
+    fun calculatePlacements(raceName: String): List<RaceTimeOutput> {
+        return calculateRacePlacements(raceName).map { raceRunner -> raceRunner.output }
     }
 
 }

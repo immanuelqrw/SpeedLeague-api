@@ -8,8 +8,8 @@ import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.entity.LeagueSpeedrun
 import com.immanuelqrw.speedleague.api.entity.Tier
 import com.immanuelqrw.speedleague.api.service.*
-import com.immanuelqrw.speedleague.api.service.seek.LeagueService
-import com.immanuelqrw.speedleague.api.service.seek.LeagueSpeedrunService
+import com.immanuelqrw.speedleague.api.service.seek.LeagueSeekService
+import com.immanuelqrw.speedleague.api.service.seek.LeagueSpeedrunSeekService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
 class LeagueController {
 
     @Autowired
-    private lateinit var leagueService: LeagueService
+    private lateinit var leagueSeekService: LeagueSeekService
 
     @Autowired
     private lateinit var playoffService: PlayoffService
@@ -31,7 +31,7 @@ class LeagueController {
     private lateinit var seasonService: SeasonService
 
     @Autowired
-    private lateinit var leagueSpeedrunService: LeagueSpeedrunService
+    private lateinit var leagueSpeedrunSeekService: LeagueSpeedrunSeekService
 
     @Autowired
     private lateinit var divisionShiftService: DivisionShiftService
@@ -54,7 +54,7 @@ class LeagueController {
                 promotions = promotions,
                 relegations = relegations
             )
-            val createdLeague: League = leagueService.create(league)
+            val createdLeague: League = leagueSeekService.create(league)
 
             val leaguePlayoffRule = LeaguePlayoffRule(
                 leagueName = name,
@@ -64,7 +64,7 @@ class LeagueController {
                 qualifierRules = qualifierRules
             )
 
-            playoffService.addPlayoffRules(leaguePlayoffRule)
+            playoffService.addRules(leaguePlayoffRule)
 
             val leaguePointRule = LeaguePointRule(
                 leagueName = name,
@@ -73,7 +73,7 @@ class LeagueController {
                 tierName = tierName,
                 pointRules = pointRules
             )
-            pointService.addPointRules(leaguePointRule)
+            pointService.addRules(leaguePointRule)
 
             createdLeague.output
         }
@@ -84,16 +84,16 @@ class LeagueController {
         @RequestParam("search")
         search: String?
     ): Iterable<LeagueOutput> {
-        return leagueService.findAll(search = search).map { league -> league.output }
+        return leagueSeekService.findAll(search = search).map { league -> league.output }
     }
 
     @PostMapping(path = ["/endSeason"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun endSeason(@RequestBody endSeason: EndSeason): LeagueOutput {
         return endSeason.run {
-            val oldLeague: League = leagueService.find(leagueName, season, tierLevel)
+            val oldLeague: League = leagueSeekService.find(leagueName, season, tierLevel)
             oldLeague.endedOn ?: run {
                 oldLeague.endedOn = endedOn
-                leagueService.create(oldLeague)
+                leagueSeekService.create(oldLeague)
             }
 
             oldLeague.output
@@ -103,11 +103,11 @@ class LeagueController {
     @PostMapping(path = ["/startNewSeason"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun startNewSeason(@RequestBody startSeason: StartSeason): List<LeagueOutput> {
         return startSeason.run {
-            val allLeagues: List<League> = leagueService.findAllTiers(leagueName, season)
+            val allLeagues: List<League> = leagueSeekService.findAllTiers(leagueName, season)
             val newLeagues: List<LeagueOutput> = allLeagues.map { oldLeague ->
                 oldLeague.endedOn ?: run {
                     oldLeague.endedOn = endedOn
-                    leagueService.create(oldLeague)
+                    leagueSeekService.create(oldLeague)
                 }
 
                 val league = League(
@@ -122,7 +122,7 @@ class LeagueController {
                     runnerLimit =  oldLeague.runnerLimit,
                     registrationEndedOn = registrationEndedOn
                 )
-                val createdLeague: League = leagueService.create(league)
+                val createdLeague: League = leagueSeekService.create(league)
 
                 qualifierRules?.let {
                     val leaguePlayoffRule = LeaguePlayoffRule(
@@ -133,7 +133,7 @@ class LeagueController {
                         qualifierRules = it
                     )
 
-                    playoffService.addPlayoffRules(leaguePlayoffRule)
+                    playoffService.addRules(leaguePlayoffRule)
                 }
 
                 pointRules?.let {
@@ -145,7 +145,7 @@ class LeagueController {
                         pointRules = it
                     )
 
-                    pointService.addPointRules(leaguePointRule)
+                    pointService.addRules(leaguePointRule)
                 }
 
                 copySpeedrunsToNewLeague(oldLeague, createdLeague)
@@ -162,7 +162,7 @@ class LeagueController {
     @PostMapping(path = ["/addLowerTier"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun addLowerTier(@RequestBody lowerTier: LowerTier): LeagueOutput {
         return lowerTier.run {
-            val parentLeague: League = leagueService.find(leagueName, season, parentTierLevel)
+            val parentLeague: League = leagueSeekService.find(leagueName, season, parentTierLevel)
 
             val league = League(
                 name = leagueName,
@@ -177,11 +177,11 @@ class LeagueController {
                 registrationEndedOn = registrationEndedOn,
                 promotions = divisionShifts
             )
-            val childLeague: League = leagueService.create(league)
+            val childLeague: League = leagueSeekService.create(league)
 
             // Update Parent league
             parentLeague.relegations = divisionShifts
-            leagueService.create(parentLeague)
+            leagueSeekService.create(parentLeague)
 
             val childQualifierRules: List<QualifierRule> = qualifierRules ?: parentLeague.playoffRules.map { playoffRule ->
                 QualifierRule(
@@ -197,7 +197,7 @@ class LeagueController {
                 qualifierRules = childQualifierRules
             )
 
-            playoffService.addPlayoffRules(leaguePlayoffRule)
+            playoffService.addRules(leaguePlayoffRule)
 
             val childPointRules: List<PointRule> = pointRules ?: parentLeague.pointRules.map { pointRule ->
                 PointRule(
@@ -213,7 +213,7 @@ class LeagueController {
                 pointRules = childPointRules
             )
 
-            pointService.addPointRules(leaguePointRule)
+            pointService.addRules(leaguePointRule)
 
             if (relegationRules != null && promotionRules != null) {
 
@@ -247,14 +247,14 @@ class LeagueController {
     @PatchMapping(path = ["/divisionShifts"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun modifyDivisionShifts(@RequestBody leagueDivisionShift: LeagueDivisionShiftUpdate): LeagueOutput {
 
-        val modifiedLeague: League = leagueService.updateDivisionShifts(leagueDivisionShift)
+        val modifiedLeague: League = leagueSeekService.updateDivisionShifts(leagueDivisionShift)
 
         return modifiedLeague.output
     }
 
     private fun copySpeedrunsToNewLeague(sourceLeague: League, destinationLeague: League) {
         val sourceLeagueSpeedruns: Iterable<LeagueSpeedrun> = sourceLeague.run {
-            leagueSpeedrunService.findAllByLeague(name, season, tier.level)
+            leagueSpeedrunSeekService.findAllByLeague(name, season, tier.level)
         }
 
         sourceLeagueSpeedruns.forEach { oldLeagueSpeedrun ->
@@ -263,7 +263,7 @@ class LeagueController {
                 speedrun = oldLeagueSpeedrun.speedrun
             )
 
-            leagueSpeedrunService.create(leagueSpeedrun)
+            leagueSpeedrunSeekService.create(leagueSpeedrun)
         }
     }
 

@@ -6,9 +6,10 @@ import com.immanuelqrw.speedleague.api.entity.Cart
 import com.immanuelqrw.speedleague.api.entity.Game
 import com.immanuelqrw.speedleague.api.entity.Region
 import com.immanuelqrw.speedleague.api.entity.System
-import com.immanuelqrw.speedleague.api.service.seek.CartService
-import com.immanuelqrw.speedleague.api.service.seek.GameService
-import com.immanuelqrw.speedleague.api.service.seek.SystemService
+import com.immanuelqrw.speedleague.api.service.CartService
+import com.immanuelqrw.speedleague.api.service.seek.CartSeekService
+import com.immanuelqrw.speedleague.api.service.seek.GameSeekService
+import com.immanuelqrw.speedleague.api.service.seek.SystemSeekService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -20,28 +21,9 @@ class CartController {
     @Autowired
     private lateinit var cartService: CartService
 
-    @Autowired
-    private lateinit var gameService: GameService
-
-    @Autowired
-    private lateinit var systemService: SystemService
-
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody cartInput: CartInput): CartOutput {
-        return cartInput.run {
-            val game: Game = gameService.findByName(gameName)
-            val system: System = systemService.findByName(systemName)
-
-            val cart = Cart(
-                game = game,
-                system = system,
-                region = region,
-                version = version
-            )
-            val createdCart: Cart = cartService.create(cart)
-
-            createdCart.output
-        }
+        return cartService.create(cartInput)
     }
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -49,7 +31,7 @@ class CartController {
         @RequestParam("search")
         search: String?
     ): Iterable<CartOutput> {
-        return cartService.findAll(search = search).map { cart -> cart.output }
+        return cartService.findAll(search)
     }
 
     @GetMapping(path = ["/deepSearch"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -65,9 +47,7 @@ class CartController {
         @RequestParam("version")
         version: String?
     ): Iterable<CartOutput> {
-        return cartService
-            .findAll(gameName, systemName, isEmulated, region, version)
-            .map { cart -> cart.output }
+        return cartService.findAll(gameName, systemName, isEmulated, region, version)
     }
 
 }

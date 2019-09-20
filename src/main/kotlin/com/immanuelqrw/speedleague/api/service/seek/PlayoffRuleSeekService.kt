@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class PlayoffRuleService : BaseUniqueService<PlayoffRule>(PlayoffRule::class.java) {
+class PlayoffRuleSeekService : BaseUniqueService<PlayoffRule>(PlayoffRule::class.java) {
 
     @Autowired
     private lateinit var playoffRuleRepository: PlayoffRuleRepository

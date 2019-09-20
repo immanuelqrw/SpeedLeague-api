@@ -10,7 +10,7 @@ import java.util.UUID
 import javax.persistence.EntityNotFoundException
 
 @Service
-class RaceRunnerService : BaseUniqueService<RaceRunner>(RaceRunner::class.java) {
+class RaceRunnerSeekService : BaseUniqueService<RaceRunner>(RaceRunner::class.java) {
 
     @Autowired
     private lateinit var raceRunnerRepository: RaceRunnerRepository

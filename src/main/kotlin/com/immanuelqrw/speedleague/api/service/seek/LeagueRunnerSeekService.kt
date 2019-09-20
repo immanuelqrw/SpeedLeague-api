@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
-class LeagueRunnerService : BaseUniqueService<LeagueRunner>(LeagueRunner::class.java) {
+class LeagueRunnerSeekService : BaseUniqueService<LeagueRunner>(LeagueRunner::class.java) {
 
     fun findByLeagueAndRunner(leagueName: String, season: Int, tierLevel: Int, runnerName: String): LeagueRunner? {
         return findAll().firstOrNull { leagueRunner ->

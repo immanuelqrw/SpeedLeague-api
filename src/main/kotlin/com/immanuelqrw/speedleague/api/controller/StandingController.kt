@@ -1,8 +1,6 @@
 package com.immanuelqrw.speedleague.api.controller
 
 import com.immanuelqrw.speedleague.api.dto.output.QualifiedRunner
-import com.immanuelqrw.speedleague.api.entity.RaceRunner
-import com.immanuelqrw.speedleague.api.service.PlayoffService
 import com.immanuelqrw.speedleague.api.dto.output.RaceTime as RaceTimeOutput
 import com.immanuelqrw.speedleague.api.dto.output.Standing as StandingOutput
 import com.immanuelqrw.speedleague.api.service.StandingService
@@ -17,9 +15,6 @@ class StandingController {
     @Autowired
     private lateinit var standingService: StandingService
 
-    @Autowired
-    private lateinit var playoffService: PlayoffService
-
     @GetMapping(path = ["/generate"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun generateStandings(
         @RequestParam("league")
@@ -29,11 +24,11 @@ class StandingController {
         @RequestParam("tier")
         tierLevel: Int
     ): Iterable<StandingOutput> {
-        return standingService.calculateStandings(leagueName, season, tierLevel)
+        return standingService.generateStandings(leagueName, season, tierLevel)
     }
 
     @GetMapping(path = ["/qualifiedRunners"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun qualifiedRunner(
+    fun findQualifiedRunners(
         @RequestParam("league")
         leagueName: String,
         @RequestParam("season")
@@ -43,17 +38,15 @@ class StandingController {
         @RequestParam("top")
         top: Int
     ): Iterable<QualifiedRunner> {
-        val standings: List<StandingOutput> = standingService.calculateStandings(leagueName, season, tierLevel)
-        return playoffService.matchQualifiedRunners(leagueName, season, tierLevel, top, standings)
+        return standingService.findQualifiedRunners(leagueName, season, tierLevel, top)
     }
 
-    // ? Consider moving to a different controller/service
     @GetMapping(path = ["/calculatePlacements"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun calculatePlacements(
         @RequestParam("race")
         raceName: String
     ): List<RaceTimeOutput> {
-        return standingService.calculateRacePlacements(raceName).map { raceRunner -> raceRunner.output }
+        return standingService.calculatePlacements(raceName)
     }
 
 }

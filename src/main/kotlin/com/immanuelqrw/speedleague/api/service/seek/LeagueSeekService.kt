@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 import javax.persistence.EntityNotFoundException
 
 @Service
-class LeagueService : BaseUniqueService<League>(League::class.java) {
+class LeagueSeekService : BaseUniqueService<League>(League::class.java) {
 
     @Autowired
     private lateinit var leagueRepository: LeagueRepository

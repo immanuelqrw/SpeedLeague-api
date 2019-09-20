@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service
 class SeasonService {
     
     @Autowired
-    private lateinit var leagueService: LeagueService
+    private lateinit var leagueSeekService: LeagueSeekService
 
     @Autowired
-    private lateinit var leagueRunnerService: LeagueRunnerService
+    private lateinit var leagueRunnerSeekService: LeagueRunnerSeekService
 
     @Autowired
-    private lateinit var runnerService: RunnerService
+    private lateinit var runnerSeekService: RunnerSeekService
 
     @Autowired
     private lateinit var standingService: StandingService
@@ -33,44 +33,44 @@ class SeasonService {
 
             val relegatedRunners: List<QualifiedRunner> = divisionShiftService.matchQualifiedRunners(league.name, league.season, league.tier.level, standings, Shift.RELEGATION)
             if (relegatedRunners.isNotEmpty()) {
-                val relegatedLeague: League = leagueService.find(league.name, league.season + 1, league.tier.level + 1)
+                val relegatedLeague: League = leagueSeekService.find(league.name, league.season + 1, league.tier.level + 1)
 
                 relegatedRunners.forEach { relegatedRunner ->
                     val leagueRunner = LeagueRunner(
                         league = relegatedLeague,
-                        runner = runnerService.findByName(relegatedRunner.runnerName)
+                        runner = runnerSeekService.findByName(relegatedRunner.runnerName)
                     )
 
-                    leagueRunnerService.create(leagueRunner)
+                    leagueRunnerSeekService.create(leagueRunner)
                 }
             }
 
             val promotedRunners: List<QualifiedRunner> = divisionShiftService.matchQualifiedRunners(league.name, league.season, league.tier.level, standings, Shift.PROMOTION)
             if (promotedRunners.isNotEmpty()) {
-                val promotedLeague: League = leagueService.find(league.name, league.season + 1, league.tier.level - 1)
+                val promotedLeague: League = leagueSeekService.find(league.name, league.season + 1, league.tier.level - 1)
 
                 promotedRunners.forEach { promotedRunner ->
                     val leagueRunner = LeagueRunner(
                         league = promotedLeague,
-                        runner = runnerService.findByName(promotedRunner.runnerName)
+                        runner = runnerSeekService.findByName(promotedRunner.runnerName)
                     )
 
-                    leagueRunnerService.create(leagueRunner)
+                    leagueRunnerSeekService.create(leagueRunner)
                 }
             }
 
             val relegatedRunnerNames: Set<String> = relegatedRunners.map { relegatedRunner -> relegatedRunner.runnerName }.toSet()
             val promotedRunnerNames: Set<String> = promotedRunners.map { promotedRunner -> promotedRunner.runnerName }.toSet()
-            val leagueRunners: Set<LeagueRunner> = leagueRunnerService.findAllByLeague(league.name, league.season, league.tier.level).toSet()
+            val leagueRunners: Set<LeagueRunner> = leagueRunnerSeekService.findAllByLeague(league.name, league.season, league.tier.level).toSet()
 
             leagueRunners.forEach { leagueRunner ->
                 if (!relegatedRunnerNames.contains(leagueRunner.runner.name) && !promotedRunnerNames.contains(leagueRunner.runner.name)) {
-                    val newLeague: League = leagueService.find(league.name, league.season + 1, league.tier.level)
+                    val newLeague: League = leagueSeekService.find(league.name, league.season + 1, league.tier.level)
                     val newLeagueRunner = LeagueRunner(
                         league = newLeague,
                         runner = leagueRunner.runner
                     )
-                    leagueRunnerService.create(newLeagueRunner)
+                    leagueRunnerSeekService.create(newLeagueRunner)
                 }
             }
         }

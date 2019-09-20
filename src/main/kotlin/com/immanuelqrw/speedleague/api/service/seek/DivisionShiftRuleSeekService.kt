@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class DivisionShiftRuleService : BaseUniqueService<DivisionShiftRule>(DivisionShiftRule::class.java) {
+class DivisionShiftRuleSeekService : BaseUniqueService<DivisionShiftRule>(DivisionShiftRule::class.java) {
 
     @Autowired
     private lateinit var divisionShiftRuleRepository: DivisionShiftRuleRepository

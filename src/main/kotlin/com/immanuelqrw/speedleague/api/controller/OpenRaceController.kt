@@ -1,7 +1,6 @@
 package com.immanuelqrw.speedleague.api.controller
 
 import com.immanuelqrw.speedleague.api.dto.output.Race as RaceOutput
-import com.immanuelqrw.speedleague.api.entity.Race
 import com.immanuelqrw.speedleague.api.service.OpenRaceService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat
@@ -22,7 +21,7 @@ class OpenRaceController {
         @RequestParam("startedOn")
         startedOn: LocalDateTime
     ): List<RaceOutput> {
-        return openRaceService.findOpenRaces(startedOn).map { race -> race.output }
+        return openRaceService.findOpenRaces(startedOn)
     }
 
     @GetMapping(path = ["/isRaceCompleted/{race}"], produces = [MediaType.APPLICATION_JSON_VALUE])
