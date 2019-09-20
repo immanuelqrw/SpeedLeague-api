@@ -82,10 +82,7 @@ class LeagueService {
     fun endSeason(endSeason: EndSeason): LeagueOutput {
         return endSeason.run {
             val oldLeague: League = leagueSeekService.find(leagueName, season, tierLevel)
-            oldLeague.endedOn ?: run {
-                oldLeague.endedOn = endedOn
-                leagueSeekService.create(oldLeague)
-            }
+            leagueSeekService.endLeague(oldLeague, endedOn)
 
             oldLeague.output
         }
@@ -95,10 +92,7 @@ class LeagueService {
         return startSeason.run {
             val allLeagues: List<League> = leagueSeekService.findAllTiers(leagueName, season)
             val newLeagues: List<LeagueOutput> = allLeagues.map { oldLeague ->
-                oldLeague.endedOn ?: run {
-                    oldLeague.endedOn = endedOn
-                    leagueSeekService.create(oldLeague)
-                }
+                leagueSeekService.endLeague(oldLeague, endedOn)
 
                 val league = League(
                     name = oldLeague.name,

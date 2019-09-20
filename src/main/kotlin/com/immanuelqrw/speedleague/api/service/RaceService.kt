@@ -4,13 +4,11 @@ import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.dto.input.Race as RaceInput
 import com.immanuelqrw.speedleague.api.dto.output.Race as RaceOutput
 import com.immanuelqrw.speedleague.api.entity.Race
-import com.immanuelqrw.speedleague.api.exception.LeagueHasEndedException
 import com.immanuelqrw.speedleague.api.service.seek.LeagueSeekService
 import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerSeekService
 import com.immanuelqrw.speedleague.api.service.seek.RaceSeekService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 
 @Service
 class RaceService {
@@ -28,12 +26,7 @@ class RaceService {
         return raceInput.run {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
-            val currentTime: LocalDateTime = LocalDateTime.now()
-            league.endedOn?.let {
-                if (currentTime >= it) {
-                    throw LeagueHasEndedException("Race $raceName cannot be created due to league being over [Ended on $it]")
-                }
-            }
+            leagueSeekService.validateLeagueChange(league.endedOn, "Race $raceName cannot be created - League has ended [End Date: ${league.endedOn}]")
 
             // If League has ended, disallow races
             val race = Race(

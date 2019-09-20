@@ -3,13 +3,36 @@ package com.immanuelqrw.speedleague.api.service.seek
 import com.immanuelqrw.core.api.service.BaseUniqueService
 import com.immanuelqrw.speedleague.api.dto.update.LeagueDivisionShift
 import com.immanuelqrw.speedleague.api.entity.League
-import com.immanuelqrw.speedleague.api.repository.LeagueRepository
-import org.springframework.beans.factory.annotation.Autowired
+import com.immanuelqrw.speedleague.api.exception.LeagueHasEndedException
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import javax.persistence.EntityNotFoundException
 
 @Service
 class LeagueSeekService : BaseUniqueService<League>(League::class.java) {
+
+    // ? Consider moving to LeagueService
+    fun validateLeagueChange(endedOn: LocalDateTime?, failureMessage: String) {
+        // If league has ended, do not allow changes/creation
+        endedOn?.run {
+            throw LeagueHasEndedException(failureMessage)
+        }
+    }
+
+    // ? Consider moving to LeagueService
+    fun endLeague(league: League, endedOn: LocalDateTime?) {
+        league.endedOn ?: run {
+            league.endedOn = endedOn
+            super.create(league)
+        }
+    }
+
+    override fun create(entity: League): League {
+        val endedOn: LocalDateTime? = entity.endedOn
+        validateLeagueChange(endedOn, "League ${entity.name} has ended on [$endedOn] and no changes can be made")
+
+        return super.create(entity)
+    }
 
     fun find(name: String, season: Int, tierLevel: Int): League {
         return findAll(search = "name:$name;season:$season;tier.level:$tierLevel")
@@ -27,6 +50,7 @@ class LeagueSeekService : BaseUniqueService<League>(League::class.java) {
             ?: throw EntityNotFoundException()
     }
 
+    // ? Consider moving to LeagueService
     fun updateDivisionShifts(leagueDivisionShift: LeagueDivisionShift): League {
         val modifiedLeague: League = leagueDivisionShift.run {
             val mainLeague: League = find(leagueName, season, tierLevel)
