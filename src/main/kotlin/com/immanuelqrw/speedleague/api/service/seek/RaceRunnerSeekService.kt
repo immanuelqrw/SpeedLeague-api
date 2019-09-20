@@ -12,9 +12,6 @@ import javax.persistence.EntityNotFoundException
 @Service
 class RaceRunnerSeekService : BaseUniqueService<RaceRunner>(RaceRunner::class.java) {
 
-    @Autowired
-    private lateinit var raceRunnerRepository: RaceRunnerRepository
-
     fun findByRaceAndRunner(raceName: String, runnerName: String): RaceRunner? {
         return findAll().firstOrNull { raceRunner ->
             raceRunner.race.name == raceName && raceRunner.runner.name == runnerName
@@ -40,7 +37,7 @@ class RaceRunnerSeekService : BaseUniqueService<RaceRunner>(RaceRunner::class.ja
         raceRunner.time = raceTimeRegister.time
         raceRunner.outcome = raceTimeRegister.outcome
 
-        return raceRunnerRepository.save(raceRunner)
+        return create(raceRunner)
     }
 
 }

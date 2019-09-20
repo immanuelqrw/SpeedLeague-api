@@ -11,9 +11,6 @@ import javax.persistence.EntityNotFoundException
 @Service
 class LeagueSeekService : BaseUniqueService<League>(League::class.java) {
 
-    @Autowired
-    private lateinit var leagueRepository: LeagueRepository
-
     fun find(name: String, season: Int, tierLevel: Int): League {
         return findAll(search = "name:$name;season:$season;tier.level:$tierLevel")
             .firstOrNull()
@@ -39,7 +36,7 @@ class LeagueSeekService : BaseUniqueService<League>(League::class.java) {
                 mainLeague.promotions = promotions
                 promotedLeague.relegations = promotions
 
-                leagueRepository.save(promotedLeague)
+                create(promotedLeague)
             }
 
             relegations?.let {
@@ -47,13 +44,13 @@ class LeagueSeekService : BaseUniqueService<League>(League::class.java) {
                 mainLeague.relegations = relegations
                 relegatedLeague.promotions = relegations
 
-                leagueRepository.save(relegatedLeague)
+                create(relegatedLeague)
             }
 
             mainLeague
         }
 
-        return leagueRepository.save(modifiedLeague)
+        return create(modifiedLeague)
     }
 
 }
