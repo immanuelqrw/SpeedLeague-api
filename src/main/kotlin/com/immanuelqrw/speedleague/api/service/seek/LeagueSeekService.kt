@@ -12,7 +12,7 @@ import javax.persistence.EntityNotFoundException
 class LeagueSeekService : BaseUniqueService<League>(League::class.java) {
 
     // ? Consider moving to LeagueService
-    fun validateLeagueChange(endedOn: LocalDateTime?, failureMessage: String) {
+    fun validateLeagueChange(endedOn: LocalDateTime?, failureMessage: String = "League has ended") {
         // If league has ended, do not allow changes/creation
         endedOn?.run {
             throw LeagueHasEndedException(failureMessage)
@@ -21,6 +21,8 @@ class LeagueSeekService : BaseUniqueService<League>(League::class.java) {
 
     // ? Consider moving to LeagueService
     fun endLeague(league: League, endedOn: LocalDateTime?) {
+        validateLeagueChange(league.endedOn)
+
         league.endedOn ?: run {
             league.endedOn = endedOn
             super.create(league)

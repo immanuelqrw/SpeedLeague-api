@@ -24,6 +24,8 @@ class LeagueSpeedrunService {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
             val speedrun: Speedrun = speedrunSeekService.find(categoryName, gameName, systemName, isEmulated, region, version)
 
+            // - Add more descriptive error message
+            leagueSeekService.validateLeagueChange(league.endedOn)
             val leagueSpeedrun = LeagueSpeedrun(
                 league = league,
                 speedrun = speedrun

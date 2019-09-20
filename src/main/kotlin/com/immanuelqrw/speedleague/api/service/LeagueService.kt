@@ -92,8 +92,6 @@ class LeagueService {
         return startSeason.run {
             val allLeagues: List<League> = leagueSeekService.findAllTiers(leagueName, season)
             val newLeagues: List<LeagueOutput> = allLeagues.map { oldLeague ->
-                leagueSeekService.endLeague(oldLeague, endedOn)
-
                 val league = League(
                     name = oldLeague.name,
                     type = oldLeague.type,
@@ -139,6 +137,10 @@ class LeagueService {
 
             seasonService.shiftDivisions(allLeagues)
 
+            allLeagues.forEach { oldLeague ->
+                leagueSeekService.endLeague(oldLeague, endedOn)
+            }
+
             newLeagues
         }
     }
@@ -146,6 +148,9 @@ class LeagueService {
     fun addLowerTier(lowerTier: LowerTier): LeagueOutput {
         return lowerTier.run {
             val parentLeague: League = leagueSeekService.find(leagueName, season, parentTierLevel)
+
+            // - Add more descriptive error message
+            leagueSeekService.validateLeagueChange(parentLeague.endedOn)
 
             val league = League(
                 name = leagueName,

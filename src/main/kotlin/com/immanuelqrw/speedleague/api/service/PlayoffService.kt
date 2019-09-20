@@ -38,6 +38,9 @@ class PlayoffService {
         return leagueRule.run {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
+            // - Add more descriptive error message
+            leagueSeekService.validateLeagueChange(league.endedOn)
+
             attachRules(league, leagueRule)
         }
     }
@@ -45,6 +48,9 @@ class PlayoffService {
     private fun replaceRules(leagueRule: LeaguePlayoffRuleInput): List<PlayoffRule> {
         return leagueRule.run {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
+
+            // - Add more descriptive error message
+            leagueSeekService.validateLeagueChange(league.endedOn)
 
             playoffRuleSeekService.deleteAll(league.playoffRules)
 

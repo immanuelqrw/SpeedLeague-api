@@ -34,6 +34,9 @@ class PointService {
         return leagueRule.run {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
+            // - Add more descriptive error message
+            leagueSeekService.validateLeagueChange(league.endedOn)
+
             attachRules(league, leagueRule)
         }
 
@@ -42,6 +45,9 @@ class PointService {
     private fun replaceRules(leagueRule: LeaguePointRuleInput): List<PointRule> {
         return leagueRule.run {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
+
+            // - Add more descriptive error message
+            leagueSeekService.validateLeagueChange(league.endedOn)
 
             pointRuleSeekService.deleteAll(league.pointRules)
 

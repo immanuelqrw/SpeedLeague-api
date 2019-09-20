@@ -50,6 +50,9 @@ class DivisionShiftService {
         return leagueRule.run {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
+            // - Add more descriptive error message
+            leagueSeekService.validateLeagueChange(league.endedOn)
+
             attachDivisionShiftRules(league, leagueRule)
         }
     }
@@ -57,6 +60,9 @@ class DivisionShiftService {
     fun addPromotionRules(leagueRule: LeagueDivisionShiftRuleInput): List<DivisionShiftRule> {
         return leagueRule.run {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
+
+            // - Add more descriptive error message
+            leagueSeekService.validateLeagueChange(league.endedOn)
 
             attachDivisionShiftRules(league, leagueRule.promotionRules, Shift.PROMOTION)
         }
@@ -66,6 +72,9 @@ class DivisionShiftService {
         return leagueRule.run {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
+            // - Add more descriptive error message
+            leagueSeekService.validateLeagueChange(league.endedOn)
+
             attachDivisionShiftRules(league, leagueRule.relegationRules, Shift.RELEGATION)
         }
     }
@@ -73,6 +82,9 @@ class DivisionShiftService {
     private fun substituteDivisionShiftRules(leagueRule: LeagueDivisionShiftRuleInput): List<DivisionShiftRule> {
         return leagueRule.run {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
+
+            // - Add more descriptive error message
+            leagueSeekService.validateLeagueChange(league.endedOn)
 
             divisionShiftRuleSeekService.deleteAll(league.divisionShiftRules)
 
@@ -84,6 +96,9 @@ class DivisionShiftService {
         return leagueRule.run {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
+            // - Add more descriptive error message
+            leagueSeekService.validateLeagueChange(league.endedOn)
+
             divisionShiftRuleSeekService.deleteAll(league.promotionRules)
 
             attachDivisionShiftRules(league, leagueRule.promotionRules, Shift.PROMOTION)
@@ -93,6 +108,9 @@ class DivisionShiftService {
     private fun substituteRelegationRules(leagueRule: LeagueDivisionShiftRuleInput): List<DivisionShiftRule> {
         return leagueRule.run {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
+
+            // - Add more descriptive error message
+            leagueSeekService.validateLeagueChange(league.endedOn)
 
             divisionShiftRuleSeekService.deleteAll(league.relegationRules)
 

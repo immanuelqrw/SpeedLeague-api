@@ -29,6 +29,9 @@ class SeasonService {
 
     fun shiftDivisions(leagues: List<League>) {
         leagues.forEach { league ->
+            // - Add more descriptive error message
+            leagueSeekService.validateLeagueChange(league.endedOn)
+
             val standings: List<Standing> = standingService.calculateStandings(league.name, league.season, league.tier.level)
 
             val relegatedRunners: List<QualifiedRunner> = divisionShiftService.matchQualifiedRunners(league.name, league.season, league.tier.level, standings, Shift.RELEGATION)
