@@ -12,16 +12,18 @@ import com.immanuelqrw.speedleague.api.dto.output.PointRule as PointRuleOutput
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDateTime
 import javax.persistence.*
+import javax.validation.constraints.Min
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "PointRule", uniqueConstraints = [UniqueConstraint(columnNames = ["leagueId", "placement"])])
 data class PointRule(
 
+    @get:Min(1)
     @Column(name = "placement", nullable = false)
     val placement: Int,
 
-    // ! Look into adding min 0 to all Int
+    @get:Min(0)
     @Column(name = "amount", nullable = false)
     val amount: Int,
 

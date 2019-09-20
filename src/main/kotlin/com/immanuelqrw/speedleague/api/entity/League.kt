@@ -12,6 +12,7 @@ import com.immanuelqrw.speedleague.api.dto.output.League as LeagueOutput
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDateTime
 import javax.persistence.*
+import javax.validation.constraints.Min
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
@@ -37,26 +38,26 @@ data class League(
     @Column(name = "endedOn")
     var endedOn: LocalDateTime? = null,
 
-    // ! Min 0
+    @get:Min(0L)
     @Column(name = "defaultTime", nullable = false)
     val defaultTime: Long,
 
-    // ! Min 0
-    // ! Consider Renaming
+    @get:Min(0)
     @Column(name = "defaultPoints", nullable = false)
     val defaultPoints: Int,
 
+    @get:Min(0)
     @Column(name = "season", nullable = false)
     val season: Int,
 
     @Embedded
     @AttributeOverrides(value = [
         AttributeOverride(name = "name", column = Column(name = "tierName", nullable = false)),
-        // ! Min(0)
         AttributeOverride(name = "level", column = Column(name = "tierLevel", nullable = false))
     ])
     val tier: Tier,
 
+    @get:Min(0)
     @Column(name = "runnerLimit", nullable = false)
     val runnerLimit: Int,
 
@@ -66,9 +67,11 @@ data class League(
     @Column(name = "registrationEndedOn")
     var registrationEndedOn: LocalDateTime? = null,
 
+    @get:Min(0)
     @Column(name = "promotions", nullable = false)
     var promotions: Int = 0,
 
+    @get:Min(0)
     @Column(name = "relegations", nullable = false)
     var relegations: Int = 0
 
