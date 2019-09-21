@@ -1,13 +1,15 @@
 package com.immanuelqrw.speedleague.api.service
 
+import com.google.common.collect.Sets
+import com.immanuelqrw.speedleague.api.dto.output.Match
 import com.immanuelqrw.speedleague.api.dto.output.QualifiedRunner
 import com.immanuelqrw.speedleague.api.dto.output.Standing
-import com.immanuelqrw.speedleague.api.entity.League
-import com.immanuelqrw.speedleague.api.entity.LeagueRunner
-import com.immanuelqrw.speedleague.api.entity.Shift
+import com.immanuelqrw.speedleague.api.entity.*
+import com.immanuelqrw.speedleague.api.dto.search.League as LeagueSearch
 import com.immanuelqrw.speedleague.api.service.seek.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class SeasonService {
@@ -20,6 +22,12 @@ class SeasonService {
 
     @Autowired
     private lateinit var runnerSeekService: RunnerSeekService
+
+    @Autowired
+    private lateinit var raceSeekService: RaceSeekService
+
+    @Autowired
+    private lateinit var raceRunnerSeekService: RaceRunnerSeekService
 
     @Autowired
     private lateinit var standingService: StandingService
@@ -77,6 +85,63 @@ class SeasonService {
                 }
             }
         }
+    }
+
+    fun generateRoundRobin(leagueSearch: LeagueSearch): List<Match> {
+        val league: League = leagueSearch.run {
+            leagueSeekService.find(name, season, tierLevel)
+        }
+        leagueSeekService.validateLeagueChange(league.endedOn)
+
+        val runnersInLeague: Set<Runner> = leagueSearch.run {
+            leagueRunnerSeekService.findAllByLeague(name, season, tierLevel)
+        }.map { leagueRunner -> leagueRunner.runner }.toSet()
+
+        val versus: Set<Set<Runner>> = Sets.combinations(runnersInLeague, 2)
+
+        // ! Fix race start dates
+        val startedOn: LocalDateTime = LocalDateTime.now()
+
+        // ! Replace with Race name generation
+        var raceCount = 1
+        return versus.map { contestants ->
+            val leagueContestants = contestants.toList()
+
+            val homeRunner: Runner = leagueContestants[0]
+            val awayRunner: Runner = leagueContestants[1]
+
+            val race = leagueSearch.run {
+                Race(
+                    name = "$name-$season-$tierLevel-RoundRobin-$raceCount",
+                    league = league,
+                    startedOn = startedOn
+                )
+            }
+
+
+            val createdRace: Race = raceSeekService.create(race)
+            val homeRaceRunner = RaceRunner(
+                race = createdRace,
+                runner = homeRunner
+            )
+            val awayRaceRunner = RaceRunner(
+                race = createdRace,
+                runner = awayRunner
+            )
+
+            raceRunnerSeekService.create(homeRaceRunner)
+            raceRunnerSeekService.create(awayRaceRunner)
+
+            raceCount += 1
+
+            Match(
+                race = createdRace.name,
+                homeRunner = homeRunner.name,
+                awayRunner = awayRunner.name,
+                startedOn = createdRace.startedOn
+            )
+        }
+
     }
 
 }

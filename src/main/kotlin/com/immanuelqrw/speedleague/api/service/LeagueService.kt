@@ -1,9 +1,12 @@
 package com.immanuelqrw.speedleague.api.service
 
 import com.immanuelqrw.speedleague.api.dto.input.*
+import com.immanuelqrw.speedleague.api.dto.output.LeagueSchedule
+import com.immanuelqrw.speedleague.api.dto.output.Match
 import com.immanuelqrw.speedleague.api.dto.update.LeagueDivisionShift as LeagueDivisionShiftUpdate
 import com.immanuelqrw.speedleague.api.dto.input.League as LeagueInput
 import com.immanuelqrw.speedleague.api.dto.output.League as LeagueOutput
+import com.immanuelqrw.speedleague.api.dto.search.League as LeagueSearch
 import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.entity.LeagueSpeedrun
 import com.immanuelqrw.speedleague.api.entity.Tier
@@ -237,6 +240,19 @@ class LeagueService {
         val modifiedLeague: League = leagueSeekService.updateDivisionShifts(leagueDivisionShift)
 
         return modifiedLeague.output
+    }
+
+    fun generateRoundRobin(leagueSearch: LeagueSearch): LeagueSchedule {
+        val matches: List<Match> = seasonService.generateRoundRobin(leagueSearch)
+
+        return leagueSearch.run {
+            LeagueSchedule(
+                name = name,
+                season = season,
+                tierLevel = tierLevel,
+                matches = matches
+            )
+        }
     }
 
     private fun copySpeedrunsToNewLeague(sourceLeague: League, destinationLeague: League) {

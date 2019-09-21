@@ -82,7 +82,8 @@ val packages: Array<Package> = arrayOf(
     *springBootPackages,
     *springTestPackages,
     *databasePackages,
-    *jUnitPackages
+    *jUnitPackages,
+    Package( "com.google.guava", "guava", "28.1-jre")
 )
 
 val testPackages: Array<Package> = arrayOf(

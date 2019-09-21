@@ -3,6 +3,8 @@ package com.immanuelqrw.speedleague.api.controller
 import com.immanuelqrw.speedleague.api.dto.input.EndSeason
 import com.immanuelqrw.speedleague.api.dto.input.LowerTier
 import com.immanuelqrw.speedleague.api.dto.input.StartSeason
+import com.immanuelqrw.speedleague.api.dto.output.LeagueSchedule
+import com.immanuelqrw.speedleague.api.dto.search.League as LeagueSearch
 import com.immanuelqrw.speedleague.api.dto.update.LeagueDivisionShift as LeagueDivisionShiftUpdate
 import com.immanuelqrw.speedleague.api.dto.input.League as LeagueInput
 import com.immanuelqrw.speedleague.api.dto.output.League as LeagueOutput
@@ -49,6 +51,11 @@ class LeagueController {
     @PatchMapping(path = ["/divisionShifts"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun modifyDivisionShifts(@RequestBody leagueDivisionShift: LeagueDivisionShiftUpdate): LeagueOutput {
         return leagueService.modifyDivisionShifts(leagueDivisionShift)
+    }
+
+    @PostMapping(path = ["/generateRoundRobin"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    fun generateRoundRobin(@RequestBody leagueSearch: LeagueSearch): LeagueSchedule {
+        return leagueService.generateRoundRobin(leagueSearch)
     }
 
 }
