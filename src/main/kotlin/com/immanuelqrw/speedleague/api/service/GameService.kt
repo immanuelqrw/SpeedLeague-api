@@ -29,4 +29,8 @@ class GameService {
         return gameSeekService.findAll(search = search).map { game -> game.output }
     }
 
+    fun findByShorthand(shorthand: String): GameOutput {
+        return gameSeekService.findByShorthand(shorthand).output
+    }
+
 }

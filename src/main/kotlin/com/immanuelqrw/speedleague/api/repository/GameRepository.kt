@@ -5,4 +5,8 @@ import com.immanuelqrw.speedleague.api.entity.Game
 import org.springframework.stereotype.Repository
 
 @Repository
-interface GameRepository : BaseUniqueRepository<Game>
+interface GameRepository : BaseUniqueRepository<Game> {
+
+    fun findByShorthand(shorthand: String): Game
+
+}

@@ -27,4 +27,12 @@ class GameController {
         return gameService.findAll(search = search)
     }
 
+    @GetMapping(path = ["/shorthand/{shorthand}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findByShorthand(
+        @PathVariable("shorthand")
+        shorthand: String
+    ): GameOutput {
+        return gameService.findByShorthand(shorthand)
+    }
+
 }
