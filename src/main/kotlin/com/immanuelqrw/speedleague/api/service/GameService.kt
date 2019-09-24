@@ -26,7 +26,7 @@ class GameService {
     }
 
     fun findAll(search: String?): Iterable<GameOutput> {
-        return gameSeekService.findAll(search = search).map { game -> game.output }
+        return gameSeekService.findAllActive(search = search).map { game -> game.output }
     }
 
     fun findByShorthand(shorthand: String): GameOutput {

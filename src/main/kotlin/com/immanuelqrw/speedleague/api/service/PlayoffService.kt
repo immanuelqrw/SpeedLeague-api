@@ -100,7 +100,7 @@ class PlayoffService {
     }
 
     fun findAll(search: String?): Iterable<PlayoffRuleOutput> {
-        return playoffRuleSeekService.findAll(search = search).map { playoffRule ->
+        return playoffRuleSeekService.findAllActive(search = search).map { playoffRule ->
             playoffRule.output
         }.sortedBy { it.order }
     }

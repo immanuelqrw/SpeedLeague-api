@@ -178,7 +178,7 @@ class DivisionShiftService {
     }
 
     fun findAll(search: String?): Iterable<DivisionShiftRuleOutput> {
-        return divisionShiftRuleSeekService.findAll(search = search).map { divisionShiftRule ->
+        return divisionShiftRuleSeekService.findAllActive(search = search).map { divisionShiftRule ->
             divisionShiftRule.output
         }.sortedBy { it.order }
     }

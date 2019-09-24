@@ -10,43 +10,43 @@ import javax.persistence.EntityNotFoundException
 class CartSeekService : BaseUniqueService<Cart>(Cart::class.java) {
 
     fun findAllByGame(gameName: String): List<Cart> {
-        return findAll().filter { cart ->
+        return findAllActive().filter { cart ->
             cart.game.name == gameName
         }
     }
 
     fun findAllBySystem(systemName: String): List<Cart> {
-        return findAll().filter { cart ->
+        return findAllActive().filter { cart ->
             cart.system.name == systemName
         }
     }
 
     fun findAllByRegion(region: Region): List<Cart> {
-        return findAll().filter { cart ->
+        return findAllActive().filter { cart ->
             cart.region == region
         }
     }
 
     fun findAllByGameAndSystem(gameName: String, systemName: String): List<Cart> {
-        return findAll().filter { cart ->
+        return findAllActive().filter { cart ->
             cart.game.name == gameName && cart.system.name == systemName
         }
     }
 
     fun findAllByGameAndRegion(gameName: String, region: Region): List<Cart> {
-        return findAll().filter { cart ->
+        return findAllActive().filter { cart ->
             cart.game.name == gameName && cart.region == region
         }
     }
 
     fun findAllBySystemAndRegion(systemName: String, region: Region): List<Cart> {
-        return findAll().filter { cart ->
+        return findAllActive().filter { cart ->
             cart.system.name == systemName && cart.region == region
         }
     }
 
     fun find(gameName: String, systemName: String, isEmulated: Boolean, region: Region, version: String): Cart {
-        return findAll().firstOrNull { cart ->
+        return findAllActive().firstOrNull { cart ->
             cart.game.name == gameName &&
             cart.system.name == systemName &&
             cart.system.isEmulated == isEmulated &&
@@ -56,7 +56,7 @@ class CartSeekService : BaseUniqueService<Cart>(Cart::class.java) {
     }
 
     fun findAll(gameName: String?, systemName: String?, isEmulated: Boolean?, region: Region?, version: String?): List<Cart> {
-        return findAll()
+        return findAllActive()
             .filter { cart ->  gameName?.let { cart.game.name == gameName } ?: true }
             .filter { cart ->  systemName?.let { cart.system.name == systemName } ?: true }
             .filter { cart ->  isEmulated?.let { cart.system.isEmulated == isEmulated } ?: true }

@@ -41,7 +41,7 @@ class RaceService {
     }
 
     fun findAll(search: String?): Iterable<RaceOutput> {
-        return raceSeekService.findAll(search = search).map { race -> race.output }
+        return raceSeekService.findAllActive(search = search).map { race -> race.output }
     }
 
     fun findAllRaces(runnerName: String): List<RaceOutput> {

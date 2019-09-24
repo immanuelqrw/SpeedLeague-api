@@ -37,7 +37,7 @@ class LeagueSpeedrunService {
     }
 
     fun findAll(search: String?): Iterable<LeagueSpeedrunOutput> {
-        return leagueSpeedrunSeekService.findAll(search = search).map { leagueSpeedrun -> leagueSpeedrun.output }
+        return leagueSpeedrunSeekService.findAllActive(search = search).map { leagueSpeedrun -> leagueSpeedrun.output }
     }
 
     fun findAll(

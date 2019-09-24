@@ -9,7 +9,7 @@ import java.util.UUID
 class LeagueRunnerSeekService : BaseUniqueService<LeagueRunner>(LeagueRunner::class.java) {
 
     fun findByLeagueAndRunner(leagueName: String, season: Int, tierLevel: Int, runnerName: String): LeagueRunner? {
-        return findAll().firstOrNull { leagueRunner ->
+        return findAllActive().firstOrNull { leagueRunner ->
             leagueRunner.league.name == leagueName &&
             leagueRunner.league.season == season &&
             leagueRunner.league.tier.level == tierLevel
@@ -18,7 +18,7 @@ class LeagueRunnerSeekService : BaseUniqueService<LeagueRunner>(LeagueRunner::cl
     }
 
     fun findAllByLeague(leagueName: String, season: Int, tierLevel: Int): List<LeagueRunner> {
-        return findAll().filter { leagueRunner ->
+        return findAllActive().filter { leagueRunner ->
             leagueRunner.league.name == leagueName &&
             leagueRunner.league.season == season &&
             leagueRunner.league.tier.level == tierLevel
@@ -26,7 +26,7 @@ class LeagueRunnerSeekService : BaseUniqueService<LeagueRunner>(LeagueRunner::cl
     }
 
     fun findAllByRunner(runnerName: String): List<LeagueRunner> {
-        return findAll().filter { leagueRunner ->
+        return findAllActive().filter { leagueRunner ->
             leagueRunner.runner.name == runnerName
         }
     }

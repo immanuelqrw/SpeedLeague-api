@@ -9,7 +9,7 @@ import javax.persistence.EntityNotFoundException
 class RunnerSeekService : BaseUniqueService<Runner>(Runner::class.java) {
 
     fun findByName(name: String): Runner {
-        return findAll(search = "name:$name").firstOrNull() ?: throw EntityNotFoundException()
+        return findAllActive(search = "name:$name").firstOrNull() ?: throw EntityNotFoundException()
     }
 
 }

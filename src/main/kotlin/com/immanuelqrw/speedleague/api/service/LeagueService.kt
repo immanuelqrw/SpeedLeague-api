@@ -79,7 +79,7 @@ class LeagueService {
     }
 
     fun findAll(search: String?): Iterable<LeagueOutput> {
-        return leagueSeekService.findAll(search = search).map { league -> league.output }
+        return leagueSeekService.findAllActive(search = search).map { league -> league.output }
     }
 
     fun endSeason(endSeason: EndSeason): LeagueOutput {

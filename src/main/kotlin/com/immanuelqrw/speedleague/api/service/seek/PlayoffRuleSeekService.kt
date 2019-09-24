@@ -14,7 +14,7 @@ class PlayoffRuleSeekService : BaseUniqueService<PlayoffRule>(PlayoffRule::class
     private lateinit var playoffRuleRepository: PlayoffRuleRepository
 
     fun findAllByLeague(leagueName: String, season: Int, tierLevel: Int): List<PlayoffRule> {
-        return findAll().filter { playoffRule ->
+        return findAllActive().filter { playoffRule ->
             playoffRule.league.name == leagueName &&
             playoffRule.league.season == season &&
             playoffRule.league.tier.level == tierLevel
@@ -22,7 +22,7 @@ class PlayoffRuleSeekService : BaseUniqueService<PlayoffRule>(PlayoffRule::class
     }
 
     fun findByLeague(leagueId: UUID): PlayoffRule? {
-        return findAll(search = "leagueId:$leagueId").firstOrNull()
+        return findAllActive(search = "leagueId:$leagueId").firstOrNull()
     }
 
     fun delete(playoffRule: PlayoffRule) {

@@ -15,7 +15,7 @@ class OpenRaceService {
     private lateinit var raceRunnerSeekService: RaceRunnerSeekService
 
     fun findOpenRaces(startedOn: LocalDateTime): List<RaceOutput> {
-        val raceRunners: Iterable<RaceRunner> = raceRunnerSeekService.findAll().filter { raceRunner ->
+        val raceRunners: Iterable<RaceRunner> = raceRunnerSeekService.findAllActive().filter { raceRunner ->
             raceRunner.race.startedOn > startedOn
         }
 

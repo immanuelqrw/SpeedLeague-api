@@ -35,7 +35,7 @@ class SpeedrunService {
     }
 
     fun findAll(search: String?): Iterable<SpeedrunOutput> {
-        return speedrunSeekService.findAll(search = search).map { speedrun -> speedrun.output }
+        return speedrunSeekService.findAllActive(search = search).map { speedrun -> speedrun.output }
     }
 
     fun findAll(

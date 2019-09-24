@@ -41,7 +41,7 @@ class CartService {
     fun findAll(
         search: String?
     ): Iterable<CartOutput> {
-        return cartSeekService.findAll(search = search).map { cart -> cart.output }
+        return cartSeekService.findAllActive(search = search).map { cart -> cart.output }
     }
 
     fun findAll(

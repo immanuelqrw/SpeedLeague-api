@@ -26,7 +26,7 @@ class SystemService {
     }
 
     fun findAll(search: String?): Iterable<SystemOutput> {
-        return systemSeekService.findAll(search = search).map { system -> system.output }
+        return systemSeekService.findAllActive(search = search).map { system -> system.output }
     }
 
 }

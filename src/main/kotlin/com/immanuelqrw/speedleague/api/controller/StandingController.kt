@@ -15,6 +15,7 @@ class StandingController {
     @Autowired
     private lateinit var standingService: StandingService
 
+    // ! Convert RequestParam into path variables
     @GetMapping(path = ["/generate"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun generateStandings(
         @RequestParam("league")

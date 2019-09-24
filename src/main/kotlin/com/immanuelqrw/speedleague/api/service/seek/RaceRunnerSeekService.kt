@@ -13,19 +13,19 @@ import javax.persistence.EntityNotFoundException
 class RaceRunnerSeekService : BaseUniqueService<RaceRunner>(RaceRunner::class.java) {
 
     fun findByRaceAndRunner(raceName: String, runnerName: String): RaceRunner? {
-        return findAll().firstOrNull { raceRunner ->
+        return findAllActive().firstOrNull { raceRunner ->
             raceRunner.race.name == raceName && raceRunner.runner.name == runnerName
         }
     }
 
     fun findAllByRace(raceName: String): List<RaceRunner> {
-        return findAll().filter { raceRunner ->
+        return findAllActive().filter { raceRunner ->
             raceRunner.race.name == raceName
         }
     }
 
     fun findAllByRunner(runnerName: String): List<RaceRunner> {
-        return findAll().filter { raceRunner ->
+        return findAllActive().filter { raceRunner ->
             raceRunner.runner.name == runnerName
         }
     }

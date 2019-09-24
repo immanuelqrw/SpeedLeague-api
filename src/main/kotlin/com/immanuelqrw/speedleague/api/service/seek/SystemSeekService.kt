@@ -9,7 +9,7 @@ import javax.persistence.EntityNotFoundException
 class SystemSeekService : BaseUniqueService<System>(System::class.java) {
 
     fun findByName(name: String): System {
-        return findAll(search = "name:$name").firstOrNull() ?: throw EntityNotFoundException()
+        return findAllActive(search = "name:$name").firstOrNull() ?: throw EntityNotFoundException()
     }
 
 }

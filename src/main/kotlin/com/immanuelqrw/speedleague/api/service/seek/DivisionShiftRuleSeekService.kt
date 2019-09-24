@@ -15,7 +15,7 @@ class DivisionShiftRuleSeekService : BaseUniqueService<DivisionShiftRule>(Divisi
     private lateinit var divisionShiftRuleRepository: DivisionShiftRuleRepository
 
     fun findAllByLeague(leagueName: String, season: Int, tierLevel: Int): List<DivisionShiftRule> {
-        return findAll().filter { divisionShiftRule ->
+        return findAllActive().filter { divisionShiftRule ->
             divisionShiftRule.league.name == leagueName &&
             divisionShiftRule.league.season == season &&
             divisionShiftRule.league.tier.level == tierLevel
@@ -23,7 +23,7 @@ class DivisionShiftRuleSeekService : BaseUniqueService<DivisionShiftRule>(Divisi
     }
 
     fun findAllPromotionByLeague(leagueName: String, season: Int, tierLevel: Int): List<DivisionShiftRule> {
-        return findAll().filter { divisionShiftRule ->
+        return findAllActive().filter { divisionShiftRule ->
             divisionShiftRule.league.name == leagueName &&
             divisionShiftRule.league.season == season &&
             divisionShiftRule.league.tier.level == tierLevel &&
@@ -32,7 +32,7 @@ class DivisionShiftRuleSeekService : BaseUniqueService<DivisionShiftRule>(Divisi
     }
 
     fun findAllRelegationByLeague(leagueName: String, season: Int, tierLevel: Int): List<DivisionShiftRule> {
-        return findAll().filter { divisionShiftRule ->
+        return findAllActive().filter { divisionShiftRule ->
             divisionShiftRule.league.name == leagueName &&
             divisionShiftRule.league.season == season &&
             divisionShiftRule.league.tier.level == tierLevel &&
@@ -41,7 +41,7 @@ class DivisionShiftRuleSeekService : BaseUniqueService<DivisionShiftRule>(Divisi
     }
 
     fun findByLeague(leagueId: UUID): DivisionShiftRule? {
-        return findAll(search = "leagueId:$leagueId").firstOrNull()
+        return findAllActive(search = "leagueId:$leagueId").firstOrNull()
     }
 
     fun delete(divisionShiftRule: DivisionShiftRule) {

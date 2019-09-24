@@ -73,7 +73,7 @@ class RunnerService {
     }
 
     fun findAll(search: String?): Iterable<RunnerOutput> {
-        return runnerSeekService.findAll(search = search).map { runner -> runner.output }
+        return runnerSeekService.findAllActive(search = search).map { runner -> runner.output }
     }
 
     fun findAllRunners(raceName: String): List<RunnerOutput> {

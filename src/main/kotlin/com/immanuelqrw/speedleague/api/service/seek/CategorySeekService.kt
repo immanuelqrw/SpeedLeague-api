@@ -9,7 +9,7 @@ import javax.persistence.EntityNotFoundException
 class CategorySeekService : BaseUniqueService<Category>(Category::class.java) {
 
     fun findByName(name: String): Category {
-        return findAll(search = "name:$name").firstOrNull() ?: throw EntityNotFoundException()
+        return findAllActive(search = "name:$name").firstOrNull() ?: throw EntityNotFoundException()
     }
 
 }

@@ -14,11 +14,11 @@ class GameSeekService : BaseUniqueService<Game>(Game::class.java) {
     private lateinit var gameRepository: GameRepository
 
     fun findByName(name: String): Game {
-        return findAll(search = "name:$name").firstOrNull() ?: throw EntityNotFoundException()
+        return findAllActive(search = "name:$name").firstOrNull() ?: throw EntityNotFoundException()
     }
 
     fun findByShorthand1(shorthand: String): Game {
-        return findAll(search = "shorthand:$shorthand").firstOrNull() ?: throw EntityNotFoundException()
+        return findAllActive(search = "shorthand:$shorthand").firstOrNull() ?: throw EntityNotFoundException()
     }
 
     fun findByShorthand(shorthand: String): Game {

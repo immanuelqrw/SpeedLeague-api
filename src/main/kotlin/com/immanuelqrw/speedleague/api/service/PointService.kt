@@ -63,7 +63,7 @@ class PointService {
     }
 
     fun findAll(search: String?): Iterable<PointRuleOutput> {
-        return pointRuleSeekService.findAll(search = search).map { pointRule ->
+        return pointRuleSeekService.findAllActive(search = search).map { pointRule ->
             pointRule.output
         }.sortedBy { it.placement }
     }
