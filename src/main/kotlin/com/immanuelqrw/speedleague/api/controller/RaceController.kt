@@ -27,9 +27,9 @@ class RaceController {
         return raceService.findAll(search = search)
     }
 
-    @GetMapping(path = ["/runner/{runnerName}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(path = ["/runner/{runner}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAllRaces(
-        @PathVariable("runnerName")
+        @PathVariable("runner")
         runnerName: String
     ): List<RaceOutput> {
         return raceService.findAllRaces(runnerName)

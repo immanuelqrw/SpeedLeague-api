@@ -7,23 +7,22 @@ import javax.persistence.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "Speedrun", uniqueConstraints = [UniqueConstraint(columnNames = ["categoryId", "cartId"])])
+@Table(name = "Speedrun", uniqueConstraints = [UniqueConstraint(columnNames = ["category", "cartId"])])
 data class Speedrun(
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
     @JoinColumn(name = "cartId", referencedColumnName = "id", nullable = false)
     val cart: Cart,
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
-    @JoinColumn(name = "categoryId", referencedColumnName = "id", nullable = false)
-    val category: Category
+    @Column(name = "category", nullable = false)
+    val category: String
 
 ) : BaseUniqueEntity() {
 
     val output: SpeedrunOutput
         get() {
             return SpeedrunOutput(
-                categoryName = category.name,
+                category = category,
                 gameName = cart.game.name,
                 systemName = cart.system.name,
                 isEmulated = cart.system.isEmulated,

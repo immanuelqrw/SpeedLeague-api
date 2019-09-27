@@ -16,13 +16,9 @@ class SpeedrunService {
     @Autowired
     private lateinit var cartSeekService: CartSeekService
 
-    @Autowired
-    private lateinit var categorySeekService: CategorySeekService
-
     fun create(speedrunInput: SpeedrunInput): SpeedrunOutput {
         return speedrunInput.run {
             val cart: Cart = cartSeekService.find(gameName, systemName, isEmulated, region, version)
-            val category: Category = categorySeekService.findByName(categoryName)
 
             val speedrun = Speedrun(
                 cart = cart,
@@ -39,7 +35,7 @@ class SpeedrunService {
     }
 
     fun findAll(
-        categoryName: String?,
+        category: String?,
         gameName: String?,
         systemName: String?,
         isEmulated: Boolean?,
@@ -47,7 +43,7 @@ class SpeedrunService {
         version: String?
     ): Iterable<SpeedrunOutput> {
         return speedrunSeekService
-            .findAll(categoryName, gameName, systemName, isEmulated, region, version)
+            .findAll(category, gameName, systemName, isEmulated, region, version)
             .map { speedrun -> speedrun.output }
     }
 

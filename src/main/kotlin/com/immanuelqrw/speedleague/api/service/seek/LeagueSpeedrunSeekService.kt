@@ -56,9 +56,9 @@ class LeagueSpeedrunSeekService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedr
         }
     }
 
-    fun findAllByCategoryAndGame(categoryName: String, gameName: String): List<LeagueSpeedrun> {
+    fun findAllByCategoryAndGame(category: String, gameName: String): List<LeagueSpeedrun> {
         return findAllActive().filter { leagueSpeedrun ->
-            leagueSpeedrun.speedrun.category.name == categoryName && leagueSpeedrun.speedrun.cart.game.name == gameName
+            leagueSpeedrun.speedrun.category == category && leagueSpeedrun.speedrun.cart.game.name == gameName
         }
     }
 
@@ -104,17 +104,17 @@ class LeagueSpeedrunSeekService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedr
         }
     }
 
-    fun findByCategoryAndGameAndSystem(categoryName: String, gameName: String, systemName: String): List<LeagueSpeedrun> {
+    fun findByCategoryAndGameAndSystem(category: String, gameName: String, systemName: String): List<LeagueSpeedrun> {
         return findAllActive().filter { leagueSpeedrun ->
-            leagueSpeedrun.speedrun.category.name == categoryName &&
+            leagueSpeedrun.speedrun.category == category &&
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
             leagueSpeedrun.speedrun.cart.system.name == systemName
         }
     }
 
-    fun findByCategoryAndGameAndRegion(categoryName: String, gameName: String, region: Region): List<LeagueSpeedrun> {
+    fun findByCategoryAndGameAndRegion(category: String, gameName: String, region: Region): List<LeagueSpeedrun> {
         return findAllActive().filter { leagueSpeedrun ->
-            leagueSpeedrun.speedrun.category.name == categoryName &&
+            leagueSpeedrun.speedrun.category == category &&
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
             leagueSpeedrun.speedrun.cart.region == region
         }
@@ -128,9 +128,9 @@ class LeagueSpeedrunSeekService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedr
         }
     }
 
-    fun findAllByCategoryAndGameAndSystemAndRegion(categoryName: String, gameName: String, systemName: String, region: Region): List<LeagueSpeedrun> {
+    fun findAllByCategoryAndGameAndSystemAndRegion(category: String, gameName: String, systemName: String, region: Region): List<LeagueSpeedrun> {
         return findAllActive().filter { leagueSpeedrun ->
-            leagueSpeedrun.speedrun.category.name == categoryName &&
+            leagueSpeedrun.speedrun.category == category &&
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
             leagueSpeedrun.speedrun.cart.system.name == systemName &&
             leagueSpeedrun.speedrun.cart.region == region
@@ -146,19 +146,19 @@ class LeagueSpeedrunSeekService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedr
         }
     }
 
-    fun findAllByLeagueAndCategoryAndGameAndRegion(leagueName: String, categoryName: String, gameName: String, region: Region): List<LeagueSpeedrun> {
+    fun findAllByLeagueAndCategoryAndGameAndRegion(leagueName: String, category: String, gameName: String, region: Region): List<LeagueSpeedrun> {
         return findAllActive().filter { leagueSpeedrun ->
             leagueSpeedrun.league.name == leagueName &&
-            leagueSpeedrun.speedrun.category.name == categoryName &&
+            leagueSpeedrun.speedrun.category == category &&
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
             leagueSpeedrun.speedrun.cart.region == region
         }
     }
 
-    fun find(leagueName: String, categoryName: String, gameName: String, systemName: String, isEmulated: Boolean, region: Region, version: String): LeagueSpeedrun {
+    fun find(leagueName: String, category: String, gameName: String, systemName: String, isEmulated: Boolean, region: Region, version: String): LeagueSpeedrun {
         return findAllActive().firstOrNull { leagueSpeedrun ->
             leagueSpeedrun.league.name == leagueName &&
-            leagueSpeedrun.speedrun.category.name == categoryName &&
+            leagueSpeedrun.speedrun.category == category &&
             leagueSpeedrun.speedrun.cart.game.name == gameName &&
             leagueSpeedrun.speedrun.cart.system.name == systemName &&
             leagueSpeedrun.speedrun.cart.system.isEmulated == isEmulated &&
@@ -167,12 +167,12 @@ class LeagueSpeedrunSeekService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedr
         } ?: throw EntityNotFoundException()
     }
 
-    fun findAll(leagueName: String?, leagueType: LeagueType?, categoryName: String?, gameName: String?, systemName: String?, isEmulated: Boolean?, region: Region?, version: String?): List<LeagueSpeedrun> {
+    fun findAll(leagueName: String?, leagueType: LeagueType?, category: String?, gameName: String?, systemName: String?, isEmulated: Boolean?, region: Region?, version: String?): List<LeagueSpeedrun> {
         return findAllActive()
             .asSequence()
             .filter { leagueSpeedrun ->  leagueName?.let { leagueSpeedrun.league.name == leagueName } ?: true }
             .filter { leagueSpeedrun ->  leagueType?.let { leagueSpeedrun.league.type == leagueType } ?: true }
-            .filter { leagueSpeedrun ->  categoryName?.let { leagueSpeedrun.speedrun.category.name == categoryName } ?: true }
+            .filter { leagueSpeedrun ->  category?.let { leagueSpeedrun.speedrun.category == category } ?: true }
             .filter { leagueSpeedrun ->  gameName?.let { leagueSpeedrun.speedrun.cart.game.name == gameName } ?: true }
             .filter { leagueSpeedrun ->  systemName?.let { leagueSpeedrun.speedrun.cart.system.name == systemName } ?: true }
             .filter { leagueSpeedrun ->  isEmulated?.let { leagueSpeedrun.speedrun.cart.system.isEmulated == isEmulated } ?: true }

@@ -15,36 +15,35 @@ class StandingController {
     @Autowired
     private lateinit var standingService: StandingService
 
-    // ! Convert RequestParam into path variables
-    @GetMapping(path = ["/generate"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(path = ["/generate/{league}/{season}/{tier}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun generateStandings(
-        @RequestParam("league")
+        @PathVariable("league")
         leagueName: String,
-        @RequestParam("season")
+        @PathVariable("season")
         season: Int,
-        @RequestParam("tier")
+        @PathVariable("tier")
         tierLevel: Int
     ): Iterable<StandingOutput> {
         return standingService.generateStandings(leagueName, season, tierLevel)
     }
 
-    @GetMapping(path = ["/qualifiedRunners"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(path = ["/qualifiedRunners/{league}/{season}/{tier}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findQualifiedRunners(
-        @RequestParam("league")
+        @PathVariable("league")
         leagueName: String,
-        @RequestParam("season")
+        @PathVariable("season")
         season: Int,
-        @RequestParam("tier")
+        @PathVariable("tier")
         tierLevel: Int,
         @RequestParam("top")
-        top: Int
+        top: Int = 8
     ): Iterable<QualifiedRunner> {
         return standingService.findQualifiedRunners(leagueName, season, tierLevel, top)
     }
 
-    @GetMapping(path = ["/calculatePlacements"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(path = ["/calculatePlacements/{race}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun calculatePlacements(
-        @RequestParam("race")
+        @PathVariable("race")
         raceName: String
     ): List<RaceTimeOutput> {
         return standingService.calculatePlacements(raceName)

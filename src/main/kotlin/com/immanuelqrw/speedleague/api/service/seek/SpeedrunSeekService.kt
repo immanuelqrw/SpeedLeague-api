@@ -27,9 +27,9 @@ class SpeedrunSeekService : BaseUniqueService<Speedrun>(Speedrun::class.java) {
         }
     }
 
-    fun findAllByCategoryAndGame(categoryName: String, gameName: String): List<Speedrun> {
+    fun findAllByCategoryAndGame(category: String, gameName: String): List<Speedrun> {
         return findAllActive().filter { speedrun ->
-            speedrun.category.name == categoryName && speedrun.cart.game.name == gameName
+            speedrun.category == category && speedrun.cart.game.name == gameName
         }
     }
 
@@ -51,17 +51,17 @@ class SpeedrunSeekService : BaseUniqueService<Speedrun>(Speedrun::class.java) {
         }
     }
 
-    fun findByCategoryAndGameAndSystem(categoryName: String, gameName: String, systemName: String): List<Speedrun> {
+    fun findByCategoryAndGameAndSystem(category: String, gameName: String, systemName: String): List<Speedrun> {
         return findAllActive().filter { speedrun ->
-            speedrun.category.name == categoryName &&
+            speedrun.category == category &&
             speedrun.cart.game.name == gameName &&
             speedrun.cart.system.name == systemName
         }
     }
 
-    fun findByCategoryAndGameAndRegion(categoryName: String, gameName: String, region: Region): List<Speedrun> {
+    fun findByCategoryAndGameAndRegion(category: String, gameName: String, region: Region): List<Speedrun> {
         return findAllActive().filter { speedrun ->
-            speedrun.category.name == categoryName &&
+            speedrun.category == category &&
             speedrun.cart.game.name == gameName &&
             speedrun.cart.region == region
         }
@@ -75,9 +75,9 @@ class SpeedrunSeekService : BaseUniqueService<Speedrun>(Speedrun::class.java) {
         }
     }
 
-    fun find(categoryName: String, gameName: String, systemName: String, isEmulated: Boolean, region: Region, version: String): Speedrun {
+    fun find(category: String, gameName: String, systemName: String, isEmulated: Boolean, region: Region, version: String): Speedrun {
         return findAllActive().firstOrNull { speedrun ->
-            speedrun.category.name == categoryName &&
+            speedrun.category == category &&
             speedrun.cart.game.name == gameName &&
             speedrun.cart.system.name == systemName &&
             speedrun.cart.system.isEmulated == isEmulated &&
@@ -86,10 +86,10 @@ class SpeedrunSeekService : BaseUniqueService<Speedrun>(Speedrun::class.java) {
         } ?: throw EntityNotFoundException()
     }
 
-    fun findAll(categoryName: String?, gameName: String?, systemName: String?, isEmulated: Boolean?, region: Region?, version: String?): List<Speedrun> {
+    fun findAll(category: String?, gameName: String?, systemName: String?, isEmulated: Boolean?, region: Region?, version: String?): List<Speedrun> {
         return findAllActive()
             .asSequence()
-            .filter { speedrun ->  categoryName?.let { speedrun.category.name == categoryName } ?: true }
+            .filter { speedrun ->  category?.let { speedrun.category == category } ?: true }
             .filter { speedrun ->  gameName?.let { speedrun.cart.game.name == gameName } ?: true }
             .filter { speedrun ->  systemName?.let { speedrun.cart.system.name == systemName } ?: true }
             .filter { speedrun ->  isEmulated?.let { speedrun.cart.system.isEmulated == isEmulated } ?: true }

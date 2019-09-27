@@ -1,0 +1,368 @@
+#%RAML 1.0
+---
+title: SpeedLeague API
+baseUri: https://api.speedleague.io/{version}
+version: v1
+uses:
+  request: request.raml
+  response: response.raml
+
+# ! Fix examples in search to be entity specific
+/cart:
+  get:
+    description: Retrieve a set of Carts based on search query
+    queryParameters:
+      search:
+        displayName: Search
+        type: string
+        description: Full Search Parameters
+        example: name~Ik*n*;type:POOL
+        required: false
+  /deepSearch:
+    get:
+      description: Retrieve a set of Carts based on query parameters
+      queryParameters:
+        game:
+          displayName: Game
+          type: string
+          description: A Game's name
+          example: Pokémon Snap
+          required: false
+        system:
+          displayName: System
+          type: string
+          description: A System's name
+          example: Wii U VC
+          required: false
+        isEmulated:
+          displayName: Emulated?
+          type: boolean
+          description: Whether a Game is emulated
+          example: false
+          required: false
+        region:
+          displayName: Region
+          type: string
+          description: A Region's name
+          example: NTSC_U
+          required: false
+        version:
+          displayName: Version
+          type: string
+          description: The Version of a game
+          example: 1.0.0
+          required: false
+      responses:
+        200:
+          body:
+            application/json:
+              type: response.Cart[]
+              example: !include example/response/cart.json
+  post:
+    description: Create Cart
+    body:
+      application/json:
+        type: request.Cart
+        example: !include example/request/cart.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: response.Cart
+            example: !include example/response/cart.json
+
+/divisionShift:
+  get:
+  post:
+
+/game:
+  get:
+    description: Retrieve a Game based on search query
+    queryParameters:
+      search:
+        displayName: Search
+        type: string
+        description: Full Search Parameters
+        example: name~Ik*n*;type:POOL
+        required: false
+    responses:
+      200:
+        body:
+          application/json:
+            type: response.Game[]
+            example: !include example/response/game.json
+  /shorthand:
+    /{shorthand}:
+      get:
+        description: Retrieve a Game from its shorthand identifier
+        responses:
+          200:
+            body:
+              application/json:
+                type: response.Game
+                example: !include example/response/game.json
+  post:
+    description: Create a Game
+    body:
+      application/json:
+        type: request.Game
+        example: !include example/request/game.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: response.Game
+            example: !include example/response/game.json
+
+/league:
+  get:
+  post:
+
+/leagueSpeedrun:
+  get:
+    description: Retrieve a set of League and Speedun Category connections based on search query
+    queryParameters:
+      search:
+        displayName: Search
+        type: string
+        description: Full Search Parameters
+        example: name~Ik*n*;type:POOL
+        required: false
+    responses:
+      200:
+        body:
+          application/json:
+            type: response.LeagueSpeedrun[]
+            example: !include example/response/leagueSpeedrun.json
+  /deepSearch:
+    get:
+      description: Retrieve a set of League and Speedun Category connection based on query parameters
+      queryParameters:
+        league:
+          displayName: League
+          type: string
+          description: A League's name
+          example: Neverending
+          required: false
+        type:
+          displayName: League Type
+          type: string
+          description: A League's type
+          example: POOL
+          required: false
+        category:
+          displayName: Category
+          type: string
+          description: A Category's name
+          example: Any%
+          required: false
+        game:
+          displayName: Game
+          type: string
+          description: A Game's name
+          example: Pokémon Snap
+          required: false
+        system:
+          displayName: System
+          type: string
+          description: A System's name
+          example: Wii U VC
+          required: false
+        isEmulated:
+          displayName: Emulated?
+          type: boolean
+          description: Whether a Game is emulated
+          example: false
+          required: false
+        region:
+          displayName: Region
+          type: string
+          description: A Region's name
+          example: NTSC_U
+          required: false
+        version:
+          displayName: Version
+          type: string
+          description: The Version of a game
+          example: 1.0.0
+          required: false
+      responses:
+        200:
+          body:
+            application/json:
+              type: response.LeagueSpeedrun[]
+              example: !include example/response/leagueSpeedrun.json
+  post:
+    description: Create League and Speedun Category connection
+    body:
+      application/json:
+        type: request.LeagueSpeedrun
+        example: !include example/request/leagueSpeedrun.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: response.LeagueSpeedrun
+            example: !include example/response/leagueSpeedrun.json
+
+/openRace:
+  get:
+    description: Retrieve a set of Races which have not started yet
+    queryParameters:
+      startedOn:
+        displayName: Started On
+        type: datetime
+        description: The datetime before races were started
+        example: "2019-09-24T00:04:32.437"
+        required: false
+    responses:
+      200:
+        body:
+          application/json:
+            type: response.Race
+            example: !include example/response/race.json
+  /isRaceCompleted:
+    /{race}:
+      get:
+        description: Whether a race has been completed
+        responses:
+          200:
+            body:
+              application/json:
+                type: boolean
+                example: false
+
+/playoffRule:
+  get:
+  post:
+
+/pointRule:
+  get:
+  post:
+
+/race:
+  get:
+    description: Retrieve a set of Races based on search query
+    queryParameters:
+      search:
+        displayName: Search
+        type: string
+        description: Full Search Parameters
+        example: name~Ik*n*;type:POOL
+        required: false
+  /runner:
+    /{runner}:
+      get:
+        description: Retrieve all races from a specific Runner
+        responses:
+          200:
+            body:
+              application/json:
+                type: response.Race
+                example: !include example/response/race.json
+  post:
+    description: Create Race
+    body:
+      application/json:
+        type: request.Race
+        example: !include example/request/race.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: response.Race
+            example: !include example/response/race.json
+
+/raceTime:
+  post:
+  patch:
+
+/runner:
+  get:
+  post:
+
+/speedrun:
+  get:
+    description: Retrieve a set of Speedrun Categories based on search query
+    queryParameters:
+      search:
+        displayName: Search
+        type: string
+        description: Full Search Parameters
+        example: name~Ik*n*;type:POOL
+        required: false
+  /deepSearch:
+    get:
+      description: Retrieve a set of Speedrun Categories based on query parameters
+      queryParameters:
+        category:
+          displayName: Category
+          type: string
+          description: A Category's name
+          example: Any%
+          required: false
+        game:
+          displayName: Game
+          type: string
+          description: A Game's name
+          example: Pokémon Snap
+          required: false
+        system:
+          displayName: System
+          type: string
+          description: A System's name
+          example: Wii U VC
+          required: false
+        isEmulated:
+          displayName: Emulated?
+          type: boolean
+          description: Whether a Game is emulated
+          example: false
+          required: false
+        region:
+          displayName: Region
+          type: string
+          description: A Region's name
+          example: NTSC_U
+          required: false
+        version:
+          displayName: Version
+          type: string
+          description: The Version of a game
+          example: 1.0.0
+          required: false
+      responses:
+        200:
+          body:
+            application/json:
+              type: response.Speedrun[]
+              example: !include example/response/speedrun.json
+
+  post:
+    description: Create Speedrun Category
+    body:
+      application/json:
+        type: request.Speedrun
+        example: !include example/request/speedrun.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: response.Speedrun
+            example: !include example/response/speedrun.json
+
+/standings:
+  /generate:
+    /{league}:
+      /{season}:
+        /{tier}:
+  /qualifiedRunners:
+    /{league}:
+      /{season}:
+        /{tier}:
+  /calculatePlacements:
+    /{race}:
+
+/system:
+  get:
+  post:

@@ -5,7 +5,7 @@ import com.immanuelqrw.speedleague.api.entity.Region
 
 data class Speedrun(
 
-    val categoryName: String,
+    val category: String,
 
     val gameName: String,
 

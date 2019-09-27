@@ -1,0 +1,23 @@
+type: object
+properties:
+  leagueName:
+    type: string
+    required: true
+  season:
+    type: integer
+    required: true
+  startedOn:
+    type: datetime
+    required: false
+  endedOn:
+    type: datetime
+    required: false
+  registrationEndedOn:
+    type: datetime
+    required: false
+  qualifierRules:
+    type: !include qualifierRule.raml
+    required: true
+  pointRules:
+    type: !include pointRule.raml
+    required: true

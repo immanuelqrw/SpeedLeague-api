@@ -22,7 +22,7 @@ class LeagueSpeedrunService {
     fun create(leagueSpeedrunInput: LeagueSpeedrunInput): LeagueSpeedrunOutput {
         return leagueSpeedrunInput.run {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
-            val speedrun: Speedrun = speedrunSeekService.find(categoryName, gameName, systemName, isEmulated, region, version)
+            val speedrun: Speedrun = speedrunSeekService.find(category, gameName, systemName, isEmulated, region, version)
 
             // - Add more descriptive error message
             leagueSeekService.validateLeagueChange(league.endedOn)
@@ -43,7 +43,7 @@ class LeagueSpeedrunService {
     fun findAll(
         leagueName: String?,
         leagueType: LeagueType?,
-        categoryName: String?,
+        category: String?,
         gameName: String?,
         systemName: String?,
         isEmulated: Boolean?,
@@ -51,7 +51,7 @@ class LeagueSpeedrunService {
         version: String?
     ): Iterable<LeagueSpeedrunOutput> {
         return leagueSpeedrunSeekService
-            .findAll(leagueName, leagueType, categoryName, gameName, systemName, isEmulated, region, version)
+            .findAll(leagueName, leagueType, category, gameName, systemName, isEmulated, region, version)
             .map { leagueSpeedrun -> leagueSpeedrun.output }
     }
 

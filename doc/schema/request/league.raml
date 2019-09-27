@@ -1,0 +1,44 @@
+type: object
+properties:
+  name:
+    type: string
+    required: true
+  type:
+    type: string
+    required: false
+  startedOn:
+    type: datetime
+    required: false
+  defaultTime:
+    type: string
+    required: true
+  defaultPoints:
+    type: boolean
+    required: false
+  tierName:
+    type: string
+    required: true
+  runnerLimit:
+    type: integer
+    required: true
+  registrationEndedOn:
+    type: datetime
+    required: false
+  promotions:
+    type: integer
+    required: false
+  relegations:
+    type: integer
+    required: false
+  qualifierRules:
+    type: !include qualifierRule.raml
+    required: true
+  pointRules:
+    type: !include pointRule.raml
+    required: true
+  promotionRules:
+    type: !include qualifierRule.raml
+    required: true
+  relegationRules:
+    type: !include qualifierRule.raml
+    required: true

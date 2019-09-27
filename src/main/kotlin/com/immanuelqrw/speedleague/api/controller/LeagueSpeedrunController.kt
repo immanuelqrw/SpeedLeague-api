@@ -36,7 +36,7 @@ class LeagueSpeedrunController {
         @RequestParam("type")
         leagueType: LeagueType?,
         @RequestParam("category")
-        categoryName: String?,
+        category: String?,
         @RequestParam("game")
         gameName: String?,
         @RequestParam("system")
@@ -49,7 +49,7 @@ class LeagueSpeedrunController {
         version: String?
     ): Iterable<LeagueSpeedrunOutput> {
         return leagueSpeedrunService
-            .findAll(leagueName, leagueType, categoryName, gameName, systemName, isEmulated, region, version)
+            .findAll(leagueName, leagueType, category, gameName, systemName, isEmulated, region, version)
     }
 
 }

@@ -34,9 +34,9 @@ class RunnerController {
         return runnerService.findAll(search = search)
     }
 
-    @GetMapping(path = ["/race/{raceName}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(path = ["/race/{race}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAllRunners(
-        @PathVariable("raceName")
+        @PathVariable("race")
         raceName: String
     ): List<RunnerOutput> {
         return runnerService.findAllRunners(raceName)

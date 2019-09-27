@@ -19,9 +19,9 @@ class OpenRaceController {
     fun findAll(
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         @RequestParam("startedOn")
-        startedOn: LocalDateTime
+        startedOn: LocalDateTime?
     ): List<RaceOutput> {
-        return openRaceService.findOpenRaces(startedOn)
+        return openRaceService.findOpenRaces(startedOn ?: LocalDateTime.now())
     }
 
     @GetMapping(path = ["/isRaceCompleted/{race}"], produces = [MediaType.APPLICATION_JSON_VALUE])
