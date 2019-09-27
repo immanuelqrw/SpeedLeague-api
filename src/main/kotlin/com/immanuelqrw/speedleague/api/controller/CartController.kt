@@ -2,14 +2,8 @@ package com.immanuelqrw.speedleague.api.controller
 
 import com.immanuelqrw.speedleague.api.dto.input.Cart as CartInput
 import com.immanuelqrw.speedleague.api.dto.output.Cart as CartOutput
-import com.immanuelqrw.speedleague.api.entity.Cart
-import com.immanuelqrw.speedleague.api.entity.Game
 import com.immanuelqrw.speedleague.api.entity.Region
-import com.immanuelqrw.speedleague.api.entity.System
 import com.immanuelqrw.speedleague.api.service.CartService
-import com.immanuelqrw.speedleague.api.service.seek.CartSeekService
-import com.immanuelqrw.speedleague.api.service.seek.GameSeekService
-import com.immanuelqrw.speedleague.api.service.seek.SystemSeekService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*

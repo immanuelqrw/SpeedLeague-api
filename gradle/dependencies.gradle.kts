@@ -83,7 +83,10 @@ val packages: Array<Package> = arrayOf(
     *springTestPackages,
     *databasePackages,
     *jUnitPackages,
-    Package( "com.google.guava", "guava", "28.1-jre")
+    Package( "com.google.guava", "guava", "28.1-jre"),
+    Package("io.swagger.core.v3", "swagger-jaxrs2", "2.0.0"),
+    Package("io.swagger.core.v3", "swagger-jaxrs2-servlet-initializer", "2.0.0"),
+            Package("org.springdoc", "springdoc-openapi-ui", "1.1.43")
 )
 
 val testPackages: Array<Package> = arrayOf(
