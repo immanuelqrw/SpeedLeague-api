@@ -4,12 +4,21 @@ import com.immanuelqrw.core.api.service.BaseUniqueService
 import com.immanuelqrw.speedleague.api.dto.update.LeagueDivisionShift
 import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.exception.LeagueHasEndedException
+import org.springframework.data.domain.Pageable
+import org.springframework.security.access.prepost.PostFilter
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import javax.persistence.EntityNotFoundException
 
 @Service
 class LeagueSeekService : BaseUniqueService<League>(League::class.java) {
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostFilter("filterObject.relatedRunners.contains(authentication.name)")
+    override fun findAllActive(page: Pageable?, search: String?): Iterable<League> {
+        return super.findAllActive(page, search)
+    }
 
     // ? Consider moving to LeagueService
     fun validateLeagueChange(endedOn: LocalDateTime?, failureMessage: String = "League has ended") {

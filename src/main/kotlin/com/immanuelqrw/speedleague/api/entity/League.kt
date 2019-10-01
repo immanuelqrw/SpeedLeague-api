@@ -122,4 +122,11 @@ data class League(
             )
         }
 
+    @OneToMany(mappedBy = "league", cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
+    var leagueRunners: Set<LeagueRunner> = emptySet()
+
+    val relatedRunners: Set<String>
+        get() {
+            return leagueRunners.map { leagueRunner -> leagueRunner.runner.name }.toSet()
+        }
 }

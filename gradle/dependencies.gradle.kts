@@ -86,14 +86,18 @@ val packages: Array<Package> = arrayOf(
     Package( "com.google.guava", "guava", "28.1-jre"),
     Package("io.swagger.core.v3", "swagger-jaxrs2", "2.0.0"),
     Package("io.swagger.core.v3", "swagger-jaxrs2-servlet-initializer", "2.0.0"),
-            Package("org.springdoc", "springdoc-openapi-ui", "1.1.43")
+    Package("org.springdoc", "springdoc-openapi-ui", "1.1.43"),
+    Package("org.springframework.security", "spring-security-config", springVersion),
+    Package("org.springframework.security", "spring-security-core", springVersion),
+    Package("org.springframework.security", "spring-security-web", springVersion)
 )
 
 val testPackages: Array<Package> = arrayOf(
     Package("org.hibernate", "hibernate-testing", "5.3.7.Final"),
     *jUnitPackages,
     *springTestPackages,
-    *nucleusTestPackages
+    *nucleusTestPackages,
+    Package("org.springframework.security", "spring-security-test", springVersion)
 )
 
 dependencies {
