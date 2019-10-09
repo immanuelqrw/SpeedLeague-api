@@ -20,6 +20,7 @@ plugins {
     id("io.spring.dependency-management") version "1.0.7.RELEASE"
     id("org.sonarqube") version "2.6"
     id("org.jetbrains.dokka") version "0.9.17"
+    id("org.springframework.boot") version "2.1.7.RELEASE"
     idea
     application
     `maven-publish`
@@ -143,4 +144,8 @@ publishing {
             artifact(sourcesJar.get())
         }
     }
+}
+
+tasks.bootJar {
+    mainClassName = "com.immanuelqrw.speedleague.api.ApplicationKt"
 }
