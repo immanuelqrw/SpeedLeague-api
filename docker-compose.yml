@@ -1,12 +1,35 @@
 version: "3.7"
 services:
+  db:
+    container_name: speed
+    image: postgres
+    volumes:
+      - speed:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=speedleague
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    networks:
+      - speednet
   speedleague-api:
     container_name: speedleague-api
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.base
     image: speedleague-api:latest
+    depends_on:
+      - db
     ports:
       - "8089:8089"
     logging:
       driver: json-file
+    networks:
+      - speednet
+volumes:
+  speed: {}
+networks:
+  speednet:
+    driver: bridge
