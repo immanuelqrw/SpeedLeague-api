@@ -5,4 +5,8 @@ import com.immanuelqrw.speedleague.api.entity.Race
 import org.springframework.stereotype.Repository
 
 @Repository
-interface RaceRepository : BaseUniqueRepository<Race>
+interface RaceRepository : BaseUniqueRepository<Race> {
+
+    fun findByNameAndRemovedOnIsNull(name: String): Race?
+
+}

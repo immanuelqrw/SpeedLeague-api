@@ -15,33 +15,21 @@ class DivisionShiftRuleSeekService : BaseUniqueService<DivisionShiftRule>(Divisi
     private lateinit var divisionShiftRuleRepository: DivisionShiftRuleRepository
 
     fun findAllByLeague(leagueName: String, season: Int, tierLevel: Int): List<DivisionShiftRule> {
-        return findAllActive().filter { divisionShiftRule ->
-            divisionShiftRule.league.name == leagueName &&
-            divisionShiftRule.league.season == season &&
-            divisionShiftRule.league.tier.level == tierLevel
-        }
+        return divisionShiftRuleRepository.findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevel(leagueName, season, tierLevel)
     }
 
     fun findAllPromotionByLeague(leagueName: String, season: Int, tierLevel: Int): List<DivisionShiftRule> {
-        return findAllActive().filter { divisionShiftRule ->
-            divisionShiftRule.league.name == leagueName &&
-            divisionShiftRule.league.season == season &&
-            divisionShiftRule.league.tier.level == tierLevel &&
-            divisionShiftRule.shift == Shift.PROMOTION
-        }
+        return divisionShiftRuleRepository
+            .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndShift(leagueName, season, tierLevel, Shift.PROMOTION)
     }
 
     fun findAllRelegationByLeague(leagueName: String, season: Int, tierLevel: Int): List<DivisionShiftRule> {
-        return findAllActive().filter { divisionShiftRule ->
-            divisionShiftRule.league.name == leagueName &&
-            divisionShiftRule.league.season == season &&
-            divisionShiftRule.league.tier.level == tierLevel &&
-            divisionShiftRule.shift == Shift.RELEGATION
-        }
+        return divisionShiftRuleRepository
+            .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndShift(leagueName, season, tierLevel, Shift.RELEGATION)
     }
 
-    fun findByLeague(leagueId: UUID): DivisionShiftRule? {
-        return findAllActive(search = "leagueId:$leagueId").firstOrNull()
+    fun findByLeague(leagueName: String): DivisionShiftRule? {
+        return divisionShiftRuleRepository.findByLeagueName(leagueName)
     }
 
     fun delete(divisionShiftRule: DivisionShiftRule) {

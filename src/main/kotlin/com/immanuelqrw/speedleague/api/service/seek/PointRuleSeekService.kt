@@ -14,15 +14,12 @@ class PointRuleSeekService : BaseUniqueService<PointRule>(PointRule::class.java)
     private lateinit var pointRuleRepository: PointRuleRepository
 
     fun findAllByLeague(leagueName: String, season: Int, tierLevel: Int): List<PointRule> {
-        return findAllActive().filter { pointRule ->
-            pointRule.league.name == leagueName &&
-            pointRule.league.season == season &&
-            pointRule.league.tier.level == tierLevel
-        }
+        return pointRuleRepository
+            .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevel(leagueName, season, tierLevel)
     }
 
-    fun findByLeague(leagueId: UUID): PointRule? {
-        return findAllActive(search = "leagueId:$leagueId").firstOrNull()
+    fun findByLeague(leagueName: String): PointRule? {
+        return pointRuleRepository.findByLeagueName(leagueName)
     }
 
     fun delete(pointRule: PointRule) {

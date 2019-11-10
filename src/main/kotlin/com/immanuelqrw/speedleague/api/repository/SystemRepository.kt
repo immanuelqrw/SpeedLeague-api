@@ -5,4 +5,8 @@ import com.immanuelqrw.speedleague.api.entity.System
 import org.springframework.stereotype.Repository
 
 @Repository
-interface SystemRepository : BaseUniqueRepository<System>
+interface SystemRepository : BaseUniqueRepository<System> {
+
+    fun findByName(name: String): System?
+
+}

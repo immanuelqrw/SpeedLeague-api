@@ -14,15 +14,12 @@ class PlayoffRuleSeekService : BaseUniqueService<PlayoffRule>(PlayoffRule::class
     private lateinit var playoffRuleRepository: PlayoffRuleRepository
 
     fun findAllByLeague(leagueName: String, season: Int, tierLevel: Int): List<PlayoffRule> {
-        return findAllActive().filter { playoffRule ->
-            playoffRule.league.name == leagueName &&
-            playoffRule.league.season == season &&
-            playoffRule.league.tier.level == tierLevel
-        }
+        return playoffRuleRepository
+            .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevel(leagueName, season, tierLevel)
     }
 
-    fun findByLeague(leagueId: UUID): PlayoffRule? {
-        return findAllActive(search = "leagueId:$leagueId").firstOrNull()
+    fun findByLeague(leagueName: String): PlayoffRule? {
+        return playoffRuleRepository.findByLeagueName(leagueName)
     }
 
     fun delete(playoffRule: PlayoffRule) {

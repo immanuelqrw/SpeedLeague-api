@@ -15,21 +15,16 @@ class OpenRaceService {
     private lateinit var raceRunnerSeekService: RaceRunnerSeekService
 
     fun findOpenRaces(startedOn: LocalDateTime): List<RaceOutput> {
-        val raceRunners: Iterable<RaceRunner> = raceRunnerSeekService.findAllActive().filter { raceRunner ->
-            raceRunner.race.startedOn > startedOn
-        }
+        val raceRunners: Iterable<RaceRunner> = raceRunnerSeekService.findAllByStartedOnAndOutcome(startedOn, Outcome.PENDING_VERIFICATION)
 
         return raceRunners
-            .filter { raceRunner -> isRaceOpen(raceRunner.race.name) }
             .map { raceRunner -> raceRunner.race.output }
     }
 
     fun isRaceOpen(raceName: String): Boolean {
-        val raceRunners: List<RaceRunner> = raceRunnerSeekService.findAllByRace(raceName)
+        val raceRunners: List<RaceRunner> = raceRunnerSeekService.findAllByRaceAndOutcome(raceName, Outcome.PENDING_VERIFICATION)
 
-        return raceRunners.all { raceRunner ->
-            raceRunner.outcome != Outcome.PENDING_VERIFICATION
-        }
+        return raceRunners.isEmpty()
     }
 
 }
