@@ -10,15 +10,12 @@ import javax.persistence.EntityNotFoundException
 @Service
 class GameSeekService : BaseUniqueService<Game>(Game::class.java) {
 
-    @Autowired
-    private lateinit var gameRepository: GameRepository
-
     fun findByName(name: String): Game {
         return findAllActive(search = "name:$name").firstOrNull() ?: throw EntityNotFoundException()
     }
 
     fun findByShorthand(shorthand: String): Game {
-        return gameRepository.findByShorthand(shorthand)
+        return findAllActive(search = "shorthand:$shorthand").firstOrNull() ?: throw EntityNotFoundException()
     }
 
 }
