@@ -62,6 +62,8 @@ val jUnitPackages: Array<Package> = arrayOf(
     Package("org.junit.jupiter", "junit-jupiter-api", junitVersion),
     Package("org.junit.jupiter", "junit-jupiter-params", junitVersion),
     Package("org.junit.jupiter", "junit-jupiter-engine", junitVersion),
+    Package("org.junit.platform", "junit-platform-commons", "1.5.2"),
+    Package("org.junit.platform", "junit-platform-launcher", "1.5.2"),
 
     Package("io.mockk", "mockk", "1.8.13"),
     Package("org.amshove.kluent", "kluent", "1.49")
