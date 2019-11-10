@@ -15,11 +15,11 @@ class PointRuleSeekService : BaseUniqueService<PointRule>(PointRule::class.java)
 
     fun findAllByLeague(leagueName: String, season: Int, tierLevel: Int): List<PointRule> {
         return pointRuleRepository
-            .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevel(leagueName, season, tierLevel)
+            .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndRemovedOnIsNull(leagueName, season, tierLevel)
     }
 
     fun findByLeague(leagueName: String): PointRule? {
-        return pointRuleRepository.findByLeagueName(leagueName)
+        return pointRuleRepository.findByLeagueNameAndRemovedOnIsNull(leagueName)
     }
 
     fun delete(pointRule: PointRule) {

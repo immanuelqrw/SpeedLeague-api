@@ -14,15 +14,15 @@ class LeagueRunnerSeekService : BaseUniqueService<LeagueRunner>(LeagueRunner::cl
     private lateinit var leagueRunnerRepository: LeagueRunnerRepository
 
     fun findByLeagueAndRunner(leagueName: String, season: Int, tierLevel: Int, runnerName: String): LeagueRunner? {
-        return leagueRunnerRepository.findByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndRunnerName(leagueName, season, tierLevel, runnerName)
+        return leagueRunnerRepository.findByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndRunnerNameAndRemovedOnIsNull(leagueName, season, tierLevel, runnerName)
     }
 
     fun findAllByLeague(leagueName: String, season: Int, tierLevel: Int): List<LeagueRunner> {
-        return leagueRunnerRepository.findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevel(leagueName, season, tierLevel)
+        return leagueRunnerRepository.findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndRemovedOnIsNull(leagueName, season, tierLevel)
     }
 
     fun findAllByRunner(runnerName: String): List<LeagueRunner> {
-        return leagueRunnerRepository.findAllByRunnerName(runnerName)
+        return leagueRunnerRepository.findAllByRunnerNameAndRemovedOnIsNull(runnerName)
     }
 
 }

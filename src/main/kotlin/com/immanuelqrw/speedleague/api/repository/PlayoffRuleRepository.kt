@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository
 @Repository
 interface PlayoffRuleRepository : BaseUniqueRepository<PlayoffRule> {
 
-    fun findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevel(leagueName: String, season: Int, tierLevel: Int): List<PlayoffRule>
+    fun findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndRemovedOnIsNull(leagueName: String, season: Int, tierLevel: Int): List<PlayoffRule>
 
-    fun findByLeagueName(leagueName: String): PlayoffRule?
+    fun findByLeagueNameAndRemovedOnIsNull(leagueName: String): PlayoffRule?
 
 }

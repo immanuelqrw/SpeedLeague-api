@@ -15,32 +15,32 @@ class CartSeekService : BaseUniqueService<Cart>(Cart::class.java) {
     private lateinit var cartRepository: CartRepository
 
     fun findAllByGame(gameName: String): List<Cart> {
-        return cartRepository.findAllByGameName(gameName)
+        return cartRepository.findAllByGameNameAndRemovedOnIsNull(gameName)
     }
 
     fun findAllBySystem(systemName: String): List<Cart> {
-        return cartRepository.findAllBySystemName(systemName)
+        return cartRepository.findAllBySystemNameAndRemovedOnIsNull(systemName)
     }
 
     fun findAllByRegion(region: Region): List<Cart> {
-        return cartRepository.findAllByRegion(region)
+        return cartRepository.findAllByRegionAndRemovedOnIsNull(region)
     }
 
     fun findAllByGameAndSystem(gameName: String, systemName: String): List<Cart> {
-        return cartRepository.findAllByGameNameAndSystemName(gameName, systemName)
+        return cartRepository.findAllByGameNameAndSystemNameAndRemovedOnIsNull(gameName, systemName)
     }
 
     fun findAllByGameAndRegion(gameName: String, region: Region): List<Cart> {
-        return cartRepository.findAllByGameNameAndRegion(gameName, region)
+        return cartRepository.findAllByGameNameAndRegionAndRemovedOnIsNull(gameName, region)
     }
 
     fun findAllBySystemAndRegion(systemName: String, region: Region): List<Cart> {
-        return cartRepository.findAllBySystemNameAndRegion(systemName, region)
+        return cartRepository.findAllBySystemNameAndRegionAndRemovedOnIsNull(systemName, region)
     }
 
     fun find(gameName: String, systemName: String, isEmulated: Boolean, region: Region, version: String): Cart {
         return cartRepository
-            .findFirstByGameNameAndSystemNameAndSystemIsEmulatedAndRegionAndVersion(gameName, systemName, isEmulated, region, version)
+            .findFirstByGameNameAndSystemNameAndSystemIsEmulatedAndRegionAndVersionAndRemovedOnIsNull(gameName, systemName, isEmulated, region, version)
             ?: throw EntityNotFoundException()
     }
 

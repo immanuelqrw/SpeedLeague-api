@@ -7,10 +7,10 @@ import org.springframework.stereotype.Repository
 @Repository
 interface LeagueRepository : BaseUniqueRepository<League> {
 
-    fun findByNameAndSeasonAndTierLevel(name: String, season: Int, tierLevel: Int): League?
+    fun findByNameAndSeasonAndTierLevelAndRemovedOnIsNull(name: String, season: Int, tierLevel: Int): League?
 
-    fun findAllByNameAndSeasonOrderByTierLevelAsc(name: String, season: Int): List<League>
+    fun findAllByNameAndSeasonAndRemovedOnIsNullOrderByTierLevelAsc(name: String, season: Int): List<League>
 
-    fun findFirstByNameAndSeasonOrderByTierLevelDesc(name: String, season: Int): League?
+    fun findFirstByNameAndSeasonAndRemovedOnIsNullOrderByTierLevelDesc(name: String, season: Int): League?
 
 }

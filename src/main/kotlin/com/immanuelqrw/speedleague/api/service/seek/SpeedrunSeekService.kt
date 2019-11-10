@@ -15,48 +15,48 @@ class SpeedrunSeekService : BaseUniqueService<Speedrun>(Speedrun::class.java) {
     private lateinit var speedrunRepository: SpeedrunRepository
 
     fun findAllByGame(gameName: String): List<Speedrun> {
-        return speedrunRepository.findAllByCartGameName(gameName)
+        return speedrunRepository.findAllByCartGameNameAndRemovedOnIsNull(gameName)
     }
 
     fun findAllBySystem(systemName: String): List<Speedrun> {
-        return speedrunRepository.findAllByCartSystemName(systemName)
+        return speedrunRepository.findAllByCartSystemNameAndRemovedOnIsNull(systemName)
     }
 
     fun findAllByRegion(region: Region): List<Speedrun> {
-        return speedrunRepository.findAllByCartRegion(region)
+        return speedrunRepository.findAllByCartRegionAndRemovedOnIsNull(region)
     }
 
     fun findAllByCategoryAndGame(category: String, gameName: String): List<Speedrun> {
-        return speedrunRepository.findAllByCategoryAndCartGameName(category, gameName)
+        return speedrunRepository.findAllByCategoryAndCartGameNameAndRemovedOnIsNull(category, gameName)
     }
 
     fun findAllByGameAndSystem(gameName: String, systemName: String): List<Speedrun> {
-        return speedrunRepository.findAllByCartGameNameAndCartSystemName(gameName, systemName)
+        return speedrunRepository.findAllByCartGameNameAndCartSystemNameAndRemovedOnIsNull(gameName, systemName)
     }
 
     fun findAllByGameAndRegion(gameName: String, region: Region): List<Speedrun> {
-        return speedrunRepository.findAllByCartGameNameAndCartRegion(gameName, region)
+        return speedrunRepository.findAllByCartGameNameAndCartRegionAndRemovedOnIsNull(gameName, region)
     }
 
     fun findAllBySystemAndRegion(systemName: String, region: Region): List<Speedrun> {
-        return speedrunRepository.findAllByCartSystemNameAndCartRegion(systemName, region)
+        return speedrunRepository.findAllByCartSystemNameAndCartRegionAndRemovedOnIsNull(systemName, region)
     }
 
     fun findAllByCategoryAndGameAndSystem(category: String, gameName: String, systemName: String): List<Speedrun> {
-        return speedrunRepository.findAllByCategoryAndCartGameNameAndCartSystemName(category, gameName, systemName)
+        return speedrunRepository.findAllByCategoryAndCartGameNameAndCartSystemNameAndRemovedOnIsNull(category, gameName, systemName)
     }
 
     fun findAllByCategoryAndGameAndRegion(category: String, gameName: String, region: Region): List<Speedrun> {
-        return speedrunRepository.findAllByCategoryAndCartGameNameAndCartRegion(category, gameName, region)
+        return speedrunRepository.findAllByCategoryAndCartGameNameAndCartRegionAndRemovedOnIsNull(category, gameName, region)
     }
 
     fun findAllByGameAndSystemAndRegion(gameName: String, systemName: String, region: Region): List<Speedrun> {
-        return speedrunRepository.findAllByCartGameNameAndCartSystemNameAndCartRegion(gameName, systemName, region)
+        return speedrunRepository.findAllByCartGameNameAndCartSystemNameAndCartRegionAndRemovedOnIsNull(gameName, systemName, region)
     }
 
     fun find(category: String, gameName: String, systemName: String, isEmulated: Boolean, region: Region, version: String): Speedrun {
         return speedrunRepository
-            .findFirstByCategoryAndCartGameNameAndCartSystemNameAndCartSystemIsEmulatedAndCartRegionAndCartVersion(category, gameName, systemName, isEmulated, region, version)
+            .findFirstByCategoryAndCartGameNameAndCartSystemNameAndCartSystemIsEmulatedAndCartRegionAndCartVersionAndRemovedOnIsNull(category, gameName, systemName, isEmulated, region, version)
             ?: throw EntityNotFoundException()
     }
 

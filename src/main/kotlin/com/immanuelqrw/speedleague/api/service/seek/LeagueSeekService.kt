@@ -51,16 +51,16 @@ class LeagueSeekService : BaseUniqueService<League>(League::class.java) {
     }
 
     fun find(name: String, season: Int, tierLevel: Int): League {
-        return leagueRepository.findByNameAndSeasonAndTierLevel(name, season, tierLevel)
+        return leagueRepository.findByNameAndSeasonAndTierLevelAndRemovedOnIsNull(name, season, tierLevel)
             ?: throw EntityNotFoundException()
     }
 
     fun findAllTiers(name: String, season: Int): List<League> {
-        return leagueRepository.findAllByNameAndSeasonOrderByTierLevelAsc(name, season)
+        return leagueRepository.findAllByNameAndSeasonAndRemovedOnIsNullOrderByTierLevelAsc(name, season)
     }
 
     fun findBottomLeague(name: String, season: Int): League {
-        return leagueRepository.findFirstByNameAndSeasonOrderByTierLevelDesc(name, season)
+        return leagueRepository.findFirstByNameAndSeasonAndRemovedOnIsNullOrderByTierLevelDesc(name, season)
             ?: throw EntityNotFoundException()
     }
 

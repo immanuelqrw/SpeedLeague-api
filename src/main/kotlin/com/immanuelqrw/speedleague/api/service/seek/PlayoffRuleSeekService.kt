@@ -15,11 +15,11 @@ class PlayoffRuleSeekService : BaseUniqueService<PlayoffRule>(PlayoffRule::class
 
     fun findAllByLeague(leagueName: String, season: Int, tierLevel: Int): List<PlayoffRule> {
         return playoffRuleRepository
-            .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevel(leagueName, season, tierLevel)
+            .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndRemovedOnIsNull(leagueName, season, tierLevel)
     }
 
     fun findByLeague(leagueName: String): PlayoffRule? {
-        return playoffRuleRepository.findByLeagueName(leagueName)
+        return playoffRuleRepository.findByLeagueNameAndRemovedOnIsNull(leagueName)
     }
 
     fun delete(playoffRule: PlayoffRule) {

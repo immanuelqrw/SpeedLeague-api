@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository
 @Repository
 interface PointRuleRepository : BaseUniqueRepository<PointRule> {
 
-    fun findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevel(leagueName: String, season: Int, tierLevel: Int): List<PointRule>
+    fun findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndRemovedOnIsNull(leagueName: String, season: Int, tierLevel: Int): List<PointRule>
 
-    fun findByLeagueName(leagueName: String): PointRule?
+    fun findByLeagueNameAndRemovedOnIsNull(leagueName: String): PointRule?
 
 }

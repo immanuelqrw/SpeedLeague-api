@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface RunnerRepository : BaseUniqueRepository<Runner> {
 
-    fun findByName(name: String): Runner?
+    fun findByNameAndRemovedOnIsNull(name: String): Runner?
 
 }

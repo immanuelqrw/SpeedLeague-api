@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface SystemRepository : BaseUniqueRepository<System> {
 
-    fun findByName(name: String): System?
+    fun findByNameAndRemovedOnIsNull(name: String): System?
 
 }

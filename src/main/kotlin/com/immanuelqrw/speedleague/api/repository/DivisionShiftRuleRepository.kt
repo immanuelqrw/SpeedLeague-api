@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository
 @Repository
 interface DivisionShiftRuleRepository : BaseUniqueRepository<DivisionShiftRule> {
 
-    fun findByLeagueName(leagueName: String): DivisionShiftRule?
+    fun findByLeagueNameAndRemovedOnIsNull(leagueName: String): DivisionShiftRule?
 
-    fun findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevel(leagueName: String, season: Int, tierLevel: Int): List<DivisionShiftRule>
+    fun findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndRemovedOnIsNull(leagueName: String, season: Int, tierLevel: Int): List<DivisionShiftRule>
 
-    fun findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndShift(leagueName: String, season: Int, tierLevel: Int, shift: Shift): List<DivisionShiftRule>
+    fun findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndShiftAndRemovedOnIsNull(leagueName: String, season: Int, tierLevel: Int, shift: Shift): List<DivisionShiftRule>
 
 }

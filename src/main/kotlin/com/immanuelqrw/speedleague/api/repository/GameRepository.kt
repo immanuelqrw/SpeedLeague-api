@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository
 @Repository
 interface GameRepository : BaseUniqueRepository<Game> {
 
-    fun findByName(name: String): Game?
+    fun findByNameAndRemovedOnIsNull(name: String): Game?
 
-    fun findByShorthand(shorthand: String): Game?
+    fun findByShorthandAndRemovedOnIsNull(shorthand: String): Game?
 
 }

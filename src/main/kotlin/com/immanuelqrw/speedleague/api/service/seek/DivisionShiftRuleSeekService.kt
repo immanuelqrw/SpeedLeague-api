@@ -15,21 +15,21 @@ class DivisionShiftRuleSeekService : BaseUniqueService<DivisionShiftRule>(Divisi
     private lateinit var divisionShiftRuleRepository: DivisionShiftRuleRepository
 
     fun findAllByLeague(leagueName: String, season: Int, tierLevel: Int): List<DivisionShiftRule> {
-        return divisionShiftRuleRepository.findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevel(leagueName, season, tierLevel)
+        return divisionShiftRuleRepository.findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndRemovedOnIsNull(leagueName, season, tierLevel)
     }
 
     fun findAllPromotionByLeague(leagueName: String, season: Int, tierLevel: Int): List<DivisionShiftRule> {
         return divisionShiftRuleRepository
-            .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndShift(leagueName, season, tierLevel, Shift.PROMOTION)
+            .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndShiftAndRemovedOnIsNull(leagueName, season, tierLevel, Shift.PROMOTION)
     }
 
     fun findAllRelegationByLeague(leagueName: String, season: Int, tierLevel: Int): List<DivisionShiftRule> {
         return divisionShiftRuleRepository
-            .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndShift(leagueName, season, tierLevel, Shift.RELEGATION)
+            .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndShiftAndRemovedOnIsNull(leagueName, season, tierLevel, Shift.RELEGATION)
     }
 
     fun findByLeague(leagueName: String): DivisionShiftRule? {
-        return divisionShiftRuleRepository.findByLeagueName(leagueName)
+        return divisionShiftRuleRepository.findByLeagueNameAndRemovedOnIsNull(leagueName)
     }
 
     fun delete(divisionShiftRule: DivisionShiftRule) {

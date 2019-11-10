@@ -9,14 +9,14 @@ import java.time.LocalDateTime
 @Repository
 interface RaceRunnerRepository : BaseUniqueRepository<RaceRunner> {
 
-    fun findByRaceNameAndRunnerName(raceName: String, runnerName: String): RaceRunner?
+    fun findByRaceNameAndRunnerNameAndRemovedOnIsNull(raceName: String, runnerName: String): RaceRunner?
 
-    fun findAllByRaceName(raceName: String): List<RaceRunner>
+    fun findAllByRaceNameAndRemovedOnIsNull(raceName: String): List<RaceRunner>
 
-    fun findAllByRunnerName(runnerName: String): List<RaceRunner>
+    fun findAllByRunnerNameAndRemovedOnIsNull(runnerName: String): List<RaceRunner>
 
-    fun findAllByRaceStartedOnBeforeAndOutcome(startedOn: LocalDateTime, outcome: Outcome): List<RaceRunner>
+    fun findAllByRaceStartedOnBeforeAndOutcomeAndRemovedOnIsNull(startedOn: LocalDateTime, outcome: Outcome): List<RaceRunner>
 
-    fun findAllByRaceNameAndOutcome(raceName: String, outcome: Outcome): List<RaceRunner>
+    fun findAllByRaceNameAndOutcomeAndRemovedOnIsNull(raceName: String, outcome: Outcome): List<RaceRunner>
 
 }

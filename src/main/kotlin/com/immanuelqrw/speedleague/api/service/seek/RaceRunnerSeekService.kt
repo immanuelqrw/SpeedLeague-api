@@ -17,23 +17,23 @@ class RaceRunnerSeekService : BaseUniqueService<RaceRunner>(RaceRunner::class.ja
     private lateinit var raceRunnerRepository: RaceRunnerRepository
 
     fun findByRaceAndRunner(raceName: String, runnerName: String): RaceRunner? {
-        return raceRunnerRepository.findByRaceNameAndRunnerName(raceName, runnerName)
+        return raceRunnerRepository.findByRaceNameAndRunnerNameAndRemovedOnIsNull(raceName, runnerName)
     }
 
     fun findAllByRace(raceName: String): List<RaceRunner> {
-        return raceRunnerRepository.findAllByRaceName(raceName)
+        return raceRunnerRepository.findAllByRaceNameAndRemovedOnIsNull(raceName)
     }
 
     fun findAllByRunner(runnerName: String): List<RaceRunner> {
-        return raceRunnerRepository.findAllByRunnerName(runnerName)
+        return raceRunnerRepository.findAllByRunnerNameAndRemovedOnIsNull(runnerName)
     }
 
     fun findAllByStartedOnAndOutcome(startedOn: LocalDateTime, outcome: Outcome): List<RaceRunner> {
-        return raceRunnerRepository.findAllByRaceStartedOnBeforeAndOutcome(startedOn, outcome)
+        return raceRunnerRepository.findAllByRaceStartedOnBeforeAndOutcomeAndRemovedOnIsNull(startedOn, outcome)
     }
 
     fun findAllByRaceAndOutcome(raceName: String, outcome: Outcome): List<RaceRunner> {
-        return raceRunnerRepository.findAllByRaceNameAndOutcome(raceName, outcome)
+        return raceRunnerRepository.findAllByRaceNameAndOutcomeAndRemovedOnIsNull(raceName, outcome)
     }
 
     fun registerRaceTime(raceTimeRegister: RaceTimeRegister): RaceRunner {

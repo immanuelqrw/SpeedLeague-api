@@ -14,7 +14,7 @@ class SystemSeekService : BaseUniqueService<System>(System::class.java) {
     private lateinit var systemRepository: SystemRepository
 
     fun findByName(name: String): System {
-        return systemRepository.findByName(name) ?: throw EntityNotFoundException()
+        return systemRepository.findByNameAndRemovedOnIsNull(name) ?: throw EntityNotFoundException()
     }
 
 }

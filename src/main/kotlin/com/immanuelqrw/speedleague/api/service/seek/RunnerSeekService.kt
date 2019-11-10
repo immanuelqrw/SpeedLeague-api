@@ -14,7 +14,7 @@ class RunnerSeekService : BaseUniqueService<Runner>(Runner::class.java) {
     private lateinit var runnerRepository: RunnerRepository
 
     fun findByName(name: String): Runner {
-        return runnerRepository.findByName(name) ?: throw EntityNotFoundException()
+        return runnerRepository.findByNameAndRemovedOnIsNull(name) ?: throw EntityNotFoundException()
     }
 
 }
