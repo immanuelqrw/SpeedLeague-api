@@ -6,7 +6,7 @@ import com.immanuelqrw.speedleague.api.entity.Shift
 import com.immanuelqrw.speedleague.api.repository.DivisionShiftRuleRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
+import javax.persistence.EntityNotFoundException
 
 @Service
 class DivisionShiftRuleSeekService : BaseUniqueService<DivisionShiftRule>(DivisionShiftRule::class.java) {
@@ -28,8 +28,9 @@ class DivisionShiftRuleSeekService : BaseUniqueService<DivisionShiftRule>(Divisi
             .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndShiftAndRemovedOnIsNull(leagueName, season, tierLevel, Shift.RELEGATION)
     }
 
-    fun findByLeague(leagueName: String): DivisionShiftRule? {
+    fun findByLeague(leagueName: String): DivisionShiftRule {
         return divisionShiftRuleRepository.findByLeagueNameAndRemovedOnIsNull(leagueName)
+            ?: throw EntityNotFoundException()
     }
 
     fun delete(divisionShiftRule: DivisionShiftRule) {

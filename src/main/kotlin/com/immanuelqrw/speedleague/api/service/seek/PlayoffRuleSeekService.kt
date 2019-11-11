@@ -5,7 +5,7 @@ import com.immanuelqrw.speedleague.api.entity.PlayoffRule
 import com.immanuelqrw.speedleague.api.repository.PlayoffRuleRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
+import javax.persistence.EntityNotFoundException
 
 @Service
 class PlayoffRuleSeekService : BaseUniqueService<PlayoffRule>(PlayoffRule::class.java) {
@@ -18,8 +18,9 @@ class PlayoffRuleSeekService : BaseUniqueService<PlayoffRule>(PlayoffRule::class
             .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndRemovedOnIsNull(leagueName, season, tierLevel)
     }
 
-    fun findByLeague(leagueName: String): PlayoffRule? {
+    fun findByLeague(leagueName: String): PlayoffRule {
         return playoffRuleRepository.findByLeagueNameAndRemovedOnIsNull(leagueName)
+            ?: throw EntityNotFoundException()
     }
 
     fun delete(playoffRule: PlayoffRule) {

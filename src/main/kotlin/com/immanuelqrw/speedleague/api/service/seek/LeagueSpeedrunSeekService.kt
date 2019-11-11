@@ -120,7 +120,7 @@ class LeagueSpeedrunSeekService : BaseUniqueService<LeagueSpeedrun>(LeagueSpeedr
     }
 
     fun findAll(leagueName: String?, leagueType: LeagueType?, category: String?, gameName: String?, systemName: String?, isEmulated: Boolean?, region: Region?, version: String?): List<LeagueSpeedrun> {
-        return findAllActive()
+        return leagueSpeedrunRepository.findAllByRemovedOnIsNull()
             .asSequence()
             .filter { leagueSpeedrun ->  leagueName?.let { leagueSpeedrun.league.name == leagueName } ?: true }
             .filter { leagueSpeedrun ->  leagueType?.let { leagueSpeedrun.league.type == leagueType } ?: true }

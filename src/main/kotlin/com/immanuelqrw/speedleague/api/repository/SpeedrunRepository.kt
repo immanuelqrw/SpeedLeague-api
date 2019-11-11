@@ -34,4 +34,6 @@ interface SpeedrunRepository : BaseUniqueRepository<Speedrun> {
 
     fun findAllByCategoryAndCartGameNameAndCartSystemNameAndCartSystemIsEmulatedAndCartRegionAndCartVersionAndRemovedOnIsNull(category: String?, gameName: String?, systemName: String?, isEmulated: Boolean?, region: Region?, version: String?): List<Speedrun>
 
+    fun findAllByRemovedOnIsNull(): List<Speedrun>
+
 }

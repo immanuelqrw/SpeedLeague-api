@@ -24,4 +24,6 @@ interface CartRepository : BaseUniqueRepository<Cart> {
 
     fun findAllByGameNameAndSystemNameAndSystemIsEmulatedAndRegionAndVersionAndRemovedOnIsNull(gameName: String?, systemName: String?, isEmulated: Boolean?, region: Region?, version: String?): List<Cart>
 
+    fun findAllByRemovedOnIsNull(): List<Cart>
+
 }

@@ -18,6 +18,7 @@ class RaceRunnerSeekService : BaseUniqueService<RaceRunner>(RaceRunner::class.ja
 
     fun findByRaceAndRunner(raceName: String, runnerName: String): RaceRunner? {
         return raceRunnerRepository.findByRaceNameAndRunnerNameAndRemovedOnIsNull(raceName, runnerName)
+            ?: throw EntityNotFoundException()
     }
 
     fun findAllByRace(raceName: String): List<RaceRunner> {

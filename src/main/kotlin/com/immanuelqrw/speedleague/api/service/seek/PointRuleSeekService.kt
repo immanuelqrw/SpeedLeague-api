@@ -5,7 +5,7 @@ import com.immanuelqrw.speedleague.api.entity.PointRule
 import com.immanuelqrw.speedleague.api.repository.PointRuleRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
+import javax.persistence.EntityNotFoundException
 
 @Service
 class PointRuleSeekService : BaseUniqueService<PointRule>(PointRule::class.java) {
@@ -18,8 +18,9 @@ class PointRuleSeekService : BaseUniqueService<PointRule>(PointRule::class.java)
             .findAllByLeagueNameAndLeagueSeasonAndLeagueTierLevelAndRemovedOnIsNull(leagueName, season, tierLevel)
     }
 
-    fun findByLeague(leagueName: String): PointRule? {
+    fun findByLeague(leagueName: String): PointRule {
         return pointRuleRepository.findByLeagueNameAndRemovedOnIsNull(leagueName)
+            ?: throw EntityNotFoundException()
     }
 
     fun delete(pointRule: PointRule) {

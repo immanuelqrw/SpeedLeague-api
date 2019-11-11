@@ -61,7 +61,7 @@ class SpeedrunSeekService : BaseUniqueService<Speedrun>(Speedrun::class.java) {
     }
 
     fun findAll(category: String?, gameName: String?, systemName: String?, isEmulated: Boolean?, region: Region?, version: String?): List<Speedrun> {
-        return findAllActive()
+        return speedrunRepository.findAllByRemovedOnIsNull()
             .asSequence()
             .filter { speedrun ->  category?.let { speedrun.category == category } ?: true }
             .filter { speedrun ->  gameName?.let { speedrun.cart.game.name == gameName } ?: true }
