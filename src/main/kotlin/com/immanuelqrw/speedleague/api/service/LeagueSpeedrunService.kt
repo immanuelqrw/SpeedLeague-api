@@ -19,13 +19,16 @@ class LeagueSpeedrunService {
     @Autowired
     private lateinit var speedrunSeekService: SpeedrunSeekService
 
+    @Autowired
+    private lateinit var leagueService: LeagueService
+
     fun create(leagueSpeedrunInput: LeagueSpeedrunInput): LeagueSpeedrunOutput {
         return leagueSpeedrunInput.run {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
             val speedrun: Speedrun = speedrunSeekService.find(category, gameName, systemName, isEmulated, region, version)
 
             // - Add more descriptive error message
-            leagueSeekService.validateLeagueChange(league.endedOn)
+            leagueService.validateLeagueChange(league.endedOn)
             val leagueSpeedrun = LeagueSpeedrun(
                 league = league,
                 speedrun = speedrun

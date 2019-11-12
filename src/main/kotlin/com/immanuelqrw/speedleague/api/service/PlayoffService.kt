@@ -21,6 +21,9 @@ class PlayoffService {
     @Autowired
     private lateinit var playoffRuleSeekService: PlayoffRuleSeekService
 
+    @Autowired
+    private lateinit var leagueService: LeagueService
+
     private fun attachRules(league: League, leagueRule: LeaguePlayoffRuleInput): List<PlayoffRule> {
         return leagueRule.qualifierRules.mapIndexed { index, qualifierRule ->
             val playoffRule = PlayoffRule(
@@ -39,7 +42,7 @@ class PlayoffService {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
             // - Add more descriptive error message
-            leagueSeekService.validateLeagueChange(league.endedOn)
+            leagueService.validateLeagueChange(league.endedOn)
 
             attachRules(league, leagueRule)
         }
@@ -50,7 +53,7 @@ class PlayoffService {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
             // - Add more descriptive error message
-            leagueSeekService.validateLeagueChange(league.endedOn)
+            leagueService.validateLeagueChange(league.endedOn)
 
             playoffRuleSeekService.deleteAll(league.playoffRules)
 

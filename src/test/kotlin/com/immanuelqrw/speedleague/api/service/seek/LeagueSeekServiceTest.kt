@@ -86,33 +86,6 @@ internal class LeagueSeekServiceTest {
             actualLeague shouldEqual expectedLeague
         }
 
-        @Test
-        fun findAllActive() {
-            TODO()
-        }
-
-        @Test
-        fun `given null endedOn - when validateLeagueChange - then do nothing`() {
-            val endedOn: LocalDateTime? = null
-
-            leagueSeekService.validateLeagueChange(endedOn)
-        }
-
-        @Test
-        fun endLeague() {
-            TODO()
-        }
-
-        @Test
-        fun create() {
-            TODO()
-        }
-
-        @Test
-        fun updateDivisionShifts() {
-            TODO()
-        }
-
     }
 
     @Nested
@@ -135,13 +108,6 @@ internal class LeagueSeekServiceTest {
         @Test
         fun `given invalid parameters - when findBottomLeague - then throw EntityNotFoundException`() {
             invoking { leagueSeekService.findBottomLeague(invalidName, invalidSeason) } shouldThrow EntityNotFoundException::class
-        }
-
-        @Test
-        fun `given non-null endedOn - when validateLeagueChange - then throw LeagueHasEndedException`() {
-            val endedOn: LocalDateTime? = LocalDateTime.now()
-
-            invoking { leagueSeekService.validateLeagueChange(endedOn) } shouldThrow LeagueHasEndedException::class
         }
 
     }

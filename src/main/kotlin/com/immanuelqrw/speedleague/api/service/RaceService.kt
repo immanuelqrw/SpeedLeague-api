@@ -22,11 +22,14 @@ class RaceService {
     @Autowired
     private lateinit var raceRunnerSeekService: RaceRunnerSeekService
 
+    @Autowired
+    private lateinit var leagueService: LeagueService
+
     fun create(raceInput: RaceInput): RaceOutput {
         return raceInput.run {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
-            leagueSeekService.validateLeagueChange(league.endedOn, "Race $raceName cannot be created - League has ended [End Date: ${league.endedOn}]")
+            leagueService.validateLeagueChange(league.endedOn, "Race $raceName cannot be created - League has ended [End Date: ${league.endedOn}]")
 
             // If League has ended, disallow races
             val race = Race(

@@ -10,12 +10,12 @@ import com.immanuelqrw.speedleague.api.dto.search.League as LeagueSearch
 import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.entity.LeagueSpeedrun
 import com.immanuelqrw.speedleague.api.entity.Tier
+import com.immanuelqrw.speedleague.api.exception.LeagueHasEndedException
 import com.immanuelqrw.speedleague.api.service.seek.LeagueSeekService
 import com.immanuelqrw.speedleague.api.service.seek.LeagueSpeedrunSeekService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.access.prepost.PostFilter
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class LeagueService {
@@ -87,7 +87,7 @@ class LeagueService {
     fun endSeason(endSeason: EndSeason): LeagueOutput {
         return endSeason.run {
             val oldLeague: League = leagueSeekService.find(leagueName, season, tierLevel)
-            leagueSeekService.endLeague(oldLeague, endedOn)
+            endLeague(oldLeague, endedOn)
 
             oldLeague.output
         }
@@ -143,7 +143,7 @@ class LeagueService {
             seasonService.shiftDivisions(allLeagues)
 
             allLeagues.forEach { oldLeague ->
-                leagueSeekService.endLeague(oldLeague, endedOn)
+                endLeague(oldLeague, endedOn)
             }
 
             newLeagues
@@ -155,7 +155,7 @@ class LeagueService {
             val parentLeague: League = leagueSeekService.find(leagueName, season, parentTierLevel)
 
             // - Add more descriptive error message
-            leagueSeekService.validateLeagueChange(parentLeague.endedOn)
+            validateLeagueChange(parentLeague.endedOn)
 
             val league = League(
                 name = leagueName,
@@ -239,7 +239,7 @@ class LeagueService {
 
     fun modifyDivisionShifts(leagueDivisionShift: LeagueDivisionShiftUpdate): LeagueOutput {
 
-        val modifiedLeague: League = leagueSeekService.updateDivisionShifts(leagueDivisionShift)
+        val modifiedLeague: League = updateDivisionShifts(leagueDivisionShift)
 
         return modifiedLeague.output
     }
@@ -270,6 +270,55 @@ class LeagueService {
 
             leagueSpeedrunSeekService.create(leagueSpeedrun)
         }
+    }
+
+    fun validateLeagueChange(endedOn: LocalDateTime?, failureMessage: String = "League has ended") {
+        // If league has ended, do not allow changes/creation
+        endedOn?.run {
+            throw LeagueHasEndedException(failureMessage)
+        }
+    }
+
+    private fun endLeague(league: League, endedOn: LocalDateTime?) {
+        validateLeagueChange(league.endedOn)
+
+        league.endedOn ?: run {
+            league.endedOn = endedOn
+            leagueSeekService.create(league)
+        }
+    }
+
+    private fun create(entity: League): League {
+        val endedOn: LocalDateTime? = entity.endedOn
+        validateLeagueChange(endedOn, "League ${entity.name} has ended on [$endedOn] and no changes can be made")
+
+        return leagueSeekService.create(entity)
+    }
+
+    private fun updateDivisionShifts(leagueDivisionShift: com.immanuelqrw.speedleague.api.dto.update.LeagueDivisionShift): League {
+        val modifiedLeague: League = leagueDivisionShift.run {
+            val mainLeague: League = leagueSeekService.find(leagueName, season, tierLevel)
+
+            promotions?.let {
+                val promotedLeague: League = leagueSeekService.find(leagueName, season, tierLevel - 1)
+                mainLeague.promotions = promotions
+                promotedLeague.relegations = promotions
+
+                create(promotedLeague)
+            }
+
+            relegations?.let {
+                val relegatedLeague: League = leagueSeekService.find(leagueName, season, tierLevel + 1)
+                mainLeague.relegations = relegations
+                relegatedLeague.promotions = relegations
+
+                create(relegatedLeague)
+            }
+
+            mainLeague
+        }
+
+        return create(modifiedLeague)
     }
 
 }

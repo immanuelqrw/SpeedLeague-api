@@ -9,8 +9,8 @@ import com.immanuelqrw.speedleague.api.entity.League
 import com.immanuelqrw.speedleague.api.entity.DivisionShiftRule
 import com.immanuelqrw.speedleague.api.entity.Qualifier
 import com.immanuelqrw.speedleague.api.entity.Shift
-import com.immanuelqrw.speedleague.api.service.seek.LeagueSeekService
 import com.immanuelqrw.speedleague.api.service.seek.DivisionShiftRuleSeekService
+import com.immanuelqrw.speedleague.api.service.seek.LeagueSeekService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.*
 
 @Service
 class DivisionShiftService {
-    
+
     @Autowired
     private lateinit var leagueSeekService: LeagueSeekService
+    
+    @Autowired
+    private lateinit var leagueService: LeagueService
 
     @Autowired
     private lateinit var divisionShiftRuleSeekService: DivisionShiftRuleSeekService
@@ -51,7 +54,7 @@ class DivisionShiftService {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
             // - Add more descriptive error message
-            leagueSeekService.validateLeagueChange(league.endedOn)
+            leagueService.validateLeagueChange(league.endedOn)
 
             attachDivisionShiftRules(league, leagueRule)
         }
@@ -62,7 +65,7 @@ class DivisionShiftService {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
             // - Add more descriptive error message
-            leagueSeekService.validateLeagueChange(league.endedOn)
+            leagueService.validateLeagueChange(league.endedOn)
 
             attachDivisionShiftRules(league, leagueRule.promotionRules, Shift.PROMOTION)
         }
@@ -73,7 +76,7 @@ class DivisionShiftService {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
             // - Add more descriptive error message
-            leagueSeekService.validateLeagueChange(league.endedOn)
+            leagueService.validateLeagueChange(league.endedOn)
 
             attachDivisionShiftRules(league, leagueRule.relegationRules, Shift.RELEGATION)
         }
@@ -84,7 +87,7 @@ class DivisionShiftService {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
             // - Add more descriptive error message
-            leagueSeekService.validateLeagueChange(league.endedOn)
+            leagueService.validateLeagueChange(league.endedOn)
 
             divisionShiftRuleSeekService.deleteAll(league.divisionShiftRules)
 
@@ -97,7 +100,7 @@ class DivisionShiftService {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
             // - Add more descriptive error message
-            leagueSeekService.validateLeagueChange(league.endedOn)
+            leagueService.validateLeagueChange(league.endedOn)
 
             divisionShiftRuleSeekService.deleteAll(league.promotionRules)
 
@@ -110,7 +113,7 @@ class DivisionShiftService {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
             // - Add more descriptive error message
-            leagueSeekService.validateLeagueChange(league.endedOn)
+            leagueService.validateLeagueChange(league.endedOn)
 
             divisionShiftRuleSeekService.deleteAll(league.relegationRules)
 

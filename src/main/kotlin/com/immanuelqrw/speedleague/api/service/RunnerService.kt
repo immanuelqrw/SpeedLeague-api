@@ -30,6 +30,9 @@ class RunnerService {
     @Autowired
     private lateinit var leagueRunnerSeekService: LeagueRunnerSeekService
 
+    @Autowired
+    private lateinit var leagueService: LeagueService
+
     fun create(runnerInput: RunnerInput): RunnerOutput {
         return runnerInput.run {
             val runner = Runner(
@@ -47,7 +50,7 @@ class RunnerService {
             val league: League = leagueSeekService.findBottomLeague(leagueName, season)
             val runner: Runner = runnerSeekService.findByName(runnerName)
 
-            leagueSeekService.validateLeagueChange(league.endedOn,"Runner $runnerName cannot be registered - League has ended [End Date: ${league.endedOn}]")
+            leagueService.validateLeagueChange(league.endedOn,"Runner $runnerName cannot be registered - League has ended [End Date: ${league.endedOn}]")
 
             val currentRunnerCount: Int = leagueRunnerSeekService.findAllByLeague(league.name, league.season, league.tier.level).size
             if (currentRunnerCount >= league.runnerLimit) {

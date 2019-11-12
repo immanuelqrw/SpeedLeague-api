@@ -30,6 +30,9 @@ class SeasonService {
     private lateinit var raceRunnerSeekService: RaceRunnerSeekService
 
     @Autowired
+    private lateinit var leagueService: LeagueService
+
+    @Autowired
     private lateinit var standingService: StandingService
 
     @Autowired
@@ -38,7 +41,7 @@ class SeasonService {
     fun shiftDivisions(leagues: List<League>) {
         leagues.forEach { league ->
             // - Add more descriptive error message
-            leagueSeekService.validateLeagueChange(league.endedOn)
+            leagueService.validateLeagueChange(league.endedOn)
 
             val standings: List<Standing> = standingService.calculateStandings(league.name, league.season, league.tier.level)
 
@@ -91,7 +94,7 @@ class SeasonService {
         val league: League = leagueSearch.run {
             leagueSeekService.find(name, season, tierLevel)
         }
-        leagueSeekService.validateLeagueChange(league.endedOn)
+        leagueService.validateLeagueChange(league.endedOn)
 
         val runnersInLeague: Set<Runner> = leagueSearch.run {
             leagueRunnerSeekService.findAllByLeague(name, season, tierLevel)

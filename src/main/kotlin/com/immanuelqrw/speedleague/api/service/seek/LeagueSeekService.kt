@@ -25,31 +25,6 @@ class LeagueSeekService : BaseUniqueService<League>(League::class.java) {
         return super.findAllActive(page, search)
     }
 
-    // ? Consider moving to LeagueService
-    fun validateLeagueChange(endedOn: LocalDateTime?, failureMessage: String = "League has ended") {
-        // If league has ended, do not allow changes/creation
-        endedOn?.run {
-            throw LeagueHasEndedException(failureMessage)
-        }
-    }
-
-    // ? Consider moving to LeagueService
-    fun endLeague(league: League, endedOn: LocalDateTime?) {
-        validateLeagueChange(league.endedOn)
-
-        league.endedOn ?: run {
-            league.endedOn = endedOn
-            super.create(league)
-        }
-    }
-
-    override fun create(entity: League): League {
-        val endedOn: LocalDateTime? = entity.endedOn
-        validateLeagueChange(endedOn, "League ${entity.name} has ended on [$endedOn] and no changes can be made")
-
-        return super.create(entity)
-    }
-
     fun find(name: String, season: Int, tierLevel: Int): League {
         return leagueRepository.findByNameAndSeasonAndTierLevelAndRemovedOnIsNull(name, season, tierLevel)
             ?: throw EntityNotFoundException()
@@ -62,33 +37,6 @@ class LeagueSeekService : BaseUniqueService<League>(League::class.java) {
     fun findBottomLeague(name: String, season: Int): League {
         return leagueRepository.findFirstByNameAndSeasonAndRemovedOnIsNullOrderByTierLevelDesc(name, season)
             ?: throw EntityNotFoundException()
-    }
-
-    // ? Consider moving to LeagueService
-    fun updateDivisionShifts(leagueDivisionShift: LeagueDivisionShift): League {
-        val modifiedLeague: League = leagueDivisionShift.run {
-            val mainLeague: League = find(leagueName, season, tierLevel)
-
-            promotions?.let {
-                val promotedLeague: League = find(leagueName, season, tierLevel - 1)
-                mainLeague.promotions = promotions
-                promotedLeague.relegations = promotions
-
-                create(promotedLeague)
-            }
-
-            relegations?.let {
-                val relegatedLeague: League = find(leagueName, season, tierLevel + 1)
-                mainLeague.relegations = relegations
-                relegatedLeague.promotions = relegations
-
-                create(relegatedLeague)
-            }
-
-            mainLeague
-        }
-
-        return create(modifiedLeague)
     }
 
 }

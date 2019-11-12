@@ -18,6 +18,9 @@ class PointService {
     @Autowired
     private lateinit var pointRuleSeekService: PointRuleSeekService
 
+    @Autowired
+    private lateinit var leagueService: LeagueService
+
     private fun attachRules(league: League, leagueRule: LeaguePointRuleInput): List<PointRule> {
         return leagueRule.pointRules.map {
             val pointRule = PointRule(
@@ -35,7 +38,7 @@ class PointService {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
             // - Add more descriptive error message
-            leagueSeekService.validateLeagueChange(league.endedOn)
+            leagueService.validateLeagueChange(league.endedOn)
 
             attachRules(league, leagueRule)
         }
@@ -47,7 +50,7 @@ class PointService {
             val league: League = leagueSeekService.find(leagueName, season, tierLevel)
 
             // - Add more descriptive error message
-            leagueSeekService.validateLeagueChange(league.endedOn)
+            leagueService.validateLeagueChange(league.endedOn)
 
             pointRuleSeekService.deleteAll(league.pointRules)
 
