@@ -140,12 +140,14 @@ internal class RaceServiceTest {
         validRaceRunners = listOf(validRaceRunner)
 
         whenever(validRaceRunner.race).thenReturn(validRace)
+
         whenever(raceSeekService.findAllActive(search = validSearch)).thenReturn(validRaces)
         whenever(raceRunnerSeekService.findAllByRunner(validRunnerName)).thenReturn(validRaceRunners)
         whenever(raceSeekService.create(validRace)).thenReturn(validRace)
         whenever(leagueSeekService.find(validLeagueName, validSeason, validTierLevel)).thenReturn(validLeague)
 
         doNothing().whenever(leagueService).validateLeagueChange(Mockito.any(LocalDateTime::class.java), Mockito.anyString())
+        // ! Add failure case for validateLeagueChange
 
         whenever(invalidLeague.name).thenReturn(invalidLeagueName)
         whenever(invalidLeague.season).thenReturn(invalidSeason)

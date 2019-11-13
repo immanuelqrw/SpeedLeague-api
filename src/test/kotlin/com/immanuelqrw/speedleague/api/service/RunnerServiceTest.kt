@@ -1,7 +1,10 @@
 package com.immanuelqrw.speedleague.api.service
 
 import com.immanuelqrw.speedleague.api.entity.*
+import com.immanuelqrw.speedleague.api.exception.LeagueIsFullException
 import com.immanuelqrw.speedleague.api.service.seek.LeagueRunnerSeekService
+import com.immanuelqrw.speedleague.api.dto.input.LeagueRunner as LeagueRunnerInput
+import com.immanuelqrw.speedleague.api.dto.output.LeagueRunner as LeagueRunnerOutput
 import com.immanuelqrw.speedleague.api.dto.input.Runner as RunnerInput
 import com.immanuelqrw.speedleague.api.dto.output.Runner as RunnerOutput
 import com.immanuelqrw.speedleague.api.service.seek.LeagueSeekService
@@ -48,6 +51,9 @@ internal class RunnerServiceTest {
 
     private val validTierName: String = "Alpha"
     private val invalidTierName: String = "Magikarp"
+    
+    private val validRunnerLimit: Int = 2
+    private val invalidRunnerLimit: Int = -2
 
     private val validTier: Tier = Tier(
         name = validTierName,
@@ -71,6 +77,20 @@ internal class RunnerServiceTest {
         name = invalidName,
         joinedOn = invalidJoinedOn
     )
+    
+    private val validLeagueRunnerInput: LeagueRunnerInput = LeagueRunnerInput(
+        leagueName = validLeagueName,
+        season = validSeason,
+        runnerName = validName,
+        joinedOn = validJoinedOn
+    )
+
+    private val invalidLeagueRunnerInput: LeagueRunnerInput = LeagueRunnerInput(
+        leagueName = invalidLeagueName,
+        season = invalidSeason,
+        runnerName = invalidName,
+        joinedOn = invalidJoinedOn
+    )
 
     @Mock
     private lateinit var validLeague: League
@@ -92,9 +112,9 @@ internal class RunnerServiceTest {
 
     private lateinit var validRaceRunners: List<RaceRunner>
     private val noRaceRunners: List<RaceRunner> = emptyList()
-    
-    @Mock
+
     private lateinit var validLeagueRunner: LeagueRunner
+    private lateinit var invalidLeagueRunner: LeagueRunner
     
     private lateinit var validLeagueRunners: List<LeagueRunner>
     private val noLeagueRunners: List<LeagueRunner> = emptyList()
@@ -119,9 +139,10 @@ internal class RunnerServiceTest {
 
     @BeforeAll
     fun setUp() {
-//        whenever(validLeague.name).thenReturn(validLeagueName)
-//        whenever(validLeague.season).thenReturn(validSeason)
-//        whenever(validLeague.tier).thenReturn(validTier)
+        whenever(validLeague.name).thenReturn(validLeagueName)
+        whenever(validLeague.season).thenReturn(validSeason)
+        whenever(validLeague.tier).thenReturn(validTier)
+        whenever(validLeague.runnerLimit).thenReturn(validRunnerLimit)
 
         validRunner = Runner(
             name = validName,
@@ -138,26 +159,45 @@ internal class RunnerServiceTest {
 
         validRaceRunners = listOf(validRaceRunner)
 
+        validLeagueRunner = LeagueRunner(
+            league = validLeague,
+            runner = validRunner,
+            joinedOn = validJoinedOn
+        )
+
+        invalidLeagueRunner = LeagueRunner(
+            league = invalidLeague,
+            runner = invalidRunner,
+            joinedOn = invalidJoinedOn
+        )
+
         validLeagueRunners = listOf(validLeagueRunner)
 
         whenever(validRaceRunner.runner).thenReturn(validRunner)
-        whenever(validLeagueRunner.runner).thenReturn(validRunner)
+
         whenever(runnerSeekService.findAllActive(search = validSearch)).thenReturn(validRunners)
+        whenever(runnerSeekService.findByName(validName)).thenReturn(validRunner)
         whenever(raceRunnerSeekService.findAllByRace(validRaceName)).thenReturn(validRaceRunners)
         whenever(runnerSeekService.create(validRunner)).thenReturn(validRunner)
         whenever(leagueSeekService.find(validLeagueName, validSeason, validTierLevel)).thenReturn(validLeague)
+        whenever(leagueSeekService.findBottomLeague(validLeagueName, validSeason)).thenReturn(validLeague)
         whenever(leagueRunnerSeekService.findAllByLeague(validLeagueName, validSeason, validTierLevel)).thenReturn(validLeagueRunners)
+        whenever(leagueRunnerSeekService.create(validLeagueRunner)).thenReturn(validLeagueRunner)
 
         doNothing().whenever(leagueService).validateLeagueChange(Mockito.any(LocalDateTime::class.java), Mockito.anyString())
+        // ! Add failure case for validateLeagueChange
 
-//        whenever(invalidLeague.name).thenReturn(invalidLeagueName)
-//        whenever(invalidLeague.season).thenReturn(invalidSeason)
-//        whenever(invalidLeague.tier).thenReturn(invalidTier)
+        whenever(invalidLeague.name).thenReturn(invalidLeagueName)
+        whenever(invalidLeague.season).thenReturn(invalidSeason)
+        whenever(invalidLeague.tier).thenReturn(invalidTier)
 
         whenever(runnerSeekService.findAllActive(search = invalidSearch)).thenReturn(noRunners)
+        whenever(runnerSeekService.findByName(invalidName)).thenReturn(invalidRunner)
         whenever(leagueSeekService.find(invalidLeagueName, invalidSeason, invalidTierLevel)).thenReturn(invalidLeague)
+        whenever(leagueSeekService.findBottomLeague(invalidLeagueName, invalidSeason)).thenReturn(invalidLeague)
         whenever(raceRunnerSeekService.findAllByRace(invalidRaceName)).thenReturn(noRaceRunners)
         whenever(leagueRunnerSeekService.findAllByLeague(invalidLeagueName, invalidSeason, invalidTierLevel)).thenReturn(noLeagueRunners)
+        doThrow(IllegalArgumentException::class).whenever(leagueRunnerSeekService).create(invalidLeagueRunner)
         doThrow(IllegalArgumentException::class).whenever(runnerSeekService).create(invalidRunner)
     }
 
@@ -171,6 +211,15 @@ internal class RunnerServiceTest {
             val actualRunnerOutput: RunnerOutput = runnerService.create(validRunnerInput)
 
             actualRunnerOutput shouldEqual expectedRunnerOutput
+        }
+
+        @Test
+        fun `given valid leagueRunnerInput - when register - then return valid leagueRunnerOutput`() {
+            val expectedLeagueRunnerOutput: LeagueRunnerOutput = validLeagueRunner.output
+
+            val actualLeagueRunnerOutput: LeagueRunnerOutput = runnerService.register(validLeagueRunnerInput)
+
+            actualLeagueRunnerOutput shouldEqual expectedLeagueRunnerOutput
         }
 
         @Test
@@ -208,6 +257,18 @@ internal class RunnerServiceTest {
         @Test
         fun `given invalid runnerInput - when create - then throw IllegalArgumentException`() {
             invoking { runnerService.create(invalidRunnerInput) } shouldThrow IllegalArgumentException::class
+        }
+
+        @Test
+        fun `given invalid runnerLimit - when register - then throw LeagueIsFullException`() {
+            whenever(invalidLeague.runnerLimit).thenReturn(invalidRunnerLimit)
+            invoking { runnerService.register(invalidLeagueRunnerInput) } shouldThrow LeagueIsFullException::class
+        }
+
+        @Test
+        fun `given invalid leagueRunnerInput - when register - then throw IllegalArgumentException`() {
+            whenever(invalidLeague.runnerLimit).thenReturn(validRunnerLimit)
+            invoking { runnerService.register(invalidLeagueRunnerInput) } shouldThrow IllegalArgumentException::class
         }
 
         @Test
