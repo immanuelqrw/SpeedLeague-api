@@ -36,7 +36,8 @@ class RunnerService {
     fun create(runnerInput: RunnerInput): RunnerOutput {
         return runnerInput.run {
             val runner = Runner(
-                name = name
+                name = name,
+                joinedOn = joinedOn
             )
             val createdRunner: Runner = runnerSeekService.create(runner)
 

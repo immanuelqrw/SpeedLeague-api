@@ -22,8 +22,8 @@ import javax.persistence.EntityNotFoundException
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class LeagueSeekServiceTest {
 
-    private val validName: String = "Pokémon Snap"
-    private val invalidName: String = "Pokémon Snap 2"
+    private val validName: String = "Neverending"
+    private val invalidName: String = "GDQ-Champions"
 
     private val validSeason: Int = 1
     private val invalidSeason: Int = -1
