@@ -4,6 +4,8 @@ import com.immanuelqrw.speedleague.api.dto.input.System as SystemInput
 import com.immanuelqrw.speedleague.api.dto.output.System as SystemOutput
 import com.immanuelqrw.speedleague.api.entity.System
 import com.immanuelqrw.speedleague.api.service.seek.SystemSeekService
+import com.immanuelqrw.speedleague.api.service.TestConstants as C
+import com.immanuelqrw.speedleague.api.service.TestEntityConstants as EC
 import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.invoking
@@ -22,34 +24,17 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class SystemServiceTest {
 
-    private val validName: String = "Wii U"
-    private val invalidName: String = "Playstation 64"
+    private val validName: String = C.VALID_SYSTEM_NAME
+    private val invalidName: String = C.INVALID_SYSTEM_NAME
 
-    private val validIsEmulated: Boolean = false
-    private val invalidIsEmulated: Boolean = true
+    private val validSearch: String? = "name:$validName"
+    private val invalidSearch: String? = "name:$invalidName"
 
-    private val validSearch: String? = "name:Wii U"
-    private val invalidSearch: String? = "name:Playstation 64"
+    private val validSystemInput: SystemInput = EC.VALID_SYSTEM_INPUT
+    private val invalidSystemInput: SystemInput = EC.INVALID_SYSTEM_INPUT
 
-    private val validSystemInput: SystemInput = SystemInput(
-            name = validName,
-    isEmulated = validIsEmulated
-    )
-
-    private val invalidSystemInput: SystemInput = SystemInput(
-        name = invalidName,
-        isEmulated = invalidIsEmulated
-    )
-
-    private val validSystem: System = System(
-        name = validName,
-        isEmulated = validIsEmulated
-    )
-
-    private val invalidSystem: System = System(
-        name = invalidName,
-        isEmulated = invalidIsEmulated
-    )
+    private val validSystem: System = EC.VALID_SYSTEM
+    private val invalidSystem: System = EC.INVALID_SYSTEM
 
     private val validSystems: List<System> = listOf(validSystem)
     private val validSystemOutputs: List<SystemOutput> = validSystems.map { system -> system.output }

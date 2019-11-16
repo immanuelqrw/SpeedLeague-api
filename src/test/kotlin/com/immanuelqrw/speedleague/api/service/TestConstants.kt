@@ -82,4 +82,7 @@ object TestConstants {
     const val VALID_RELEGATIONS: Int = 1
     const val INVALID_RELEGATIONS: Int = -1
 
+    const val VALID_PLACEMENT: Int = 1
+    const val INVALID_PLACEMENT: Int = -1
+
 }

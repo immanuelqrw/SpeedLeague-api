@@ -65,6 +65,34 @@ object TestEntityConstants {
         isEmulated = C.INVALID_IS_EMULATED
     )
 
+    val VALID_LEAGUE: League = League(
+        name = C.VALID_LEAGUE_NAME,
+        type = C.VALID_LEAGUE_TYPE,
+        startedOn = C.VALID_STARTED_ON,
+        endedOn = C.VALID_ENDED_ON,
+        defaultTime = C.VALID_DEFAULT_TIME,
+        defaultPoints = C.VALID_DEFAULT_POINTS,
+        season = C.VALID_SEASON,
+        tier = VALID_TIER,
+        runnerLimit = C.VALID_RUNNER_LIMIT,
+        promotions = C.VALID_PROMOTIONS,
+        relegations = C.VALID_RELEGATIONS
+    )
+
+    val INVALID_LEAGUE: League = League(
+        name = C.INVALID_LEAGUE_NAME,
+        type = C.INVALID_LEAGUE_TYPE,
+        startedOn = C.INVALID_STARTED_ON,
+        endedOn = C.INVALID_ENDED_ON,
+        defaultTime = C.INVALID_DEFAULT_TIME,
+        defaultPoints = C.INVALID_DEFAULT_POINTS,
+        season = C.INVALID_SEASON,
+        tier = INVALID_TIER,
+        runnerLimit = C.INVALID_RUNNER_LIMIT,
+        promotions = C.INVALID_PROMOTIONS,
+        relegations = C.INVALID_RELEGATIONS
+    )
+
     val VALID_RACE_INPUT: RaceInput = RaceInput(
         leagueName = C.VALID_LEAGUE_NAME,
         season = C.VALID_SEASON,
@@ -81,6 +109,18 @@ object TestEntityConstants {
         startedOn = C.INVALID_STARTED_ON
     )
 
+    val VALID_RACE: Race = Race(
+        name = C.VALID_RACE_NAME,
+        league = VALID_LEAGUE,
+        startedOn = C.VALID_STARTED_ON
+    )
+
+    val INVALID_RACE: Race = Race(
+        name = C.INVALID_RACE_NAME,
+        league = INVALID_LEAGUE,
+        startedOn = C.INVALID_STARTED_ON
+    )
+
     val VALID_RUNNER_INPUT: RunnerInput = RunnerInput(
         name = C.VALID_RUNNER_NAME,
         joinedOn = C.VALID_JOINED_ON
@@ -88,6 +128,34 @@ object TestEntityConstants {
 
     val INVALID_RUNNER_INPUT: RunnerInput = RunnerInput(
         name = C.INVALID_RUNNER_NAME,
+        joinedOn = C.INVALID_JOINED_ON
+    )
+
+    val VALID_RUNNER: Runner = Runner(
+        name = C.VALID_RUNNER_NAME,
+        joinedOn = C.VALID_JOINED_ON
+    )
+
+    val INVALID_RUNNER: Runner = Runner(
+        name = C.INVALID_RUNNER_NAME,
+        joinedOn = C.INVALID_JOINED_ON
+    )
+
+    val VALID_RACE_RUNNER: RaceRunner = RaceRunner(
+        race = VALID_RACE,
+        runner = VALID_RUNNER,
+        time = C.VALID_RACE_RUNNER_TIME,
+        outcome = C.VALID_OUTCOME,
+        placement = C.VALID_PLACEMENT,
+        joinedOn = C.VALID_JOINED_ON
+    )
+
+    val INVALID_RACE_RUNNER: RaceRunner = RaceRunner(
+        race = INVALID_RACE,
+        runner = INVALID_RUNNER,
+        time = C.INVALID_RACE_RUNNER_TIME,
+        outcome = C.INVALID_OUTCOME,
+        placement = C.INVALID_PLACEMENT,
         joinedOn = C.INVALID_JOINED_ON
     )
 
@@ -157,34 +225,6 @@ object TestEntityConstants {
         raceName = C.INVALID_RACE_NAME,
         time = C.INVALID_RACE_RUNNER_TIME,
         outcome = C.INVALID_OUTCOME
-    )
-
-    val VALID_LEAGUE: League = League(
-        name = C.VALID_LEAGUE_NAME,
-        type = C.VALID_LEAGUE_TYPE,
-        startedOn = C.VALID_STARTED_ON,
-        endedOn = C.VALID_ENDED_ON,
-        defaultTime = C.VALID_DEFAULT_TIME,
-        defaultPoints = C.VALID_DEFAULT_POINTS,
-        season = C.VALID_SEASON,
-        tier = VALID_TIER,
-        runnerLimit = C.VALID_RUNNER_LIMIT,
-        promotions = C.VALID_PROMOTIONS,
-        relegations = C.VALID_RELEGATIONS
-    )
-
-    val INVALID_LEAGUE: League = League(
-        name = C.INVALID_LEAGUE_NAME,
-        type = C.INVALID_LEAGUE_TYPE,
-        startedOn = C.INVALID_STARTED_ON,
-        endedOn = C.INVALID_ENDED_ON,
-        defaultTime = C.INVALID_DEFAULT_TIME,
-        defaultPoints = C.INVALID_DEFAULT_POINTS,
-        season = C.INVALID_SEASON,
-        tier = INVALID_TIER,
-        runnerLimit = C.INVALID_RUNNER_LIMIT,
-        promotions = C.INVALID_PROMOTIONS,
-        relegations = C.INVALID_RELEGATIONS
     )
     
     val VALID_CART: Cart = Cart(
