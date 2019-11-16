@@ -1,14 +1,16 @@
 package com.immanuelqrw.speedleague.api.service
 
 import com.immanuelqrw.speedleague.api.entity.*
+import com.immanuelqrw.speedleague.api.dto.input.Cart as CartInput
+import com.immanuelqrw.speedleague.api.dto.input.Game as GameInput
 import com.immanuelqrw.speedleague.api.dto.input.LeagueRunner as LeagueRunnerInput
 import com.immanuelqrw.speedleague.api.dto.input.LeagueSpeedrun as LeagueSpeedrunInput
 import com.immanuelqrw.speedleague.api.dto.input.Race as RaceInput
 import com.immanuelqrw.speedleague.api.dto.input.RaceTime as RaceTimeInput
 import com.immanuelqrw.speedleague.api.dto.update.RaceTime as RaceTimeRegister
 import com.immanuelqrw.speedleague.api.dto.input.Runner as RunnerInput
+import com.immanuelqrw.speedleague.api.dto.input.Speedrun as SpeedrunInput
 import com.immanuelqrw.speedleague.api.dto.input.System as SystemInput
-import com.immanuelqrw.speedleague.api.dto.input.Game as GameInput
 import com.immanuelqrw.speedleague.api.service.TestConstants as C
 
 object TestEntityConstants {
@@ -199,6 +201,22 @@ object TestEntityConstants {
         version = C.INVALID_VERSION
     )
     
+    val VALID_CART_INPUT: CartInput = CartInput(
+        gameName = C.VALID_GAME_NAME,
+        systemName = C.VALID_SYSTEM_NAME,
+        isEmulated = C.VALID_IS_EMULATED,
+        region = C.VALID_REGION,
+        version = C.VALID_VERSION
+    )
+
+    val INVALID_CART_INPUT: CartInput = CartInput(
+        gameName = C.INVALID_GAME_NAME,
+        systemName = C.INVALID_SYSTEM_NAME,
+        isEmulated = C.INVALID_IS_EMULATED,
+        region = C.INVALID_REGION,
+        version = C.INVALID_VERSION
+    )
+    
     val VALID_SPEEDRUN: Speedrun = Speedrun(
         cart = VALID_CART,
         category = C.VALID_CATEGORY
@@ -207,6 +225,24 @@ object TestEntityConstants {
     val INVALID_SPEEDRUN: Speedrun = Speedrun(
         cart = INVALID_CART,
         category = C.INVALID_CATEGORY
+    )
+    
+    val VALID_SPEEDRUN_INPUT: SpeedrunInput = SpeedrunInput(
+        category = C.VALID_CATEGORY,
+        gameName = C.VALID_GAME_NAME,
+        systemName = C.VALID_SYSTEM_NAME,
+        isEmulated = C.VALID_IS_EMULATED,
+        region = C.VALID_REGION,
+        version = C.VALID_VERSION
+    )
+
+    val INVALID_SPEEDRUN_INPUT: SpeedrunInput = SpeedrunInput(
+        category = C.INVALID_CATEGORY,
+        gameName = C.INVALID_GAME_NAME,
+        systemName = C.INVALID_SYSTEM_NAME,
+        isEmulated = C.INVALID_IS_EMULATED,
+        region = C.INVALID_REGION,
+        version = C.INVALID_VERSION
     )
 
 }

@@ -77,7 +77,6 @@ internal class LeagueSpeedrunServiceTest {
     private val noLeagueSpeedrunOutputs: List<LeagueSpeedrunOutput> = emptyList()
 
     private val validLeague: League = EC.VALID_LEAGUE
-
     private val invalidLeague: League = EC.INVALID_LEAGUE
 
     @Mock
@@ -117,7 +116,7 @@ internal class LeagueSpeedrunServiceTest {
         )
 
         validLeagueSpeedruns = listOf(validLeagueSpeedrun)
-        validLeagueSpeedrunOutputs= validLeagueSpeedruns.map { system -> system.output }
+        validLeagueSpeedrunOutputs = validLeagueSpeedruns.map { system -> system.output }
         
         whenever(leagueSeekService.find(validLeagueName, validSeason, validTierLevel)).thenReturn(validLeague)
         whenever(speedrunSeekService.find(validCategory, validGameName, validSystemName, validIsEmulated, validRegion, validVersion)).thenReturn(validSpeedrun)
