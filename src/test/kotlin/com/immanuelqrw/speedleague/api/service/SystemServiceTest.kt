@@ -32,8 +32,8 @@ internal class SystemServiceTest {
     private val invalidSearch: String? = "name:Playstation 64"
 
     private val validSystemInput: SystemInput = SystemInput(
-        name = validName,
-        isEmulated = validIsEmulated
+            name = validName,
+    isEmulated = validIsEmulated
     )
 
     private val invalidSystemInput: SystemInput = SystemInput(

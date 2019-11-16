@@ -50,7 +50,8 @@ class RaceTimeService {
                 race = race,
                 runner = runner,
                 time = time,
-                outcome = outcome
+                outcome = outcome,
+                joinedOn = joinedOn
             )
             val createdRaceRunner: RaceRunner = raceRunnerSeekService.create(raceRunner)
 
