@@ -52,14 +52,19 @@ class StandingService {
                     0
                 }
             }
+
             val raceCount: Int = raceRunners.size
+            val pointsPerRace: Float = points.toFloat() / raceCount
+            val wins: Int = raceRunners.filter { raceRunner -> raceRunner.placement == 1 }.size
+            val averageTime: Long = raceRunners.map { raceRunner -> raceRunner.time ?: league.defaultTime }.sum()
+
             Standing(
                 runnerName = runnerName,
                 points = points,
-                raceCount = raceRunners.size,
-                pointsPerRace = points.toFloat() / raceCount,
-                wins = raceRunners.filter { raceRunner -> raceRunner.placement == 1 }.size,
-                averageTime = raceRunners.map { raceRunner -> raceRunner.time ?: league.defaultTime }.sum()
+                raceCount = raceCount,
+                pointsPerRace = pointsPerRace,
+                wins = wins,
+                averageTime = averageTime
             )
         }
 

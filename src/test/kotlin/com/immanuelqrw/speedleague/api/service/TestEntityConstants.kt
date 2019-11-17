@@ -1,5 +1,6 @@
 package com.immanuelqrw.speedleague.api.service
 
+import com.immanuelqrw.speedleague.api.dto.output.Standing
 import com.immanuelqrw.speedleague.api.entity.*
 import com.immanuelqrw.speedleague.api.dto.input.Cart as CartInput
 import com.immanuelqrw.speedleague.api.dto.input.Game as GameInput
@@ -305,6 +306,38 @@ object TestEntityConstants {
     val INVALID_LEAGUE_SPEEDRUN: LeagueSpeedrun = LeagueSpeedrun(
         league = INVALID_LEAGUE,
         speedrun = INVALID_SPEEDRUN
+    )
+    
+    val VALID_STANDING: Standing = Standing(
+        runnerName = C.VALID_RUNNER_NAME,
+        points = C.VALID_POINTS,
+        pointsPerRace = C.VALID_POINTS_PER_RACE,
+        raceCount = C.VALID_RACE_COUNT,
+        wins = C.VALID_WINS,
+        averageTime = C.VALID_AVERAGE_TIME
+    )
+
+    val INVALID_STANDING: Standing = Standing(
+        runnerName = C.INVALID_RUNNER_NAME,
+        points = C.INVALID_POINTS,
+        pointsPerRace = C.INVALID_POINTS_PER_RACE,
+        raceCount = C.INVALID_RACE_COUNT,
+        wins = C.INVALID_WINS,
+        averageTime = C.INVALID_AVERAGE_TIME
+    )
+
+    val VALID_POINT_RULE: PointRule = PointRule(
+        placement = C.VALID_PLACEMENT!!,
+        amount = C.VALID_AMOUNT,
+        league = VALID_LEAGUE,
+        addedOn = C.VALID_ADDED_ON
+    )
+
+    val INVALID_POINT_RULE: PointRule = PointRule(
+        placement = C.INVALID_PLACEMENT!!,
+        amount = C.INVALID_AMOUNT,
+        league = INVALID_LEAGUE,
+        addedOn = C.INVALID_ADDED_ON
     )
 
 }

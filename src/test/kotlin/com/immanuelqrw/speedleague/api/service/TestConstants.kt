@@ -3,6 +3,7 @@ package com.immanuelqrw.speedleague.api.service
 import com.immanuelqrw.speedleague.api.entity.LeagueType
 import com.immanuelqrw.speedleague.api.entity.Outcome
 import com.immanuelqrw.speedleague.api.entity.Region
+import sun.jvm.hotspot.code.CompressedStream.L
 import java.time.LocalDateTime
 
 object TestConstants {
@@ -82,7 +83,28 @@ object TestConstants {
     const val VALID_RELEGATIONS: Int = 1
     const val INVALID_RELEGATIONS: Int = -1
 
-    val VALID_PLACEMENT: Int? = null
-    val INVALID_PLACEMENT: Int? = null
+    val VALID_PLACEMENT: Int? = 1
+    val INVALID_PLACEMENT: Int? = -1
+
+    const val VALID_POINTS: Int = 3
+    const val INVALID_POINTS: Int = -3
+
+    const val VALID_POINTS_PER_RACE: Float = 3.0F
+    const val INVALID_POINTS_PER_RACE: Float = -3.0F
+
+    const val VALID_RACE_COUNT: Int = 1
+    const val INVALID_RACE_COUNT: Int = -1
+
+    const val VALID_WINS: Int = 1
+    const val INVALID_WINS: Int = -1
+
+    const val VALID_AVERAGE_TIME: Long = 73_800L
+    const val INVALID_AVERAGE_TIME: Long = 82_800L
+
+    val VALID_ADDED_ON: LocalDateTime = LocalDateTime.now()
+    val INVALID_ADDED_ON: LocalDateTime = LocalDateTime.MAX
+
+    const val VALID_AMOUNT: Int = 3
+    const val INVALID_AMOUNT: Int = -3
 
 }
