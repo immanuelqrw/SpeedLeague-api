@@ -1,8 +1,8 @@
 package com.immanuelqrw.speedleague.api.service.seek
 
 import com.immanuelqrw.speedleague.api.entity.League
-import com.immanuelqrw.speedleague.api.exception.LeagueHasEndedException
 import com.immanuelqrw.speedleague.api.repository.LeagueRepository
+import com.immanuelqrw.speedleague.api.service.TestConstants as C
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.invoking
 import org.amshove.kluent.shouldEqual
@@ -15,21 +15,20 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.time.LocalDateTime
 import javax.persistence.EntityNotFoundException
 
 @ExtendWith(SpringExtension::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class LeagueSeekServiceTest {
 
-    private val validName: String = "Neverending"
-    private val invalidName: String = "GDQ-Champions"
+    private val validName: String = C.VALID_LEAGUE_NAME
+    private val invalidName: String = C.INVALID_LEAGUE_NAME
 
-    private val validSeason: Int = 1
-    private val invalidSeason: Int = -1
+    private val validSeason: Int = C.VALID_SEASON
+    private val invalidSeason: Int = C.INVALID_SEASON
 
-    private val validTierLevel: Int = 1
-    private val invalidTierLevel: Int = -1
+    private val validTierLevel: Int = C.VALID_TIER_LEVEL
+    private val invalidTierLevel: Int = C.INVALID_TIER_LEVEL
 
     private val noLeagues: List<League> = emptyList()
 

@@ -173,28 +173,16 @@ object TestEntityConstants {
         joinedOn = C.INVALID_JOINED_ON
     )
 
-    val VALID_LEAGUE_SPEEDRUN_INPUT: LeagueSpeedrunInput = LeagueSpeedrunInput(
-        leagueName = C.VALID_LEAGUE_NAME,
-        season = C.VALID_SEASON,
-        tierLevel = C.VALID_TIER_LEVEL,
-        category = C.VALID_CATEGORY,
-        gameName = C.VALID_GAME_NAME,
-        systemName = C.VALID_SYSTEM_NAME,
-        isEmulated = C.VALID_IS_EMULATED,
-        region = C.VALID_REGION,
-        version = C.VALID_VERSION
+    val VALID_LEAGUE_RUNNER: LeagueRunner = LeagueRunner(
+        league = VALID_LEAGUE,
+        runner = VALID_RUNNER,
+        joinedOn = C.VALID_JOINED_ON
     )
 
-    val INVALID_LEAGUE_SPEEDRUN_INPUT: LeagueSpeedrunInput = LeagueSpeedrunInput(
-        leagueName = C.INVALID_LEAGUE_NAME,
-        season = C.INVALID_SEASON,
-        tierLevel = C.INVALID_TIER_LEVEL,
-        category = C.INVALID_CATEGORY,
-        gameName = C.INVALID_GAME_NAME,
-        systemName = C.INVALID_SYSTEM_NAME,
-        isEmulated = C.INVALID_IS_EMULATED,
-        region = C.INVALID_REGION,
-        version = C.INVALID_VERSION
+    val INVALID_LEAGUE_RUNNER: LeagueRunner = LeagueRunner(
+        league = INVALID_LEAGUE,
+        runner = INVALID_RUNNER,
+        joinedOn = C.INVALID_JOINED_ON
     )
 
     val VALID_RACE_TIME_INPUT: RaceTimeInput = RaceTimeInput(
@@ -283,6 +271,40 @@ object TestEntityConstants {
         isEmulated = C.INVALID_IS_EMULATED,
         region = C.INVALID_REGION,
         version = C.INVALID_VERSION
+    )
+
+    val VALID_LEAGUE_SPEEDRUN_INPUT: LeagueSpeedrunInput = LeagueSpeedrunInput(
+        leagueName = C.VALID_LEAGUE_NAME,
+        season = C.VALID_SEASON,
+        tierLevel = C.VALID_TIER_LEVEL,
+        category = C.VALID_CATEGORY,
+        gameName = C.VALID_GAME_NAME,
+        systemName = C.VALID_SYSTEM_NAME,
+        isEmulated = C.VALID_IS_EMULATED,
+        region = C.VALID_REGION,
+        version = C.VALID_VERSION
+    )
+
+    val INVALID_LEAGUE_SPEEDRUN_INPUT: LeagueSpeedrunInput = LeagueSpeedrunInput(
+        leagueName = C.INVALID_LEAGUE_NAME,
+        season = C.INVALID_SEASON,
+        tierLevel = C.INVALID_TIER_LEVEL,
+        category = C.INVALID_CATEGORY,
+        gameName = C.INVALID_GAME_NAME,
+        systemName = C.INVALID_SYSTEM_NAME,
+        isEmulated = C.INVALID_IS_EMULATED,
+        region = C.INVALID_REGION,
+        version = C.INVALID_VERSION
+    )
+
+    val VALID_LEAGUE_SPEEDRUN: LeagueSpeedrun = LeagueSpeedrun(
+        league = VALID_LEAGUE,
+        speedrun = VALID_SPEEDRUN
+    )
+
+    val INVALID_LEAGUE_SPEEDRUN: LeagueSpeedrun = LeagueSpeedrun(
+        league = INVALID_LEAGUE,
+        speedrun = INVALID_SPEEDRUN
     )
 
 }

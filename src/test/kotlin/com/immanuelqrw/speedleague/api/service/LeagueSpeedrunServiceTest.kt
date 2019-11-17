@@ -65,13 +65,11 @@ internal class LeagueSpeedrunServiceTest {
     private val validLeagueSpeedrunInput: LeagueSpeedrunInput = EC.VALID_LEAGUE_SPEEDRUN_INPUT
     private val invalidLeagueSpeedrunInput: LeagueSpeedrunInput = EC.INVALID_LEAGUE_SPEEDRUN_INPUT
 
-    private val validCart: Cart = EC.VALID_CART
+    private val validLeagueSpeedrun: LeagueSpeedrun = EC.VALID_LEAGUE_SPEEDRUN
+    private val invalidLeagueSpeedrun: LeagueSpeedrun = EC.INVALID_LEAGUE_SPEEDRUN
 
-    private lateinit var validLeagueSpeedrun: LeagueSpeedrun
-    private lateinit var invalidLeagueSpeedrun: LeagueSpeedrun
-
-    private lateinit var validLeagueSpeedruns: List<LeagueSpeedrun>
-    private lateinit var validLeagueSpeedrunOutputs: List<LeagueSpeedrunOutput>
+    private val validLeagueSpeedruns: List<LeagueSpeedrun> = listOf(validLeagueSpeedrun)
+    private val validLeagueSpeedrunOutputs: List<LeagueSpeedrunOutput> = validLeagueSpeedruns.map { leagueSpeedrun -> leagueSpeedrun.output }
 
     private val noLeagueSpeedruns: List<LeagueSpeedrun> = emptyList()
     private val noLeagueSpeedrunOutputs: List<LeagueSpeedrunOutput> = emptyList()
@@ -79,11 +77,8 @@ internal class LeagueSpeedrunServiceTest {
     private val validLeague: League = EC.VALID_LEAGUE
     private val invalidLeague: League = EC.INVALID_LEAGUE
 
-    @Mock
-    private lateinit var validSpeedrun: Speedrun
-
-    @Mock
-    private lateinit var invalidSpeedrun: Speedrun
+    private val validSpeedrun: Speedrun = EC.VALID_SPEEDRUN
+    private val invalidSpeedrun: Speedrun = EC.INVALID_SPEEDRUN
     
     @Mock
     private lateinit var leagueSpeedrunSeekService: LeagueSpeedrunSeekService
@@ -102,22 +97,6 @@ internal class LeagueSpeedrunServiceTest {
 
     @BeforeAll
     fun setUp() {
-        whenever(validSpeedrun.category).thenReturn(validCategory)
-        whenever(validSpeedrun.cart).thenReturn(validCart)
-
-        validLeagueSpeedrun = LeagueSpeedrun(
-            league = validLeague,
-            speedrun = validSpeedrun
-        )
-
-        invalidLeagueSpeedrun = LeagueSpeedrun(
-            league = invalidLeague,
-            speedrun = invalidSpeedrun
-        )
-
-        validLeagueSpeedruns = listOf(validLeagueSpeedrun)
-        validLeagueSpeedrunOutputs = validLeagueSpeedruns.map { system -> system.output }
-        
         whenever(leagueSeekService.find(validLeagueName, validSeason, validTierLevel)).thenReturn(validLeague)
         whenever(speedrunSeekService.find(validCategory, validGameName, validSystemName, validIsEmulated, validRegion, validVersion)).thenReturn(validSpeedrun)
         whenever(leagueSpeedrunSeekService.create(validLeagueSpeedrun)).thenReturn(validLeagueSpeedrun)

@@ -4,6 +4,8 @@ import com.immanuelqrw.speedleague.api.dto.input.Game as GameInput
 import com.immanuelqrw.speedleague.api.dto.output.Game as GameOutput
 import com.immanuelqrw.speedleague.api.entity.Game
 import com.immanuelqrw.speedleague.api.service.seek.GameSeekService
+import com.immanuelqrw.speedleague.api.service.TestConstants as C
+import com.immanuelqrw.speedleague.api.service.TestEntityConstants as EC
 import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.invoking
@@ -23,34 +25,20 @@ import javax.persistence.EntityNotFoundException
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class GameServiceTest {
 
-    private val validName: String = "Pokémon Snap"
-    private val invalidName: String = "Pokémon Snap 2"
+    private val validName: String = C.VALID_GAME_NAME
+    private val invalidName: String = C.INVALID_GAME_NAME
 
-    private val validShorthand: String = "pkmnsnap"
-    private val invalidShorthand: String = "pkmnsnap2"
+    private val validShorthand: String = C.VALID_SHORTHAND
+    private val invalidShorthand: String = C.INVALID_SHORTHAND
 
-    private val validSearch: String? = "name:Pokémon Snap"
-    private val invalidSearch: String? = "name:Pokémon Snap 2"
+    private val validSearch: String? = "name:$validName"
+    private val invalidSearch: String? = "name:$invalidName"
 
-    private val validGameInput: GameInput = GameInput(
-        name = validName,
-        shorthand = validShorthand
-    )
+    private val validGameInput: GameInput = EC.VALID_GAME_INPUT
+    private val invalidGameInput: GameInput = EC.INVALID_GAME_INPUT
 
-    private val invalidGameInput: GameInput = GameInput(
-        name = invalidName,
-        shorthand = invalidShorthand
-    )
-
-    private val validGame: Game = Game(
-        name = validName,
-        shorthand = validShorthand
-    )
-
-    private val invalidGame: Game = Game(
-        name = invalidName,
-        shorthand = invalidShorthand
-    )
+    private val validGame: Game = EC.VALID_GAME
+    private val invalidGame: Game = EC.INVALID_GAME
 
     private val validGames: List<Game> = listOf(validGame)
     private val validGameOutputs: List<GameOutput> = validGames.map { game -> game.output }

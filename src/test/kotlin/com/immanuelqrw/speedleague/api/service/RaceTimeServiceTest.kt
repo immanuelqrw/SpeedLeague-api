@@ -9,6 +9,8 @@ import com.immanuelqrw.speedleague.api.dto.update.RaceTime as RaceTimeRegister
 import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerSeekService
 import com.immanuelqrw.speedleague.api.service.seek.RaceSeekService
 import com.immanuelqrw.speedleague.api.service.seek.RunnerSeekService
+import com.immanuelqrw.speedleague.api.service.TestConstants as C
+import com.immanuelqrw.speedleague.api.service.TestEntityConstants as EC
 import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.invoking
@@ -29,80 +31,32 @@ import javax.persistence.EntityNotFoundException
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class RaceTimeServiceTest {
 
-    private val validRaceName: String = "Neverending-S1-W6-Friday-1"
-    private val invalidRaceName: String = "Shoo-vs-Quo-GrandFinals"
+    private val validRaceName: String = C.VALID_RACE_NAME
+    private val invalidRaceName: String = C.INVALID_RACE_NAME
 
-    private val validRunnerName: String = "Shoo"
-    private val invalidRunnerName: String = "Arjay"
+    private val validRunnerName: String = C.VALID_RUNNER_NAME
+    private val invalidRunnerName: String = C.INVALID_RUNNER_NAME
 
-    private val validTime: Long = 73_800L
-    private val invalidTime: Long = 82_800L
+    private val validRaceTimeInput: RaceTimeInput = EC.VALID_RACE_TIME_INPUT
+    private val invalidRaceTimeInput: RaceTimeInput = EC.INVALID_RACE_TIME_INPUT
 
-    private val validOutcome: Outcome = Outcome.PENDING_VERIFICATION
-    private val invalidOutcome: Outcome = Outcome.DID_NOT_FINISH
+    private val validRaceTimeRegister: RaceTimeRegister = EC.VALID_RACE_TIME_REGISTER
+    private val invalidRaceTimeRegister: RaceTimeRegister = EC.INVALID_RACE_TIME_REGISTER
 
-    private val validJoinedOn: LocalDateTime = LocalDateTime.now()
-    private val invalidJoinedOn: LocalDateTime = LocalDateTime.MAX
+    private val validRace: Race = EC.VALID_RACE
+    private val invalidRace: Race = EC.INVALID_RACE
 
-    private val validRaceTimeInput: RaceTimeInput = RaceTimeInput(
-        runnerName = validRunnerName,
-        raceName = validRaceName,
-        time = validTime,
-        outcome = validOutcome,
-        joinedOn = validJoinedOn
-    )
+    private val validRunner: Runner = EC.VALID_RUNNER
+    private val invalidRunner: Runner = EC.INVALID_RUNNER
 
-    private val invalidRaceTimeInput: RaceTimeInput = RaceTimeInput(
-        runnerName = invalidRunnerName,
-        raceName = invalidRaceName,
-        time = invalidTime,
-        outcome = invalidOutcome,
-        joinedOn = invalidJoinedOn
-    )
+    private val validLeagueRunner: LeagueRunner = EC.VALID_LEAGUE_RUNNER
+    private val invalidLeagueRunner: LeagueRunner = EC.INVALID_LEAGUE_RUNNER
 
-    private val validRaceTimeRegister: RaceTimeRegister = RaceTimeRegister(
-        runnerName = validRunnerName,
-        raceName = validRaceName,
-        time = validTime,
-        outcome = validOutcome
-    )
-
-    private val invalidRaceTimeRegister: RaceTimeRegister = RaceTimeRegister(
-        runnerName = invalidRunnerName,
-        raceName = invalidRaceName,
-        time = invalidTime,
-        outcome = invalidOutcome
-    )
-    
-    @Mock
-    private lateinit var validRace: Race
-
-    @Mock
-    private lateinit var invalidRace: Race
-
-    @Mock
-    private lateinit var validRunner: Runner
-
-    @Mock
-    private lateinit var invalidRunner: Runner
-
-    @Mock
-    private lateinit var validLeague: League
-
-    @Mock
-    private lateinit var invalidLeague: League
-
-    @Mock
-    private lateinit var validLeagueRunner: LeagueRunner
-
-    @Mock
-    private lateinit var invalidLeagueRunner: LeagueRunner
-
-    private lateinit var validLeagueRunners: List<LeagueRunner>
+    private val validLeagueRunners: List<LeagueRunner> = listOf(validLeagueRunner)
     private val noLeagueRunners: List<LeagueRunner> = emptyList()
 
-    private lateinit var validRaceRunner: RaceRunner
-    private lateinit var invalidRaceRunner: RaceRunner
+    private val validRaceRunner: RaceRunner = EC.VALID_RACE_RUNNER
+    private val invalidRaceRunner: RaceRunner = EC.INVALID_RACE_RUNNER
 
     @Mock
     private lateinit var raceSeekService: RaceSeekService
@@ -121,33 +75,6 @@ internal class RaceTimeServiceTest {
 
     @BeforeAll
     fun setUp() {
-        whenever(validRace.league).thenReturn(validLeague)
-        whenever(validRace.name).thenReturn(validRaceName)
-        whenever(validRunner.name).thenReturn(validRunnerName)
-        whenever(validLeagueRunner.league).thenReturn(validLeague)
-
-        validLeagueRunners = listOf(validLeagueRunner)
-
-        validRaceRunner = RaceRunner(
-            race = validRace,
-            runner = validRunner,
-            time = validTime,
-            outcome = validOutcome,
-            joinedOn = validJoinedOn
-        )
-
-        invalidRaceRunner = RaceRunner(
-            race = invalidRace,
-            runner = invalidRunner,
-            time = invalidTime,
-            outcome = invalidOutcome,
-            joinedOn = invalidJoinedOn
-        )
-
-        whenever(invalidRace.league).thenReturn(invalidLeague)
-        whenever(invalidRace.name).thenReturn(invalidRaceName)
-        whenever(invalidRunner.name).thenReturn(invalidRunnerName)
-        
         whenever(raceSeekService.findByName(validRaceName)).thenReturn(validRace)
         whenever(runnerSeekService.findByName(validRunnerName)).thenReturn(validRunner)
         whenever(leagueRunnerSeekService.findAllByRunner(validRunnerName)).thenReturn(validLeagueRunners)
@@ -187,9 +114,8 @@ internal class RaceTimeServiceTest {
     inner class Failure {
 
         @Test
-        fun `given invalid invalidRaceTimeInput - when register - then throw IllegalArgumentException`() {
+        fun `given invalid raceTimeInput - when register - then throw IllegalArgumentException`() {
             val invalidLeagueRunners: List<LeagueRunner> = listOf(invalidLeagueRunner)
-            whenever(invalidLeagueRunner.league).thenReturn(invalidLeague)
             whenever(leagueRunnerSeekService.findAllByRunner(invalidRunnerName)).thenReturn(invalidLeagueRunners)
 
             invoking { raceTimeService.register(invalidRaceTimeInput) } shouldThrow IllegalArgumentException::class

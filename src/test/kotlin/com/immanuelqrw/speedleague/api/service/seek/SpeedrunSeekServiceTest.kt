@@ -3,6 +3,7 @@ package com.immanuelqrw.speedleague.api.service.seek
 import com.immanuelqrw.speedleague.api.entity.Region
 import com.immanuelqrw.speedleague.api.entity.Speedrun
 import com.immanuelqrw.speedleague.api.repository.SpeedrunRepository
+import com.immanuelqrw.speedleague.api.service.TestConstants as C
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.invoking
 import org.amshove.kluent.shouldEqual
@@ -21,23 +22,23 @@ import javax.persistence.EntityNotFoundException
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class SpeedrunSeekServiceTest {
 
-    private val validGameName: String = "Pokémon Snap"
-    private val invalidGameName: String = "Pokémon Snap 2"
+    private val validGameName: String = C.VALID_GAME_NAME
+    private val invalidGameName: String = C.INVALID_GAME_NAME
 
-    private val validSystemName: String = "Wii U"
-    private val invalidSystemName: String = "Playstation 64"
+    private val validSystemName: String = C.VALID_SYSTEM_NAME
+    private val invalidSystemName: String = C.INVALID_SYSTEM_NAME
 
-    private val validRegion: Region = Region.NTSC_U
-    private val invalidRegion: Region = Region.PAL
+    private val validRegion: Region = C.VALID_REGION
+    private val invalidRegion: Region = C.INVALID_REGION
 
-    private val validCategory: String = "Any%"
-    private val invalidCategory: String = "Jynx%"
+    private val validCategory: String = C.VALID_CATEGORY
+    private val invalidCategory: String = C.INVALID_CATEGORY
 
-    private val validIsEmulated: Boolean = false
-    private val invalidIsEmulated: Boolean = true
+    private val validIsEmulated: Boolean = C.VALID_IS_EMULATED
+    private val invalidIsEmulated: Boolean = C.INVALID_IS_EMULATED
 
-    private val validVersion: String = "1.0.0"
-    private val invalidVersion: String = "5.0.0-Alpha"
+    private val validVersion: String = C.VALID_VERSION
+    private val invalidVersion: String = C.INVALID_VERSION
 
     private val noSpeedruns: List<Speedrun> = emptyList()
 

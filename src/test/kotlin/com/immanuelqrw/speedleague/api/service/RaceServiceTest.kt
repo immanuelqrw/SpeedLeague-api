@@ -5,10 +5,11 @@ import com.immanuelqrw.speedleague.api.dto.input.Race as RaceInput
 import com.immanuelqrw.speedleague.api.dto.output.Race as RaceOutput
 import com.immanuelqrw.speedleague.api.entity.Race
 import com.immanuelqrw.speedleague.api.entity.RaceRunner
-import com.immanuelqrw.speedleague.api.entity.Tier
 import com.immanuelqrw.speedleague.api.service.seek.LeagueSeekService
 import com.immanuelqrw.speedleague.api.service.seek.RaceRunnerSeekService
 import com.immanuelqrw.speedleague.api.service.seek.RaceSeekService
+import com.immanuelqrw.speedleague.api.service.TestConstants as C
+import com.immanuelqrw.speedleague.api.service.TestEntityConstants as EC
 import com.nhaarman.mockitokotlin2.doNothing
 import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.whenever
@@ -30,75 +31,42 @@ import java.time.LocalDateTime
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class RaceServiceTest {
 
-    private val validName: String = "Neverending-S1-W6-Friday-1"
-    private val invalidName: String = "Shoo-vs-Quo-GrandFinals"
+    private val validName: String = C.VALID_RACE_NAME
+    private val invalidName: String = C.INVALID_RACE_NAME
 
-    private val validLeagueName: String = "Neverending"
-    private val invalidLeagueName: String = "GDQ-Champions"
+    private val validLeagueName: String = C.VALID_LEAGUE_NAME
+    private val invalidLeagueName: String = C.INVALID_LEAGUE_NAME
 
-    private val validSeason: Int = 1
-    private val invalidSeason: Int = -1
+    private val validSeason: Int = C.VALID_SEASON
+    private val invalidSeason: Int = C.INVALID_SEASON
 
-    private val validTierLevel: Int = 1
-    private val invalidTierLevel: Int = -1
+    private val validTierLevel: Int = C.VALID_TIER_LEVEL
+    private val invalidTierLevel: Int = C.INVALID_TIER_LEVEL
 
-    private val validTierName: String = "Alpha"
-    private val invalidTierName: String = "Magikarp"
+    private val validRunnerName: String = C.VALID_RUNNER_NAME
+    private val invalidRunnerName: String = C.INVALID_RUNNER_NAME
 
-    private val validTier: Tier = Tier(
-        name = validTierName,
-        level = validTierLevel
-    )
+    private val validSearch: String? = "name:$validName"
+    private val invalidSearch: String? = "name:$invalidName"
 
-    private val invalidTier: Tier = Tier(
-        name = invalidTierName,
-        level = invalidTierLevel
-    )
+    private val validRaceInput: RaceInput = EC.VALID_RACE_INPUT
+    private val invalidRaceInput: RaceInput = EC.INVALID_RACE_INPUT
 
-    private val validStartedOn: LocalDateTime = LocalDateTime.now()
-    private val invalidStartedOn: LocalDateTime = LocalDateTime.MAX
+    private val validLeague: League = EC.VALID_LEAGUE
+    private val invalidLeague: League = EC.INVALID_LEAGUE
 
-    private val validRunnerName: String = "Shoo"
-    private val invalidRunnerName: String = "Arjay"
+    private val validRace: Race = EC.VALID_RACE
+    private val invalidRace: Race = EC.INVALID_RACE
 
-    private val validSearch: String? = "name:Neverending-S1-W6-Friday-1"
-    private val invalidSearch: String? = "name:Shoo-vs-Quo-GrandFinals"
-
-    private val validRaceInput: RaceInput = RaceInput(
-        leagueName = validLeagueName,
-        season = validSeason,
-        tierLevel = validTierLevel,
-        raceName = validName,
-        startedOn = validStartedOn
-    )
-
-    private val invalidRaceInput: RaceInput = RaceInput(
-        leagueName = invalidLeagueName,
-        season = invalidSeason,
-        tierLevel = invalidTierLevel,
-        raceName = invalidName,
-        startedOn = invalidStartedOn
-    )
-
-    @Mock
-    private lateinit var validLeague: League
-
-    @Mock
-    private lateinit var invalidLeague: League
-
-    private lateinit var validRace: Race
-    private lateinit var invalidRace: Race
-
-    private lateinit var validRaces: List<Race>
-    private lateinit var validRaceOutputs: List<RaceOutput>
+    private val validRaces: List<Race> = listOf(validRace)
+    private val validRaceOutputs: List<RaceOutput> = validRaces.map { race -> race.output }
 
     private val noRaces: List<Race> = emptyList()
     private val noRaceOutputs: List<RaceOutput> = emptyList()
 
-    @Mock
-    private lateinit var validRaceRunner: RaceRunner
+    private val validRaceRunner: RaceRunner = EC.VALID_RACE_RUNNER
 
-    private lateinit var validRaceRunners: List<RaceRunner>
+    private val validRaceRunners: List<RaceRunner> = listOf(validRaceRunner)
     private val noRaceRunners: List<RaceRunner> = emptyList()
 
     @Mock
@@ -118,29 +86,6 @@ internal class RaceServiceTest {
 
     @BeforeAll
     fun setUp() {
-        whenever(validLeague.name).thenReturn(validLeagueName)
-        whenever(validLeague.season).thenReturn(validSeason)
-        whenever(validLeague.tier).thenReturn(validTier)
-
-        validRace = Race(
-            name = validName,
-            league = validLeague,
-            startedOn = validStartedOn
-        )
-
-        invalidRace = Race(
-            name = invalidName,
-            league = invalidLeague,
-            startedOn = invalidStartedOn
-        )
-
-        validRaces = listOf(validRace)
-        validRaceOutputs = validRaces.map { race -> race.output }
-
-        validRaceRunners = listOf(validRaceRunner)
-
-        whenever(validRaceRunner.race).thenReturn(validRace)
-
         whenever(raceSeekService.findAllActive(search = validSearch)).thenReturn(validRaces)
         whenever(raceRunnerSeekService.findAllByRunner(validRunnerName)).thenReturn(validRaceRunners)
         whenever(raceSeekService.create(validRace)).thenReturn(validRace)
@@ -148,10 +93,6 @@ internal class RaceServiceTest {
 
         doNothing().whenever(leagueService).validateLeagueChange(Mockito.any(LocalDateTime::class.java), Mockito.anyString())
         // ! Add failure case for validateLeagueChange
-
-        whenever(invalidLeague.name).thenReturn(invalidLeagueName)
-        whenever(invalidLeague.season).thenReturn(invalidSeason)
-        whenever(invalidLeague.tier).thenReturn(invalidTier)
 
         whenever(raceSeekService.findAllActive(search = invalidSearch)).thenReturn(noRaces)
         whenever(leagueSeekService.find(invalidLeagueName, invalidSeason, invalidTierLevel)).thenReturn(invalidLeague)

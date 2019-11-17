@@ -3,6 +3,7 @@ package com.immanuelqrw.speedleague.api.service.seek
 import com.immanuelqrw.speedleague.api.entity.DivisionShiftRule
 import com.immanuelqrw.speedleague.api.entity.Shift
 import com.immanuelqrw.speedleague.api.repository.DivisionShiftRuleRepository
+import com.immanuelqrw.speedleague.api.service.TestConstants as C
 import com.nhaarman.mockitokotlin2.doNothing
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -23,14 +24,14 @@ import javax.persistence.EntityNotFoundException
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class DivisionShiftRuleSeekServiceTest {
 
-    private val validLeagueName: String = "Neverending"
-    private val invalidLeagueName: String = "GDQ-Champions"
+    private val validLeagueName: String = C.VALID_LEAGUE_NAME
+    private val invalidLeagueName: String = C.INVALID_LEAGUE_NAME
 
-    private val validSeason: Int = 1
-    private val invalidSeason: Int = -1
+    private val validSeason: Int = C.VALID_SEASON
+    private val invalidSeason: Int = C.INVALID_SEASON
 
-    private val validTierLevel: Int = 1
-    private val invalidTierLevel: Int = -1
+    private val validTierLevel: Int = C.VALID_TIER_LEVEL
+    private val invalidTierLevel: Int = C.INVALID_TIER_LEVEL
 
     private val noDivisionShiftRules: List<DivisionShiftRule> = emptyList()
 

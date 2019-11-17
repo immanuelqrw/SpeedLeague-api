@@ -2,6 +2,7 @@ package com.immanuelqrw.speedleague.api.service.seek
 
 import com.immanuelqrw.speedleague.api.entity.Game
 import com.immanuelqrw.speedleague.api.repository.GameRepository
+import com.immanuelqrw.speedleague.api.service.TestConstants as C
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.invoking
 import org.amshove.kluent.shouldEqual
@@ -20,11 +21,11 @@ import javax.persistence.EntityNotFoundException
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class GameSeekServiceTest {
 
-    private val validName: String = "Pokémon Snap"
-    private val invalidName: String = "Pokémon Snap 2"
+    private val validName: String = C.VALID_GAME_NAME
+    private val invalidName: String = C.INVALID_GAME_NAME
 
-    private val validShorthand: String = "pkmnsnap"
-    private val invalidShorthand: String = "pkmnsnap2"
+    private val validShorthand: String = C.VALID_SHORTHAND
+    private val invalidShorthand: String = C.INVALID_SHORTHAND
 
     @Mock
     private lateinit var validGame: Game

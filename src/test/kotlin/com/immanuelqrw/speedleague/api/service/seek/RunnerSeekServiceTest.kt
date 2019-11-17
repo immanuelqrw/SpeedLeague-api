@@ -2,6 +2,7 @@ package com.immanuelqrw.speedleague.api.service.seek
 
 import com.immanuelqrw.speedleague.api.entity.Runner
 import com.immanuelqrw.speedleague.api.repository.RunnerRepository
+import com.immanuelqrw.speedleague.api.service.TestConstants as C
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.invoking
 import org.amshove.kluent.shouldEqual
@@ -20,8 +21,8 @@ import javax.persistence.EntityNotFoundException
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class RunnerSeekServiceTest {
 
-    private val validName: String = "Shoo"
-    private val invalidName: String = "Arjay"
+    private val validName: String = C.VALID_RUNNER_NAME
+    private val invalidName: String = C.INVALID_RUNNER_NAME
 
     @Mock
     private lateinit var validRunner: Runner

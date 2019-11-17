@@ -4,6 +4,8 @@ import com.immanuelqrw.speedleague.api.dto.update.RaceTime as RaceTimeRegister
 import com.immanuelqrw.speedleague.api.entity.Outcome
 import com.immanuelqrw.speedleague.api.entity.RaceRunner
 import com.immanuelqrw.speedleague.api.repository.RaceRunnerRepository
+import com.immanuelqrw.speedleague.api.service.TestConstants as C
+import com.immanuelqrw.speedleague.api.service.TestEntityConstants as EC
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.invoking
 import org.amshove.kluent.shouldEqual
@@ -24,31 +26,21 @@ import javax.persistence.EntityNotFoundException
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class RaceRunnerSeekServiceTest {
 
-    private val validRaceName: String = "Neverending-S1-W6-Friday-1"
-    private val invalidRaceName: String = "Shoo-vs-Quo-GrandFinals"
+    private val validRaceName: String = C.VALID_RACE_NAME
+    private val invalidRaceName: String = C.INVALID_RACE_NAME
 
-    private val validRunnerName: String = "Shoo"
-    private val invalidRunnerName: String = "Arjay"
+    private val validRunnerName: String = C.VALID_RUNNER_NAME
+    private val invalidRunnerName: String = C.INVALID_RUNNER_NAME
 
-    private val validStartedOn: LocalDateTime = LocalDateTime.now()
-    private val invalidStartedOn: LocalDateTime = LocalDateTime.MIN
+    private val validStartedOn: LocalDateTime = C.VALID_STARTED_ON
+    private val invalidStartedOn: LocalDateTime = C.INVALID_STARTED_ON
 
-    private val validOutcome: Outcome = Outcome.DID_NOT_FINISH
+    private val validOutcome: Outcome = C.VALID_OUTCOME
 
     private val noRaceRunners: List<RaceRunner> = emptyList()
 
-    private val validRaceTimeRegister: RaceTimeRegister = RaceTimeRegister(
-        runnerName = validRunnerName,
-        raceName = validRaceName,
-        time = 0,
-        outcome = validOutcome
-    )
-    private val invalidRaceTimeRegister: RaceTimeRegister = RaceTimeRegister(
-        runnerName = invalidRunnerName,
-        raceName = invalidRaceName,
-        time = 0,
-        outcome = validOutcome
-    )
+    private val validRaceTimeRegister: RaceTimeRegister = EC.VALID_RACE_TIME_REGISTER
+    private val invalidRaceTimeRegister: RaceTimeRegister = EC.INVALID_RACE_TIME_REGISTER
 
     @Mock
     private lateinit var validRaceRunner: RaceRunner
