@@ -2,6 +2,7 @@ package com.immanuelqrw.speedleague.api.service
 
 import com.immanuelqrw.speedleague.api.entity.LeagueType
 import com.immanuelqrw.speedleague.api.entity.Outcome
+import com.immanuelqrw.speedleague.api.entity.Qualifier
 import com.immanuelqrw.speedleague.api.entity.Region
 import sun.jvm.hotspot.code.CompressedStream.L
 import java.time.LocalDateTime
@@ -106,5 +107,11 @@ object TestConstants {
 
     const val VALID_AMOUNT: Int = 3
     const val INVALID_AMOUNT: Int = -3
+
+    val VALID_QUALIFIER: Qualifier = Qualifier.POINTS
+    val INVALID_QUALIFIER: Qualifier = Qualifier.WINS
+
+    const val VALID_ORDER: Int = 1
+    const val INVALID_ORDER: Int = -1
 
 }

@@ -23,7 +23,6 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
@@ -49,7 +48,6 @@ internal class PointServiceTest {
     private val invalidLeaguePointRuleInput: LeaguePointRuleInput = EC.INVALID_LEAGUE_POINT_RULE_INPUT
 
     private val validPointRule: PointRule = EC.VALID_POINT_RULE
-    private val invalidPointRule: PointRule = EC.INVALID_POINT_RULE
 
     private val validPointRules: List<PointRule> = listOf(validPointRule)
     private val validPointRuleOutputs: List<PointRuleOutput> = validPointRules.map { pointRule -> pointRule.output }

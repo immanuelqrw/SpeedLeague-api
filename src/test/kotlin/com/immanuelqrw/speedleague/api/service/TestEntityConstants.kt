@@ -1,9 +1,11 @@
 package com.immanuelqrw.speedleague.api.service
 
+import com.immanuelqrw.speedleague.api.dto.input.QualifierRule
 import com.immanuelqrw.speedleague.api.dto.output.Standing
 import com.immanuelqrw.speedleague.api.entity.*
 import com.immanuelqrw.speedleague.api.dto.input.Cart as CartInput
 import com.immanuelqrw.speedleague.api.dto.input.Game as GameInput
+import com.immanuelqrw.speedleague.api.dto.input.LeaguePlayoffRule as LeaguePlayoffRuleInput
 import com.immanuelqrw.speedleague.api.dto.input.LeaguePointRule as LeaguePointRuleInput
 import com.immanuelqrw.speedleague.api.dto.input.LeagueRunner as LeagueRunnerInput
 import com.immanuelqrw.speedleague.api.dto.input.LeagueSpeedrun as LeagueSpeedrunInput
@@ -366,6 +368,48 @@ object TestEntityConstants {
         tierLevel = C.INVALID_TIER_LEVEL,
         tierName = C.INVALID_TIER_NAME,
         pointRules = listOf(INVALID_POINT_RULE_INPUT)
+    )
+    
+    val VALID_QUALIFIER_RULE: QualifierRule = QualifierRule(
+        qualifier = C.VALID_QUALIFIER,
+        count = C.VALID_RACE_COUNT
+    )
+
+    val INVALID_QUALIFIER_RULE: QualifierRule = QualifierRule(
+        qualifier = C.INVALID_QUALIFIER,
+        count = C.INVALID_RACE_COUNT
+    )
+
+    val VALID_PLAYOFF_RULE: PlayoffRule = PlayoffRule(
+        qualifier = C.VALID_QUALIFIER,
+        count = C.VALID_RACE_COUNT,
+        league = VALID_LEAGUE,
+        addedOn = C.VALID_ADDED_ON,
+        order = C.VALID_ORDER
+    )
+
+    val INVALID_PLAYOFF_RULE: PlayoffRule = PlayoffRule(
+        qualifier = C.INVALID_QUALIFIER,
+        count = C.INVALID_RACE_COUNT,
+        league = INVALID_LEAGUE,
+        addedOn = C.INVALID_ADDED_ON,
+        order = C.INVALID_ORDER
+    )
+
+    val VALID_LEAGUE_PLAYOFF_RULE_INPUT: LeaguePlayoffRuleInput = LeaguePlayoffRuleInput(
+        leagueName = C.VALID_LEAGUE_NAME,
+        season = C.VALID_SEASON,
+        tierLevel = C.VALID_TIER_LEVEL,
+        tierName = C.VALID_TIER_NAME,
+        qualifierRules = listOf(VALID_QUALIFIER_RULE)
+    )
+
+    val INVALID_LEAGUE_PLAYOFF_RULE_INPUT: LeaguePlayoffRuleInput = LeaguePlayoffRuleInput(
+        leagueName = C.INVALID_LEAGUE_NAME,
+        season = C.INVALID_SEASON,
+        tierLevel = C.INVALID_TIER_LEVEL,
+        tierName = C.INVALID_TIER_NAME,
+        qualifierRules = listOf(INVALID_QUALIFIER_RULE)
     )
 
 }
