@@ -4,8 +4,10 @@ import com.immanuelqrw.speedleague.api.dto.output.Standing
 import com.immanuelqrw.speedleague.api.entity.*
 import com.immanuelqrw.speedleague.api.dto.input.Cart as CartInput
 import com.immanuelqrw.speedleague.api.dto.input.Game as GameInput
+import com.immanuelqrw.speedleague.api.dto.input.LeaguePointRule as LeaguePointRuleInput
 import com.immanuelqrw.speedleague.api.dto.input.LeagueRunner as LeagueRunnerInput
 import com.immanuelqrw.speedleague.api.dto.input.LeagueSpeedrun as LeagueSpeedrunInput
+import com.immanuelqrw.speedleague.api.dto.input.PointRule as PointRuleInput
 import com.immanuelqrw.speedleague.api.dto.input.Race as RaceInput
 import com.immanuelqrw.speedleague.api.dto.input.RaceTime as RaceTimeInput
 import com.immanuelqrw.speedleague.api.dto.update.RaceTime as RaceTimeRegister
@@ -326,6 +328,16 @@ object TestEntityConstants {
         averageTime = C.INVALID_AVERAGE_TIME
     )
 
+    val VALID_POINT_RULE_INPUT: PointRuleInput = PointRuleInput(
+        placement = C.VALID_PLACEMENT!!,
+        amount = C.VALID_AMOUNT
+    )
+
+    val INVALID_POINT_RULE_INPUT: PointRuleInput = PointRuleInput(
+        placement = C.INVALID_PLACEMENT!!,
+        amount = C.INVALID_AMOUNT
+    )
+
     val VALID_POINT_RULE: PointRule = PointRule(
         placement = C.VALID_PLACEMENT!!,
         amount = C.VALID_AMOUNT,
@@ -338,6 +350,22 @@ object TestEntityConstants {
         amount = C.INVALID_AMOUNT,
         league = INVALID_LEAGUE,
         addedOn = C.INVALID_ADDED_ON
+    )
+
+    val VALID_LEAGUE_POINT_RULE_INPUT: LeaguePointRuleInput = LeaguePointRuleInput(
+        leagueName = C.VALID_LEAGUE_NAME,
+        season = C.VALID_SEASON,
+        tierLevel = C.VALID_TIER_LEVEL,
+        tierName = C.VALID_TIER_NAME,
+        pointRules = listOf(VALID_POINT_RULE_INPUT)
+    )
+
+    val INVALID_LEAGUE_POINT_RULE_INPUT: LeaguePointRuleInput = LeaguePointRuleInput(
+        leagueName = C.INVALID_LEAGUE_NAME,
+        season = C.INVALID_SEASON,
+        tierLevel = C.INVALID_TIER_LEVEL,
+        tierName = C.INVALID_TIER_NAME,
+        pointRules = listOf(INVALID_POINT_RULE_INPUT)
     )
 
 }
