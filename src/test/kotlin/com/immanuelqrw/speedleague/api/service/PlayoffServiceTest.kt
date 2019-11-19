@@ -44,8 +44,8 @@ internal class PlayoffServiceTest {
     private val validTop: Int = 1
     private val invalidTop: Int = 0
 
-    private val validEndonOn: LocalDateTime? = C.VALID_ENDED_ON
-    private val invalidEndonOn: LocalDateTime? = C.INVALID_ENDED_ON
+    private val validEndedOn: LocalDateTime? = C.VALID_ENDED_ON
+    private val invalidEndedOn: LocalDateTime? = C.INVALID_ENDED_ON
 
     private val validSearch: String = "leagueName:$validLeagueName"
     private val invalidSearch: String = "leagueName:$invalidLeagueName"
@@ -89,20 +89,20 @@ internal class PlayoffServiceTest {
     @BeforeAll
     fun setUp() {
         whenever(validLeague.playoffRules).thenReturn(validPlayoffRules)
-        whenever(validLeague.endedOn).thenReturn(validEndonOn)
+        whenever(validLeague.endedOn).thenReturn(validEndedOn)
 
         whenever(leagueSeekService.find(validLeagueName, validSeason, validTierLevel)).thenReturn(validLeague)
-        doNothing().whenever(leagueService).validateLeagueChange(validEndonOn)
+        doNothing().whenever(leagueService).validateLeagueChange(validEndedOn)
         whenever(playoffRuleSeekService.create(any())).thenReturn(validPlayoffRule)
         whenever(playoffRuleSeekService.findAllActive(search = validSearch)).thenReturn(validPlayoffRules)
         whenever(playoffRuleSeekService.findAllByLeague(validLeagueName, validSeason, validTierLevel)).thenReturn(validPlayoffRules)
         doNothing().whenever(playoffRuleSeekService).deleteAll(validPlayoffRules)
 
         whenever(invalidLeague.playoffRules).thenReturn(noPlayoffRules)
-        whenever(invalidLeague.endedOn).thenReturn(invalidEndonOn)
+        whenever(invalidLeague.endedOn).thenReturn(invalidEndedOn)
 
         whenever(leagueSeekService.find(invalidLeagueName, invalidSeason, invalidTierLevel)).thenReturn(invalidLeague)
-        doThrow(LeagueHasEndedException::class).whenever(leagueService).validateLeagueChange(invalidEndonOn)
+        doThrow(LeagueHasEndedException::class).whenever(leagueService).validateLeagueChange(invalidEndedOn)
         whenever(playoffRuleSeekService.findAllActive(search = invalidSearch)).thenReturn(noPlayoffRules)
         whenever(playoffRuleSeekService.findAllByLeague(invalidLeagueName, invalidSeason, invalidTierLevel)).thenReturn(noPlayoffRules)
     }

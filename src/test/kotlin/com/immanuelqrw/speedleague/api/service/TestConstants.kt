@@ -1,9 +1,6 @@
 package com.immanuelqrw.speedleague.api.service
 
-import com.immanuelqrw.speedleague.api.entity.LeagueType
-import com.immanuelqrw.speedleague.api.entity.Outcome
-import com.immanuelqrw.speedleague.api.entity.Qualifier
-import com.immanuelqrw.speedleague.api.entity.Region
+import com.immanuelqrw.speedleague.api.entity.*
 import sun.jvm.hotspot.code.CompressedStream.L
 import java.time.LocalDateTime
 
@@ -79,10 +76,10 @@ object TestConstants {
     const val INVALID_DEFAULT_POINTS: Int = -1
 
     const val VALID_PROMOTIONS: Int = 1
-    const val INVALID_PROMOTIONS: Int = -1
+    const val INVALID_PROMOTIONS: Int = 0
 
     const val VALID_RELEGATIONS: Int = 1
-    const val INVALID_RELEGATIONS: Int = -1
+    const val INVALID_RELEGATIONS: Int = 0
 
     val VALID_PLACEMENT: Int? = 1
     val INVALID_PLACEMENT: Int? = -1
@@ -113,5 +110,8 @@ object TestConstants {
 
     const val VALID_ORDER: Int = 1
     const val INVALID_ORDER: Int = -1
+
+    val VALID_SHIFT: Shift = Shift.PROMOTION
+    val INVALID_SHIFT: Shift = Shift.RELEGATION
 
 }

@@ -5,6 +5,7 @@ import com.immanuelqrw.speedleague.api.dto.output.Standing
 import com.immanuelqrw.speedleague.api.entity.*
 import com.immanuelqrw.speedleague.api.dto.input.Cart as CartInput
 import com.immanuelqrw.speedleague.api.dto.input.Game as GameInput
+import com.immanuelqrw.speedleague.api.dto.input.LeagueDivisionShiftRule as LeagueDivisionShiftRuleInput
 import com.immanuelqrw.speedleague.api.dto.input.LeaguePlayoffRule as LeaguePlayoffRuleInput
 import com.immanuelqrw.speedleague.api.dto.input.LeaguePointRule as LeaguePointRuleInput
 import com.immanuelqrw.speedleague.api.dto.input.LeagueRunner as LeagueRunnerInput
@@ -410,6 +411,40 @@ object TestEntityConstants {
         tierLevel = C.INVALID_TIER_LEVEL,
         tierName = C.INVALID_TIER_NAME,
         qualifierRules = listOf(INVALID_QUALIFIER_RULE)
+    )
+
+    val VALID_LEAGUE_DIVISION_SHIFT_RULE_INPUT: LeagueDivisionShiftRuleInput = LeagueDivisionShiftRuleInput(
+        leagueName = C.VALID_LEAGUE_NAME,
+        season = C.VALID_SEASON,
+        tierLevel = C.VALID_TIER_LEVEL,
+        tierName = C.VALID_TIER_NAME,
+        promotionRules = listOf(VALID_QUALIFIER_RULE),
+        relegationRules = listOf(VALID_QUALIFIER_RULE)
+    )
+
+    val INVALID_LEAGUE_DIVISION_SHIFT_RULE_INPUT: LeagueDivisionShiftRuleInput = LeagueDivisionShiftRuleInput(
+        leagueName = C.INVALID_LEAGUE_NAME,
+        season = C.INVALID_SEASON,
+        tierLevel = C.INVALID_TIER_LEVEL,
+        tierName = C.INVALID_TIER_NAME,
+        promotionRules = listOf(INVALID_QUALIFIER_RULE),
+        relegationRules = listOf(INVALID_QUALIFIER_RULE)
+    )
+
+    val VALID_DIVISION_SHIFT_RULE: DivisionShiftRule = DivisionShiftRule(
+        qualifier = C.VALID_QUALIFIER,
+        count = C.VALID_RACE_COUNT,
+        shift = C.VALID_SHIFT,
+        league = VALID_LEAGUE,
+        order = C.VALID_ORDER
+    )
+
+    val INVALID_DIVISION_SHIFT_RULE: DivisionShiftRule = DivisionShiftRule(
+        qualifier = C.INVALID_QUALIFIER,
+        count = C.INVALID_RACE_COUNT,
+        shift = C.INVALID_SHIFT,
+        league = INVALID_LEAGUE,
+        order = C.INVALID_ORDER
     )
 
 }
