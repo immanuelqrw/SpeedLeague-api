@@ -1,4 +1,4 @@
-val kotlinVersion: String by extra {"1.3.50"}
+val kotlinVersion: String by extra {"1.3.61"}
 val junitVersion: String by extra {"5.5.1"}
 val jacksonVersion: String by extra {"2.9.7"}
 val springDataVersion : String by extra{"2.1.10.RELEASE"}

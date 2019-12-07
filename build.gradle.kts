@@ -12,11 +12,11 @@ apply(from = "gradle/constants.gradle.kts")
 
 plugins {
     java
-    kotlin("jvm") version "1.3.50"
-    kotlin("plugin.noarg") version "1.3.50"
-    kotlin("plugin.jpa") version "1.3.50"
-    kotlin("plugin.allopen") version "1.3.50"
-    kotlin("plugin.spring") version "1.3.50"
+    kotlin("jvm") version "1.3.61"
+    kotlin("plugin.noarg") version "1.3.61"
+    kotlin("plugin.jpa") version "1.3.61"
+    kotlin("plugin.allopen") version "1.3.61"
+    kotlin("plugin.spring") version "1.3.61"
     id("io.spring.dependency-management") version "1.0.7.RELEASE"
     id("org.sonarqube") version "2.6"
     id("org.jetbrains.dokka") version "0.9.17"
@@ -30,10 +30,26 @@ application {
     mainClassName = "com.immanuelqrw.speedleague.api.ApplicationKt"
 }
 
+val awsAccessKey: String by project
+val awsSecretKey: String by project
+
 repositories {
     mavenCentral()
     jcenter()
-    maven(url = "http://localhost:8081/repository/maven-public/")
+    maven {
+        url = uri("s3://repo.immanuelqrw.com/release")
+        credentials(AwsCredentials::class.java) {
+            accessKey = awsAccessKey
+            secretKey = awsSecretKey
+        }
+    }
+    maven {
+        url = uri("s3://repo.immanuelqrw.com/snapshot")
+        credentials(AwsCredentials::class.java) {
+            accessKey = awsAccessKey
+            secretKey = awsSecretKey
+        }
+    }
 }
 
 
@@ -128,10 +144,10 @@ val repoPassword: String by project
 publishing {
     repositories {
         maven {
-            url = uri("http://localhost:8081/repository/maven-releases/")
-            credentials {
-                username = repoUsername
-                password = repoPassword
+            url = uri("s3://repo.immanuelqrw.com/release/")
+            credentials(AwsCredentials::class.java) {
+                accessKey = awsAccessKey
+                secretKey = awsSecretKey
             }
         }
     }

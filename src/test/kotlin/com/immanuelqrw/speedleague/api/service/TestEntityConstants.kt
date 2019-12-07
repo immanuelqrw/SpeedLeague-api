@@ -1,10 +1,16 @@
 package com.immanuelqrw.speedleague.api.service
 
+import com.immanuelqrw.speedleague.api.dto.input.EndSeason
+import com.immanuelqrw.speedleague.api.dto.input.LowerTier
 import com.immanuelqrw.speedleague.api.dto.input.QualifierRule
+import com.immanuelqrw.speedleague.api.dto.input.StartSeason
+import com.immanuelqrw.speedleague.api.dto.output.LeagueSchedule
+import com.immanuelqrw.speedleague.api.dto.output.Match
 import com.immanuelqrw.speedleague.api.dto.output.Standing
 import com.immanuelqrw.speedleague.api.entity.*
 import com.immanuelqrw.speedleague.api.dto.input.Cart as CartInput
 import com.immanuelqrw.speedleague.api.dto.input.Game as GameInput
+import com.immanuelqrw.speedleague.api.dto.input.League as LeagueInput
 import com.immanuelqrw.speedleague.api.dto.input.LeagueDivisionShiftRule as LeagueDivisionShiftRuleInput
 import com.immanuelqrw.speedleague.api.dto.input.LeaguePlayoffRule as LeaguePlayoffRuleInput
 import com.immanuelqrw.speedleague.api.dto.input.LeaguePointRule as LeaguePointRuleInput
@@ -13,10 +19,12 @@ import com.immanuelqrw.speedleague.api.dto.input.LeagueSpeedrun as LeagueSpeedru
 import com.immanuelqrw.speedleague.api.dto.input.PointRule as PointRuleInput
 import com.immanuelqrw.speedleague.api.dto.input.Race as RaceInput
 import com.immanuelqrw.speedleague.api.dto.input.RaceTime as RaceTimeInput
-import com.immanuelqrw.speedleague.api.dto.update.RaceTime as RaceTimeRegister
 import com.immanuelqrw.speedleague.api.dto.input.Runner as RunnerInput
 import com.immanuelqrw.speedleague.api.dto.input.Speedrun as SpeedrunInput
 import com.immanuelqrw.speedleague.api.dto.input.System as SystemInput
+import com.immanuelqrw.speedleague.api.dto.search.League as LeagueSearch
+import com.immanuelqrw.speedleague.api.dto.update.RaceTime as RaceTimeRegister
+import com.immanuelqrw.speedleague.api.dto.update.LeagueDivisionShift as LeagueDivisionShiftUpdate
 import com.immanuelqrw.speedleague.api.service.TestConstants as C
 
 object TestEntityConstants {
@@ -445,6 +453,161 @@ object TestEntityConstants {
         shift = C.INVALID_SHIFT,
         league = INVALID_LEAGUE,
         order = C.INVALID_ORDER
+    )
+
+    val VALID_LEAGUE_INPUT: LeagueInput = LeagueInput(
+        name = C.VALID_LEAGUE_NAME,
+        type = C.VALID_LEAGUE_TYPE,
+        startedOn = C.VALID_STARTED_ON,
+        defaultTime = C.VALID_DEFAULT_TIME,
+        defaultPoints = C.VALID_DEFAULT_POINTS,
+        tierName = C.VALID_TIER_NAME,
+        runnerLimit = C.VALID_RUNNER_LIMIT,
+        promotions = C.VALID_PROMOTIONS,
+        relegations = C.VALID_RELEGATIONS,
+        qualifierRules = listOf(VALID_QUALIFIER_RULE),
+        pointRules = listOf(VALID_POINT_RULE_INPUT),
+        promotionRules = listOf(VALID_QUALIFIER_RULE),
+        relegationRules = listOf(VALID_QUALIFIER_RULE)
+    )
+
+    val INVALID_LEAGUE_INPUT: LeagueInput = LeagueInput(
+        name = C.INVALID_LEAGUE_NAME,
+        type = C.INVALID_LEAGUE_TYPE,
+        startedOn = C.INVALID_STARTED_ON,
+        defaultTime = C.INVALID_DEFAULT_TIME,
+        defaultPoints = C.INVALID_DEFAULT_POINTS,
+        tierName = C.INVALID_TIER_NAME,
+        runnerLimit = C.INVALID_RUNNER_LIMIT,
+        promotions = C.INVALID_PROMOTIONS,
+        relegations = C.INVALID_RELEGATIONS,
+        qualifierRules = listOf(INVALID_QUALIFIER_RULE),
+        pointRules = listOf(INVALID_POINT_RULE_INPUT),
+        promotionRules = listOf(INVALID_QUALIFIER_RULE),
+        relegationRules = listOf(INVALID_QUALIFIER_RULE)
+    )
+    
+    val VALID_END_SEASON: EndSeason = EndSeason(
+        leagueName = C.VALID_LEAGUE_NAME,
+        season = C.VALID_SEASON,
+        tierLevel = C.VALID_TIER_LEVEL
+    )
+
+    val INVALID_END_SEASON: EndSeason = EndSeason(
+        leagueName = C.INVALID_LEAGUE_NAME,
+        season = C.INVALID_SEASON,
+        tierLevel = C.INVALID_TIER_LEVEL,
+        endedOn = C.INVALID_ENDED_ON!!
+    )
+
+    val VALID_START_SEASON: StartSeason = StartSeason(
+        leagueName = C.VALID_LEAGUE_NAME,
+        season = C.VALID_SEASON,
+        startedOn = C.VALID_STARTED_ON,
+        endedOn = C.VALID_STARTED_ON,
+        registrationEndedOn = C.VALID_REGISTRATION_ENDED_ON,
+        qualifierRules = listOf(VALID_QUALIFIER_RULE),
+        pointRules = listOf(VALID_POINT_RULE_INPUT)
+    )
+
+    val INVALID_START_SEASON: StartSeason = StartSeason(
+        leagueName = C.INVALID_LEAGUE_NAME,
+        season = C.INVALID_SEASON,
+        startedOn = C.INVALID_STARTED_ON,
+        endedOn = C.INVALID_STARTED_ON,
+        registrationEndedOn = C.INVALID_REGISTRATION_ENDED_ON,
+        qualifierRules = listOf(INVALID_QUALIFIER_RULE),
+        pointRules = listOf(INVALID_POINT_RULE_INPUT)
+    )
+
+    val VALID_LOWER_TIER: LowerTier = LowerTier(
+        leagueName = C.VALID_LEAGUE_NAME,
+        season = C.VALID_SEASON,
+        parentTierLevel = C.VALID_PARENT_TIER_LEVEL,
+        tierName = C.VALID_TIER_NAME,
+        startedOn = C.VALID_STARTED_ON,
+        defaultTime = C.VALID_DEFAULT_TIME,
+        defaultPoints = C.VALID_DEFAULT_POINTS,
+        runnerLimit = C.VALID_RUNNER_LIMIT,
+        registrationEndedOn = C.VALID_REGISTRATION_ENDED_ON,
+        qualifierRules = listOf(VALID_QUALIFIER_RULE),
+        pointRules = listOf(VALID_POINT_RULE_INPUT),
+        divisionShifts = C.VALID_DIVISION_SHIFTS,
+        promotionRules = listOf(VALID_QUALIFIER_RULE),
+        relegationRules = listOf(VALID_QUALIFIER_RULE)
+    )
+
+    val INVALID_LOWER_TIER: LowerTier = LowerTier(
+        leagueName = C.INVALID_LEAGUE_NAME,
+        season = C.INVALID_SEASON,
+        parentTierLevel = C.INVALID_PARENT_TIER_LEVEL,
+        tierName = C.INVALID_TIER_NAME,
+        startedOn = C.INVALID_STARTED_ON,
+        defaultTime = C.INVALID_DEFAULT_TIME,
+        defaultPoints = C.INVALID_DEFAULT_POINTS,
+        runnerLimit = C.INVALID_RUNNER_LIMIT,
+        registrationEndedOn = C.INVALID_REGISTRATION_ENDED_ON,
+        qualifierRules = listOf(INVALID_QUALIFIER_RULE),
+        pointRules = listOf(INVALID_POINT_RULE_INPUT),
+        divisionShifts = C.INVALID_DIVISION_SHIFTS,
+        promotionRules = listOf(INVALID_QUALIFIER_RULE),
+        relegationRules = listOf(INVALID_QUALIFIER_RULE)
+    )
+    
+    val VALID_MATCH: Match = Match(
+        race = C.VALID_RACE_NAME,
+        homeRunner = C.VALID_RUNNER_NAME,
+        awayRunner = C.VALID_RUNNER_NAME,
+        startedOn = C.VALID_STARTED_ON
+    )
+
+    val INVALID_MATCH: Match = Match(
+        race = C.INVALID_RACE_NAME,
+        homeRunner = C.INVALID_RUNNER_NAME,
+        awayRunner = C.INVALID_RUNNER_NAME,
+        startedOn = C.INVALID_STARTED_ON
+    )
+    
+    val VALID_LEAGUE_SCHEDULE: LeagueSchedule = LeagueSchedule(
+        name = C.VALID_LEAGUE_NAME,
+        season = C.VALID_SEASON,
+        tierLevel = C.VALID_TIER_LEVEL,
+        matches = listOf(VALID_MATCH)
+    )
+
+    val INVALID_LEAGUE_SCHEDULE: LeagueSchedule = LeagueSchedule(
+        name = C.INVALID_LEAGUE_NAME,
+        season = C.INVALID_SEASON,
+        tierLevel = C.INVALID_TIER_LEVEL,
+        matches = listOf(INVALID_MATCH)
+    )
+
+    val VALID_LEAGUE_SEARCH: LeagueSearch = LeagueSearch(
+        name = C.VALID_LEAGUE_NAME,
+        season = C.VALID_SEASON,
+        tierLevel = C.VALID_TIER_LEVEL
+    )
+
+    val INVALID_LEAGUE_SEARCH: LeagueSearch = LeagueSearch(
+        name = C.INVALID_LEAGUE_NAME,
+        season = C.INVALID_SEASON,
+        tierLevel = C.INVALID_TIER_LEVEL
+    )
+    
+    val VALID_LEAGUE_DIVISION_SHIFT_UPDATE: LeagueDivisionShiftUpdate = LeagueDivisionShiftUpdate(
+        leagueName = C.VALID_LEAGUE_NAME,
+        season = C.VALID_SEASON,
+        tierLevel = C.VALID_TIER_LEVEL,
+        promotions = C.VALID_PROMOTIONS,
+        relegations = C.VALID_RELEGATIONS
+    )
+
+    val INVALID_LEAGUE_DIVISION_SHIFT_UPDATE: LeagueDivisionShiftUpdate = LeagueDivisionShiftUpdate(
+        leagueName = C.INVALID_LEAGUE_NAME,
+        season = C.INVALID_SEASON,
+        tierLevel = C.INVALID_TIER_LEVEL,
+        promotions = C.INVALID_PROMOTIONS,
+        relegations = C.INVALID_RELEGATIONS
     )
 
 }

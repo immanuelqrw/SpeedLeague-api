@@ -295,7 +295,7 @@ class LeagueService {
         return leagueSeekService.create(entity)
     }
 
-    private fun updateDivisionShifts(leagueDivisionShift: com.immanuelqrw.speedleague.api.dto.update.LeagueDivisionShift): League {
+    private fun updateDivisionShifts(leagueDivisionShift: LeagueDivisionShiftUpdate): League {
         val modifiedLeague: League = leagueDivisionShift.run {
             val mainLeague: League = leagueSeekService.find(leagueName, season, tierLevel)
 

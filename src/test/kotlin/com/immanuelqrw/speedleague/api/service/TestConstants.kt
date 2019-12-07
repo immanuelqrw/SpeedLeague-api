@@ -30,6 +30,12 @@ object TestConstants {
     const val VALID_TIER_LEVEL: Int = 1
     const val INVALID_TIER_LEVEL: Int = -1
 
+    const val VALID_PARENT_TIER_LEVEL: Int = VALID_TIER_LEVEL - 1
+    const val INVALID_PARENT_TIER_LEVEL: Int = INVALID_TIER_LEVEL + 1
+
+    const val VALID_CHILD_TIER_LEVEL: Int = VALID_TIER_LEVEL + 1
+    const val INVALID_CHILD_TIER_LEVEL: Int = INVALID_TIER_LEVEL - 1
+
     const val VALID_RUNNER_LIMIT: Int = 2
     const val INVALID_RUNNER_LIMIT: Int = -2
 
@@ -113,5 +119,8 @@ object TestConstants {
 
     val VALID_SHIFT: Shift = Shift.PROMOTION
     val INVALID_SHIFT: Shift = Shift.RELEGATION
+
+    const val VALID_DIVISION_SHIFTS: Int = 1
+    const val INVALID_DIVISION_SHIFTS: Int = -1
 
 }
