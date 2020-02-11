@@ -1,7 +1,6 @@
 package com.immanuelqrw.speedleague.api.service
 
 import com.immanuelqrw.speedleague.api.entity.*
-import sun.jvm.hotspot.code.CompressedStream.L
 import java.time.LocalDateTime
 
 object TestConstants {
@@ -14,7 +13,7 @@ object TestConstants {
 
     const val VALID_SYSTEM_NAME: String = "Wii U"
     const val INVALID_SYSTEM_NAME: String = "Playstation 64"
-    
+
     const val VALID_LEAGUE_NAME: String = "Neverending"
     const val INVALID_LEAGUE_NAME: String = "GDQ-Champions"
 
