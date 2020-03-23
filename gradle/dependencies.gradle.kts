@@ -91,7 +91,11 @@ val packages: Array<Package> = arrayOf(
     Package("org.springdoc", "springdoc-openapi-ui", "1.1.43"),
     Package("org.springframework.security", "spring-security-config", springVersion),
     Package("org.springframework.security", "spring-security-core", springVersion),
-    Package("org.springframework.security", "spring-security-web", springVersion)
+    Package("org.springframework.security", "spring-security-web", springVersion),
+    Package("com.giffing.bucket4j.spring.boot.starter", "bucket4j-spring-boot-starter", "0.2.0"),
+    Package("org.springframework.boot", "spring-boot-starter-cache", springBootVersion),
+    Package("org.ehcache", "ehcache", "3.8.1"),
+    Package("javax.cache", "cache-api", "1.1.1")
 )
 
 val testPackages: Array<Package> = arrayOf(
@@ -99,7 +103,8 @@ val testPackages: Array<Package> = arrayOf(
     *jUnitPackages,
     *springTestPackages,
     *nucleusTestPackages,
-    Package("org.springframework.security", "spring-security-test", springVersion)
+    Package("org.springframework.security", "spring-security-test", springVersion),
+    Package("com.nhaarman.mockitokotlin2", "mockito-kotlin", "2.2.0")
 )
 
 dependencies {

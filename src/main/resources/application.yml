@@ -23,6 +23,19 @@ spring:
         globally_quoted_identifiers: true
     serialization:
       write_dates_as_timestamps: false
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
 springdoc:
   swagger-ui:
     path: /api.html
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: buckets
+      url: .*
+      rate-limits:
+        - bandwidths:
+            - capacity: 1
+              time: 1
+              unit: seconds
