@@ -5,6 +5,7 @@ import com.immanuelqrw.speedleague.api.dto.input.LeagueSpeedrun as LeagueSpeedru
 import com.immanuelqrw.speedleague.api.dto.output.LeagueSpeedrun as LeagueSpeedrunOutput
 import com.immanuelqrw.speedleague.api.service.seek.*
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 
 @Service
@@ -43,6 +44,7 @@ class LeagueSpeedrunService {
         return leagueSpeedrunSeekService.findAllActive(search = search).map { leagueSpeedrun -> leagueSpeedrun.output }
     }
 
+    @Cacheable("leagueSpeedrun")
     fun findAll(
         leagueName: String?,
         leagueType: LeagueType?,

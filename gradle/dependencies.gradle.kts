@@ -41,7 +41,9 @@ val springPackages: Array<Package> = arrayOf(
     Package("org.springframework.data", "spring-data-jpa", springDataVersion),
     Package("org.springframework", "spring-orm", springVersion),
     Package("org.springframework", "spring-web", springVersion),
-    Package("org.springframework", "spring-webmvc", springVersion)
+    Package("org.springframework", "spring-webmvc", springVersion),
+    Package("org.springframework", "spring-context", springVersion),
+    Package("org.springframework", "spring-context-support", springVersion)
 )
 
 val springBootPackages: Array<Package> = arrayOf(
