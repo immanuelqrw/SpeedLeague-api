@@ -8,6 +8,7 @@ import com.immanuelqrw.speedleague.api.dto.output.LeagueSpeedrun as LeagueSpeedr
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+import java.util.concurrent.Future
 
 @RestController
 @RequestMapping("/leagueSpeedrun")
@@ -48,8 +49,10 @@ class LeagueSpeedrunController {
         @RequestParam("version")
         version: String?
     ): Iterable<LeagueSpeedrunOutput> {
-        return leagueSpeedrunService
+        val leagueSpeedrunsResult: Future<Iterable<LeagueSpeedrunOutput>> = leagueSpeedrunService
             .findAll(leagueName, leagueType, category, gameName, systemName, isEmulated, region, version)
+
+        return leagueSpeedrunsResult.get()
     }
 
 }

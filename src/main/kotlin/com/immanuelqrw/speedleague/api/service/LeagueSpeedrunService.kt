@@ -6,7 +6,10 @@ import com.immanuelqrw.speedleague.api.dto.output.LeagueSpeedrun as LeagueSpeedr
 import com.immanuelqrw.speedleague.api.service.seek.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.Cacheable
+import org.springframework.scheduling.annotation.Async
+import org.springframework.scheduling.annotation.AsyncResult
 import org.springframework.stereotype.Service
+import java.util.concurrent.Future
 
 @Service
 class LeagueSpeedrunService {
@@ -45,6 +48,7 @@ class LeagueSpeedrunService {
     }
 
     @Cacheable("leagueSpeedrun")
+    @Async
     fun findAll(
         leagueName: String?,
         leagueType: LeagueType?,
@@ -54,10 +58,10 @@ class LeagueSpeedrunService {
         isEmulated: Boolean?,
         region: Region?,
         version: String?
-    ): Iterable<LeagueSpeedrunOutput> {
-        return leagueSpeedrunSeekService
+    ): Future<Iterable<LeagueSpeedrunOutput>> {
+        return AsyncResult(leagueSpeedrunSeekService
             .findAll(leagueName, leagueType, category, gameName, systemName, isEmulated, region, version)
-            .map { leagueSpeedrun -> leagueSpeedrun.output }
+            .map { leagueSpeedrun -> leagueSpeedrun.output })
     }
 
 }
